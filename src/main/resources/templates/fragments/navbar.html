@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head/>
+    <body>
+        <div th:fragment="navbar">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">Product Factory</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [[${#httpServletRequest.remoteUser}]]
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <!-- logout -->
+                            <form class="form-inline" th:action="@{/logout}" method="post">
+                                <button class="dropdown-item" type="submit">Выйти</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </body>
+</html>

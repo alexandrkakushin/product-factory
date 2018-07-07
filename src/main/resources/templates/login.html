@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example</title>
+    <div th:replace="fragments/header :: header-bootstrap"/>
+</head>
+<body>
+    <div class="container pt-5" style="width: 500px">
+        <h1 class="text-center pb-3">Product Factory</h1>
+
+        <form class="form-group" th:action="@{/login}" method="post">
+            <div class="form-group">
+                <input class="form-control" type="text" name="username" placeholder="Пользователь"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Пароль"/>
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Войти</button>
+        </form>
+
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">
+                Неверные имя пользователя или пароль.
+            </div>
+        </div>
+        <div th:if="${param.logout}">
+            <div class="alert alert-info">
+                Вы вышли из системы.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
