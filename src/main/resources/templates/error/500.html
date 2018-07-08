@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <div th:replace="fragments/head :: common-head"/>
+    </head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <h2>Ой, что-то пошло не так... </h2>
+            <div>
+                <h5><span th:text="${url}"> # </span></h5>
+            </div>
+            <div>
+                <h7><span th:text="${exception}"> # </span></h7>
+            </div>
+        </div>
+    </body>
+</html>

@@ -3,7 +3,7 @@
     <body>
         <div th:fragment="navbar">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Product Factory</a>
+                <a class="navbar-brand" href="/">Product Factory</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -11,10 +11,21 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <!-- Нормативно справочная информация -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Справочники
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/catalogs/os">Операционные системы</a>
+                            </div>
                         </li>
                     </ul>
 
+                    <!-- Выход -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             [[${#httpServletRequest.remoteUser}]]

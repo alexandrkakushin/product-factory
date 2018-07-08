@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <div th:replace="fragments/head :: common-head"/>
+    </head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <div class="row">
+                <div class="col-sm-8" style="text-align: left" >
+                    <h5><b>Операционные системы</b></h5>
+                </div>
+                <div class="col-sm-4" style="text-align: right" >
+                    <a href="/catalogs/os/new" role="button" aria-pressed="true">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Создать
+                    </a>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Комментарий</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${items.empty}">
+                        <td colspan="2"> No Books Available </td>
+                    </tr>
+                    <tr th:each="item : ${items}">
+                        <td scope="row">
+                            <span th:text="${item.id}"> # </span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/catalogs/os/' + ${item.id}}">
+                                <span th:text="${item.name}"> Наименование </span>
+                            </a>
+                        </td>
+                        <td><span th:text="${item.comment}"> Комментарий </span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

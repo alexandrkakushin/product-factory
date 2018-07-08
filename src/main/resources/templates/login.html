@@ -4,7 +4,7 @@
     <div th:replace="fragments/head :: common-head"/>
 </head>
 <body>
-    <div class="container pt-5" style="width: 500px">
+    <div class="container pt-5" style="width: 300px">
         <h1 class="text-center pb-3">Product Factory</h1>
 
         <form class="form-group" th:action="@{/login}" method="post">
@@ -14,9 +14,11 @@
             <div class="form-group">
                 <input class="form-control" type="password" name="password" placeholder="Пароль"/>
             </div>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                <i class="fa fa-sign-in" aria-hidden="true"></i>  Войти
-            </button>
+            <div class="mx-auto" style="width: 150px">
+                <button class="btn btn-outline-success btn-block" type="submit">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>  Войти
+                </button>
+            </div>
         </form>
 
         <div th:if="${param.error}">

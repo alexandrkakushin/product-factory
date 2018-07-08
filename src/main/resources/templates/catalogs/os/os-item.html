@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <div th:replace="fragments/head :: common-head"/>
+    </head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"/>
+
+        <div class="container-fluid pt-2">
+            <div class="row">
+                <div class="col-sm-8" style="text-align: left" >
+                    <h5><b>Новый (Операционная система)</b></h5>
+                </div>
+            </div>
+
+            <form action="#" th:action="@{/catalogs/os/submit}" th:object="${entity}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-id">Код</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{id}" th:value="${entity.id}" type="text" readonly class="form-control" id="os-id" placeholder="Код">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-name">Наименование</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{name}" th:value="${entity.name}" type="text" class="form-control" id="os-name" placeholder="Наименование">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-comment">Комментарий</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{comment}" th:value="${entity.comment}" type="text" class="form-control" id="os-comment" placeholder="Комментарий">
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fa fa-hdd-o" aria-hidden="true"></i>  Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
