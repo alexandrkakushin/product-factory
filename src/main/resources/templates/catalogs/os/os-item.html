@@ -9,7 +9,9 @@
         <div class="container-fluid pt-2">
             <div class="row">
                 <div class="col-sm-8" style="text-align: left" >
-                    <h5><b>Новый (Операционная система)</b></h5>
+                    <h5><b>
+                        <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}"></span> (Операционные системы)
+                    </b></h5>
                 </div>
             </div>
 
@@ -38,6 +40,10 @@
                     <button class="btn btn-outline-success" type="submit">
                         <i class="fa fa-hdd-o" aria-hidden="true"></i>  Сохранить
                     </button>
+                    <a th:href="@{'/catalogs/os/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
+                        <i class="fa fa-trash" aria-hidden="true"></i> Удалить
+                    </a>
+                    <a href="/catalogs/os" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
                 </div>
             </form>
         </div>

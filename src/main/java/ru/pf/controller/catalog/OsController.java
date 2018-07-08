@@ -36,10 +36,16 @@ public class OsController {
         return "catalogs/os/os-item";
     }
 
+    // todo: переделать на Async XHR
+    @RequestMapping("/delete/{id}")
+    public String osDelete(@PathVariable(name = "id") Long id) {
+        osRepository.deleteById(id);
+        return "redirect:/catalogs/os";
+    }
+
     @PostMapping("/submit")
-    public String osSubmit(@ModelAttribute Os entity, Model model) {
+    public String osSubmit(@ModelAttribute Os entity) {
         Os saved = osRepository.save(entity);
         return "redirect:/catalogs/os/" + saved.getId();
     }
-
 }

@@ -22,7 +22,6 @@ public class ControllerExceptionHandler {
                 (e.getClass(), ResponseStatus.class) != null)
             throw e;
 
-
         // Otherwise setup and send the user to a default error-view.
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
