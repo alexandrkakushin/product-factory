@@ -8,10 +8,10 @@
         <div class="container-fluid pt-2">
             <div class="row">
                 <div class="col-sm-8" style="text-align: left" >
-                    <h5><b>Операционные системы</b></h5>
+                    <h5><b>Хранилища конфигураций</b></h5>
                 </div>
                 <div class="col-sm-4" style="text-align: right" >
-                    <a href="/catalogs/os/new" role="button" aria-pressed="true">
+                    <a href="/catalogs/cr/new" role="button" aria-pressed="true">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i> Создать
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                             <span th:text="${item.id}"> # </span>
                         </td>
                         <td>
-                            <a th:href="@{'/catalogs/os/' + ${item.id}}">
+                            <a th:href="@{'/catalogs/cr/' + ${item.id}}">
                                 <span th:text="${item.name}"> Наименование </span>
                             </a>
                         </td>

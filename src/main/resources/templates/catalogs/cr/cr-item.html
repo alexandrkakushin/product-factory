@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <div th:replace="fragments/head :: common-head"/>
+    </head>
+    <body>
+        <div th:replace="fragments/navbar :: navbar"/>
+
+        <div class="container-fluid pt-2">
+            <div class="row">
+                <div class="col-sm-8" style="text-align: left" >
+                    <h5><b>
+                        <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}"></span> (Хранилище конфигурации)
+                    </b></h5>
+                </div>
+            </div>
+
+            <form action="#" th:action="@{/catalogs/cr/submit}" th:object="${entity}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="conf-id">Код</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{id}" th:value="${entity.id}" type="text" readonly class="form-control" id="conf-id" placeholder="Код">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="conf-name">Наименование</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{name}" th:value="${entity.name}" type="text" class="form-control" id="conf-name" placeholder="Наименование">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="conf-name">TCP</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{tcp}" th:value="${entity.tcp}" type="text" class="form-control" id="conf-name" placeholder="TCP-адрес">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="conf-name">HTTP</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{http}" th:value="${entity.http}" type="text" class="form-control" id="conf-name" placeholder="HTTP-адрес">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="conf-comment">Комментарий</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{comment}" th:value="${entity.comment}" type="text" class="form-control" id="conf-comment" placeholder="Комментарий">
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fa fa-hdd-o" aria-hidden="true"></i>  Сохранить
+                    </button>
+                    <a th:href="@{'/catalogs/cr/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
+                        <i class="fa fa-trash" aria-hidden="true"></i> Удалить
+                    </a>
+                    <a href="/catalogs/cr" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
