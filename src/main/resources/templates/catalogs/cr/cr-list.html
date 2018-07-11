@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
-        <div th:replace="fragments/head :: common-head"/>
+        <div th:insert="fragments/head :: common-head"/>
     </head>
     <body>
-        <div th:replace="fragments/navbar :: navbar"/>
+        <div th:insert="fragments/navbar :: navbar"/>
         <div class="container-fluid pt-2">
             <div class="row">
                 <div class="col-sm-8" style="text-align: left" >
