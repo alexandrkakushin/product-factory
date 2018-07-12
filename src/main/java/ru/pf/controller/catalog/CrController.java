@@ -9,43 +9,45 @@ import ru.pf.entity.Cr;
 import ru.pf.repository.CrRepository;
 
 /**
- * @author a.kakushin1
+ * @author a.kakushin
  */
 @Controller
-@RequestMapping("/catalogs/cr")
+@RequestMapping(CrController.url)
 public class CrController {
+
+    final static String url = "catalogs/cr";
+    private final static String name = "Хранилища конфигураций";
 
     @Autowired
     CrRepository crRepository;
 
     @GetMapping
     public String osItems(Model model) {
-        model.addAttribute("items", crRepository.findAll(Sort.by("id")));
-        return "catalogs/cr/cr-list";
+        return ControllerUtil.items(model, url, name, crRepository.findAll(Sort.by("id")));
     }
 
     @GetMapping("/new")
     public String osFormNew(Model model) {
         model.addAttribute("entity", new Cr());
-        return "catalogs/cr/cr-item";
+        return url + "/cr-item";
     }
 
     @GetMapping("/{id}")
     public String osForm(@PathVariable(name = "id") Long id, Model model) {
         model.addAttribute("entity", crRepository.findById(id).orElse(new Cr()));
-        return "catalogs/cr/cr-item";
+        return url + "/cr-item";
     }
 
     // todo: переделать на Async XHR
     @RequestMapping("/delete/{id}")
     public String osDelete(@PathVariable(name = "id") Long id) {
         crRepository.deleteById(id);
-        return "redirect:/catalogs/cr";
+        return "redirect:/" + url;
     }
 
     @PostMapping("/submit")
     public String osSubmit(@ModelAttribute Cr entity) {
         Cr saved = crRepository.save(entity);
-        return "redirect:/catalogs/cr/" + saved.getId();
+        return "redirect:/" + url + "/" + saved.getId();
     }
 }

@@ -23,8 +23,7 @@ public class Cr {
     String tcp;
     String http;
 
-    public Cr() {
-    }
+    public Cr() {}
 
     public Long getId() {
         return id;

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <div th:replace="fragments/head :: common-head"/>
-</head>
+
+<head th:replace="fragments/header :: common"/>
+
 <body>
     <div class="container pt-5" style="width: 300px">
         <h1 class="text-center pb-3">Product Factory</h1>
@@ -32,5 +32,7 @@
             </div>
         </div>
     </div>
+
+    <footer th:replace="fragments/footer :: bootstrap"/>
 </body>
 </html>

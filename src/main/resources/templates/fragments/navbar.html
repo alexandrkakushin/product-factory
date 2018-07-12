@@ -1,58 +1,53 @@
-<html xmlns:th="http://www.thymeleaf.org">
-    <head/>
-    <body>
-        <div th:fragment="navbar">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/">Product Factory</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
-                        </li>
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="navbar"
+     class="navbar navbar-expand-lg navbar-light bg-light">
 
-                        <!-- Нормативно справочная информация -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Справочники
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/catalogs/os">Операционные системы</a>
-                            </div>
-                        </li>
+    <a class="navbar-brand" href="/">Product Factory</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-                        <!-- VCS -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                VCS
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/catalogs/cr">Хранилища конфигураций 1C</a>
-                            </div>
-                        </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+            </li>
 
-                    </ul>
-
-                    <!-- Выход -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            [[${#httpServletRequest.remoteUser}]]
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <!-- logout -->
-                            <form class="form-inline" th:action="@{/logout}" method="post">
-                                <button class="dropdown-item" type="submit">
-                                    <i class="fa fa-sign-out" aria-hidden="true"></i> Выйти
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
+            <!-- Нормативно справочная информация -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Справочники
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/catalogs/os">Операционные системы</a>
                 </div>
-            </nav>
+            </li>
+
+            <!-- VCS -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    VCS
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/catalogs/cr">Хранилища конфигураций 1C</a>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Выход -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                [[${#httpServletRequest.remoteUser}]]
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <!-- logout -->
+                <form class="form-inline" th:action="@{/logout}" method="post">
+                    <button class="dropdown-item" type="submit">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> Выйти
+                    </button>
+                </form>
+            </div>
         </div>
-    </body>
-</html>
+
+    </div>
+</nav>
