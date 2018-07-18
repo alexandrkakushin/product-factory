@@ -1,0 +1,18 @@
+<item-title th:fragment="title" xmlns:th="http://www.thymeleaf.org">
+    <div class="col-sm-8" style="text-align: left" >
+        <h5><b>
+            <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}+' ('+${name}+')'"></span>
+        </b></h5>1
+    </div>
+</item-title>
+
+
+<item-operations th:fragment="operations" xmlns:th="http://www.thymeleaf.org">
+    <button class="btn btn-outline-success" type="submit">
+        <i class="fa fa-hdd-o" aria-hidden="true"></i>  Сохранить
+    </button>
+    <a th:href="@{'/'+${url}+'/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
+        <i class="fa fa-trash" aria-hidden="true"></i> Удалить
+    </a>
+    <a th:href="@{'/'+${url}}" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
+</item-operations>

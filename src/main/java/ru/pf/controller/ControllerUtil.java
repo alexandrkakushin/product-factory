@@ -1,4 +1,4 @@
-package ru.pf.controller.catalog;
+package ru.pf.controller;
 
 import org.springframework.ui.Model;
 
@@ -7,8 +7,7 @@ import org.springframework.ui.Model;
  */
 public class ControllerUtil {
 
-    public static String items(Model model, String url, String name, Iterable<?> items) {
-        model.addAttribute("url", url);
+    public static String items(Model model, String name, Iterable<?> items) {
         model.addAttribute("name", name);
         model.addAttribute("items", items);
         return "catalogs/items";

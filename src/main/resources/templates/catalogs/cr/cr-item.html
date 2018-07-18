@@ -5,13 +5,7 @@
         <nav th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
-            <div class="row">
-                <div class="col-sm-8" style="text-align: left" >
-                    <h5><b>
-                        <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}"></span> (Хранилище конфигурации)
-                    </b></h5>
-                </div>
-            </div>
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Хранилище конфигурации')"></div>
 
             <form action="#" th:action="@{/catalogs/cr/submit}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -48,15 +42,8 @@
                         <input th:field="*{comment}" th:value="${entity.comment}" type="text" class="form-control" id="conf-comment" placeholder="Комментарий">
                     </div>
                 </div>
-                <div>
-                    <button class="btn btn-outline-success" type="submit">
-                        <i class="fa fa-hdd-o" aria-hidden="true"></i>  Сохранить
-                    </button>
-                    <a th:href="@{'/catalogs/cr/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
-                        <i class="fa fa-trash" aria-hidden="true"></i> Удалить
-                    </a>
-                    <a href="/catalogs/cr" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
-                </div>
+
+                <div th:include="fragments/item :: operations(url = ${url})"></div>
             </form>
         </div>
         <footer th:replace="fragments/footer :: bootstrap"/>

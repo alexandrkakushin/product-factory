@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav th:replace="fragments/navbar :: navbar"/>
+
+        <div class="container-fluid pt-2">
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Проект')"></div>
+
+            <form action="#" th:action="@{'/'+${url}+'/submit'}" th:object="${entity}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-id">Код</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{id}" th:value="${entity.id}" type="text" readonly class="form-control" id="os-id" placeholder="Код">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-name">Наименование</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{name}" th:value="${entity.name}" type="text" class="form-control" id="os-name" placeholder="Наименование">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-comment">Комментарий</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{comment}" th:value="${entity.comment}" type="text" class="form-control" id="os-comment" placeholder="Комментарий">
+                    </div>
+                </div>
+
+                <div th:include="fragments/item :: operations(url = ${url})"></div>
+            </form>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>

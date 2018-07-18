@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
+import ru.pf.controller.ControllerInterceptor;
 
 /**
  * @author a.kakushin
@@ -36,5 +37,13 @@ public class MvcConfig implements WebMvcConfigurer {
                 addResourceHandler("/fonts/**")
                 .addResourceLocations("classpath:/static/fonts/")
                 .setCachePeriod(3600);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ControllerInterceptor())
+                .addPathPatterns("/development/**")
+                .addPathPatterns("/infrastructure/**")
+                .addPathPatterns("/catalogs/**");
     }
 }

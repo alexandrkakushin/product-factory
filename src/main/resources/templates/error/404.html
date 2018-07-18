@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <h2>Похоже, запрашивая страница не найдена...</h2>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
 </html>
