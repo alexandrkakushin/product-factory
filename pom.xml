@@ -23,6 +23,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<postgresql.version>42.2.1</postgresql.version>
+		<!-- webjars -->
+		<webjars.locator.version>0.34</webjars.locator.version>
+		<bootstrap.version>4.1.1</bootstrap.version>
+		<jquery.version>3.2.1</jquery.version>
+		<font.awesome.version>4.7.0</font.awesome.version>
+		<popperjs.version>1.14.1</popperjs.version>
 	</properties>
 
 	<dependencies>
@@ -66,10 +72,32 @@
 			<scope>runtime</scope>
 			<version>${postgresql.version}</version>
 		</dependency>
+
+		<!-- webjars -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>RELEASE</version>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+			<version>${webjars.locator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${bootstrap.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>${jquery.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>5.0.13-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>popper.js</artifactId>
+			<version>${popperjs.version}</version>
 		</dependency>
 	</dependencies>
 
