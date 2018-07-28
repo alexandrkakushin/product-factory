@@ -47,6 +47,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new ControllerInterceptor())
                 .addPathPatterns("/development/**")
                 .addPathPatterns("/infrastructure/**")
-                .addPathPatterns("/catalogs/**");
+                .addPathPatterns("/vcs/**");
     }
 }

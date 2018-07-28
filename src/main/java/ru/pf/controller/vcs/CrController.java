@@ -1,4 +1,4 @@
-package ru.pf.controller.catalog;
+package ru.pf.controller.vcs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,7 +17,7 @@ import ru.pf.repository.CrRepository;
 @RequestMapping(CrController.url)
 public class CrController implements PfController {
 
-    final static String url = "catalogs/cr";
+    final static String url = "vcs/cr";
     private final static String name = "Хранилища конфигураций";
 
     @Autowired
