@@ -22,6 +22,19 @@
                         <input th:field="*{name}" th:value="${entity.name}" type="text" class="form-control" id="os-name" placeholder="Наименование">
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="os-vsc">VSC</label>
+                    <div class="col-sm-5">
+                        <select id="os-vsc" class="custom-select" th:field="*{cr.id}">
+                            <option value="">Выберите VCS</option>
+                            <option th:each="cr : ${crList}" th:value="${cr.id}">
+                                <p th:text="${cr.name}"> # </p>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label class="col-sm-1 col-form-label" for="os-comment">Комментарий</label>
                     <div class="col-sm-5">

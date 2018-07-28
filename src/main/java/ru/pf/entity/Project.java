@@ -19,9 +19,21 @@ public class Project {
     private String name;
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name="cr_id")
+    private Cr cr;
+
     public Project() {}
 
     public Long getId() {
         return id;
+    }
+
+    public Cr getCr() {
+        return cr;
+    }
+
+    public void setCr(Cr cr) {
+        this.cr = cr;
     }
 }
