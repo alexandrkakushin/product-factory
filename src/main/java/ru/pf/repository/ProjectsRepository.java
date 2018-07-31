@@ -1,14 +1,15 @@
 package ru.pf.repository;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 import ru.pf.entity.Project;
 
 /**
+ * Репозиторий "Проекты"
  * @author a.kakushin
  */
-public interface ProjectsRepository extends CrudRepository<Project, Long> {
+public interface ProjectsRepository extends PfRepository<Project, Long> {
 
-    Iterable<Project> findAll(Sort sort);
-
+    @Override
+    default Project newInstance() {
+        return new Project();
+    }
 }

@@ -5,10 +5,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.pf.controller.ControllerUtil;
 import ru.pf.controller.PfController;
 import ru.pf.entity.Project;
 import ru.pf.repository.CrRepository;
+import ru.pf.repository.PfRepository;
 import ru.pf.repository.ProjectsRepository;
 
 /**
@@ -16,10 +16,9 @@ import ru.pf.repository.ProjectsRepository;
  */
 @Controller
 @RequestMapping(ProjectsController.url)
-public class ProjectsController implements PfController {
+public class ProjectsController implements PfController<Project, Long> {
 
     final static String url = "development/projects";
-    private final static String name = "Проекты";
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -32,16 +31,26 @@ public class ProjectsController implements PfController {
         return url;
     }
 
-    @GetMapping
-    public String items(Model model) {
-        return ControllerUtil.items(model, name, projectsRepository.findAll(Sort.by("id")));
+    @Override
+    public String getTemplateItem() {
+        return "project-item";
+    }
+
+    @Override
+    public String getName() {
+        return "Проекты";
+    }
+
+    @Override
+    public PfRepository<Project, Long> getRepository() {
+        return this.projectsRepository;
     }
 
     @GetMapping("/new")
     public String formNew(Model model) {
         model.addAttribute("entity", new Project());
         model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
-        return url + "/project-item";
+        return url + "/" + getTemplateItem();
     }
 
     @GetMapping("/{id}")
@@ -49,14 +58,7 @@ public class ProjectsController implements PfController {
         Project project = projectsRepository.findById(id).get();
         model.addAttribute("entity", project);
         model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
-        return url + "/project-item";
-    }
-
-    // todo: переделать на Async XHR
-    @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") Long id) {
-        projectsRepository.deleteById(id);
-        return "redirect:/" + url;
+        return url + "/" + getTemplateItem();
     }
 
     @PostMapping("/submit")

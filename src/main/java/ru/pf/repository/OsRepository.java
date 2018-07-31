@@ -1,14 +1,15 @@
 package ru.pf.repository;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 import ru.pf.entity.Os;
 
 /**
  * Репозиторий "Операционные системы"
  * @author a.kakushin
  */
-public interface OsRepository extends CrudRepository<Os, Long> {
+public interface OsRepository extends PfRepository<Os, Long> {
 
-    Iterable<Os> findAll(Sort sort);
+    @Override
+    default Os newInstance() {
+        return new Os();
+    }
 }

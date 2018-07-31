@@ -1,14 +1,15 @@
 package ru.pf.repository;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
 import ru.pf.entity.Cr;
 
 /**
+ * Репозиторий "Хранилища конфигураций"
  * @author a.kakushin
  */
-public interface CrRepository extends CrudRepository<Cr, Long> {
+public interface CrRepository extends PfRepository<Cr, Long> {
 
-    Iterable<Cr> findAll(Sort sort);
-
+    @Override
+    default Cr newInstance() {
+        return new Cr();
+    }
 }

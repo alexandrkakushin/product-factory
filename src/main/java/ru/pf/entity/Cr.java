@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "CR")
 @Data
-public class Cr {
+public class Cr implements PfEntity<Cr, Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +25,8 @@ public class Cr {
 
     public Cr() {}
 
+    @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 }
