@@ -1,0 +1,27 @@
+
+<item-field th:fragment="id" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-id">Код</label>
+        <div class="col-sm-5">
+            <input th:field="*{id}" th:value="${entity.id}" type="text" readonly class="form-control" id="field-id" placeholder="Код">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="name" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-name">Наименование</label>
+        <div class="col-sm-5">
+            <input th:field="*{name}" th:value="${entity.name}" type="text" class="form-control" id="field-name" placeholder="Наименование">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="comment" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-comment">Комментарий</label>
+        <div class="col-sm-5">
+            <input th:field="*{comment}" th:value="${entity.comment}" type="text" class="form-control" id="field-comment" placeholder="Комментарий">
+        </div>
+    </div>
+</item-field>
