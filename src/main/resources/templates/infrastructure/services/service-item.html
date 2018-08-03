@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav th:replace="fragments/navbar :: navbar"/>
+
+        <div class="container-fluid pt-2">
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Служба')"></div>
+
+            <form action="#" th:action="@{'/'+${url}+'/submit'}" th:object="${entity}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <field th:replace="fragments/fields :: id"></field>
+                <field th:replace="fragments/fields :: name"></field>
+                <field th:replace="fragments/fields :: comment"></field>
+
+                <div th:include="fragments/item :: operations(url = ${url})"></div>
+            </form>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>
