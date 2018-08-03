@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.PfEntity;
 import ru.pf.repository.PfRepository;
 
+import java.util.Map;
+
 /**
  * Интерфейс контроллеров для реализация CRUD-операций
  * @author a.kakushin
@@ -22,16 +24,24 @@ public interface PfController<T extends PfEntity, ID> {
 
     PfRepository<T, ID> getRepository();
 
+    default void addAttributesItems(Model model) {}
+
+    default void addAttributesItem(Model model) {}
+
     @GetMapping
     default String items(Model model) {
         model.addAttribute("name", getName());
         model.addAttribute("items", getRepository().findAll(Sort.by("id")));
+        addAttributesItems(model);
+
         return "catalogs/items";
     }
 
     @GetMapping("/new")
     default String formNew(Model model) {
         model.addAttribute("entity", getRepository().newInstance());
+        addAttributesItem(model);
+
         return getUrl() + "/" + getTemplateItem();
     }
 
@@ -41,6 +51,8 @@ public interface PfController<T extends PfEntity, ID> {
                 .orElse(getRepository().newInstance());
 
         model.addAttribute("entity", entity);
+        addAttributesItem(model);
+
         return getUrl() + "/" + getTemplateItem();
     }
 

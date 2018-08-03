@@ -25,3 +25,31 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="vcs" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="os-vsc">VCS</label>
+        <div class="col-sm-5">
+            <select id="os-vsc" class="custom-select" th:field="*{cr.id}">
+                <option value="">Выберите VCS</option>
+                <option th:each="cr : ${crList}" th:value="${cr.id}">
+                    <p th:text="${cr.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="os" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-os">ОС</label>
+        <div class="col-sm-5">
+            <select id="field-os" class="custom-select" th:field="*{os.id}">
+                <option value="">Выберите операционную систему</option>
+                <option th:each="os : ${osList}" th:value="${os.id}">
+                    <p th:text="${os.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>

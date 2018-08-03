@@ -46,19 +46,9 @@ public class ProjectsController implements PfController<Project, Long> {
         return this.projectsRepository;
     }
 
-    @GetMapping("/new")
-    public String formNew(Model model) {
-        model.addAttribute("entity", new Project());
+    @Override
+    public void addAttributesItem(Model model) {
         model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
-        return url + "/" + getTemplateItem();
-    }
-
-    @GetMapping("/{id}")
-    public String form(@PathVariable(name = "id") Long id, Model model) {
-        Project project = projectsRepository.findById(id).get();
-        model.addAttribute("entity", project);
-        model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
-        return url + "/" + getTemplateItem();
     }
 
     @PostMapping("/submit")

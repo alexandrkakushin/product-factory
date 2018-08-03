@@ -12,19 +12,7 @@
 
                 <field th:replace="fragments/fields :: id"></field>
                 <field th:replace="fragments/fields :: name"></field>
-
-                <div class="form-group row">
-                    <label class="col-sm-1 col-form-label" for="os-vsc">VSC</label>
-                    <div class="col-sm-5">
-                        <select id="os-vsc" class="custom-select" th:field="*{cr.id}">
-                            <option value="">Выберите VCS</option>
-                            <option th:each="cr : ${crList}" th:value="${cr.id}">
-                                <p th:text="${cr.name}"> # </p>
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
+                <field th:replace="fragments/fields :: vcs"></field>
                 <field th:replace="fragments/fields :: comment"></field>
 
                 <div th:include="fragments/item :: operations(url = ${url})"></div>

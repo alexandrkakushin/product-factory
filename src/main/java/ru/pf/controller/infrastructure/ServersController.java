@@ -1,10 +1,13 @@
 package ru.pf.controller.infrastructure;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.pf.controller.PfController;
 import ru.pf.entity.Server;
+import ru.pf.repository.OsRepository;
 import ru.pf.repository.PfRepository;
 import ru.pf.repository.ServersRepository;
 
@@ -19,6 +22,9 @@ public class ServersController implements PfController<Server, Long> {
 
     @Autowired
     private ServersRepository serversRepository;
+
+    @Autowired
+    private OsRepository osRepository;
 
     @Override
     public String getUrl() {
@@ -39,4 +45,22 @@ public class ServersController implements PfController<Server, Long> {
     public PfRepository<Server, Long> getRepository() {
         return this.serversRepository;
     }
+
+    @Override
+    public void addAttributesItem(Model model) {
+        model.addAttribute("osList", osRepository.findAll(Sort.by("id")));
+    }
+
+
+    @PostMapping("/submit")
+    public String submit(@ModelAttribute Server entity) {
+        if (entity.getOs() != null) {
+            if (entity.getOs().getId() == null) {
+                entity.setOs(null);
+            }
+        }
+        Server saved = this.getRepository().save(entity);
+        return "redirect:/" + url + "/" + saved.getId();
+    }
+
 }

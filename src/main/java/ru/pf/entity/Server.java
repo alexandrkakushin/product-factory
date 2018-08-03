@@ -20,10 +20,22 @@ public class Server implements PfEntity<Server, Long>{
     private String name;
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name = "os_id")
+    private Os os;
+
     public Server() {}
 
     @Override
     public Long getId() {
         return this.id;
+    }
+
+    public Os getOs() {
+        return os;
+    }
+
+    public void setOs(Os os) {
+        this.os = os;
     }
 }
