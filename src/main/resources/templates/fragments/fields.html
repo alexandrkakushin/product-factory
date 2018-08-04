@@ -53,3 +53,30 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="ip4" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-ip4">IP4</label>
+        <div class="col-sm-5">
+            <input th:field="*{ip4}" th:value="${entity.ip4}" type="text" class="form-control" id="field-ip4" placeholder="IP-адрес">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="cpu" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-cpu">CPU</label>
+        <div class="col-sm-5">
+            <input th:field="*{cpu}" th:value="${entity.cpu}" type="text" class="form-control" id="field-cpu" placeholder="CPU">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="ram" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-ram">RAM (Gb)</label>
+        <div class="col-sm-5">
+            <input th:field="*{ram}" th:value="${entity.ram}" type="text" class="form-control" id="field-ram" placeholder="RAM">
+        </div>
+    </div>
+</item-field>

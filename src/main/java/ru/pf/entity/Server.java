@@ -24,6 +24,10 @@ public class Server implements PfEntity<Server, Long>{
     @JoinColumn(name = "os_id")
     private Os os;
 
+    private Integer cpu;
+    private Integer ram;
+    private String ip4;
+
     public Server() {}
 
     @Override
