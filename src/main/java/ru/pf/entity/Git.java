@@ -5,13 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * CR - Configuration Repository
  * @author a.kakushin
  */
 @Entity
-@Table(name = "CR")
+@Table(name = "GIT")
 @Data
-public class Cr implements PfEntity<Cr, Long> {
+public class Git implements PfEntity<Git, Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,11 +18,6 @@ public class Cr implements PfEntity<Cr, Long> {
 
     private String name;
     private String comment;
-
-    private String tcp;
-    private String http;
-
-    public Cr() {}
 
     @Override
     public Long getId() {

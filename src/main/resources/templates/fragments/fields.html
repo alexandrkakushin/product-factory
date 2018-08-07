@@ -80,3 +80,21 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="tcp" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="conf-name">TCP</label>
+        <div class="col-sm-5">
+            <input th:field="*{tcp}" th:value="${entity.tcp}" type="text" class="form-control" id="conf-name" placeholder="TCP-адрес">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="http" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="conf-name">HTTP</label>
+        <div class="col-sm-5">
+            <input th:field="*{http}" th:value="${entity.http}" type="text" class="form-control" id="conf-name" placeholder="HTTP-адрес">
+        </div>
+    </div>
+</item-field>
