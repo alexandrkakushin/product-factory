@@ -23,6 +23,10 @@ public class Project implements PfEntity<Project, Long> {
     @JoinColumn(name="cr_id")
     private Cr cr;
 
+    @ManyToOne
+    @JoinColumn(name = "git_id")
+    private Git git;
+
     public Project() {}
 
     @Override
@@ -36,5 +40,13 @@ public class Project implements PfEntity<Project, Long> {
 
     public void setCr(Cr cr) {
         this.cr = cr;
+    }
+
+    public Git getGit() {
+        return git;
+    }
+
+    public void setGit(Git git) {
+        this.git = git;
     }
 }

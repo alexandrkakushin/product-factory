@@ -26,14 +26,28 @@
     </div>
 </item-field>
 
-<item-field th:fragment="vcs" xmlns:th="http://www.thymeleaf.org">
+<item-field th:fragment="cr" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="os-vsc">VCS</label>
+        <label class="col-sm-1 col-form-label" for="field-cr">CR</label>
         <div class="col-sm-5">
-            <select id="os-vsc" class="custom-select" th:field="*{cr.id}">
-                <option value="">Выберите VCS</option>
+            <select id="field-cr" class="custom-select" th:field="*{cr.id}">
+                <option value="">Выберите хранилище конфигурации</option>
                 <option th:each="cr : ${crList}" th:value="${cr.id}">
                     <p th:text="${cr.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="git" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-git">GIT</label>
+        <div class="col-sm-5">
+            <select id="field-git" class="custom-select" th:field="*{git.id}">
+                <option value="">Выберите GIT-репозиторий</option>
+                <option th:each="git : ${gitList}" th:value="${git.id}">
+                    <p th:text="${git.name}"> # </p>
                 </option>
             </select>
         </div>
