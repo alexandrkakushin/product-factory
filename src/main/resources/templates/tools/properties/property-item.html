@@ -5,15 +5,14 @@
         <nav th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
-            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'GIT-репозиторий')"></div>
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Настройка')"></div>
 
             <form action="#" th:action="@{'/'+${url}+'/submit'}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <field th:replace="fragments/fields :: id"></field>
-                <field th:replace="fragments/fields :: name"></field>
-                <field th:replace="fragments/fields :: fetchUrl"></field>
-                <field th:replace="fragments/fields :: defaultBranch"></field>
+                <field th:replace="fragments/fields :: property"></field>
+                <field th:replace="fragments/fields :: value"></field>
                 <field th:replace="fragments/fields :: comment"></field>
 
                 <div th:include="fragments/item :: operations(url = ${url})"></div>

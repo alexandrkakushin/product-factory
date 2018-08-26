@@ -3,32 +3,36 @@ package ru.pf.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 /**
  * @author a.kakushin
  */
 @Entity
-@Table(name = "GIT")
+@Table(name = "PROPERTIES")
 @Data
-public class Git implements PfEntity<Git, Long> {
+public class Property implements PfEntity<Property, Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String value;
+
     private String comment;
 
-    private String fetchUrl;
-    private String defaultBranch;
+    public Property() {
+    }
 
     @Override
     public Long getId() {
         return this.id;
     }
 
-    public void fetch(Path storage) {
-
+    public String getValue() {
+        return value;
     }
 }

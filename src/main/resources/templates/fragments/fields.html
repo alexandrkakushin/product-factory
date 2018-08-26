@@ -112,3 +112,44 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="property" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-parameter">Параметр</label>
+        <div class="col-sm-5">
+            <select id="field-parameter" class="custom-select" th:field="*{name}">
+                <option value="">Выберите параметр</option>
+                <option th:each="property : ${propertyList}" th:value="${property}">
+                    <p th:text="${property}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="value" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-value">Значение</label>
+        <div class="col-sm-5">
+            <input th:field="*{value}" th:value="${entity.value}" type="text" class="form-control" id="field-value" placeholder="Значение">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="fetchUrl" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-fetchUrl">Fetch URL</label>
+        <div class="col-sm-5">
+            <input th:field="*{fetchUrl}" th:value="${entity.fetchUrl}" type="text" class="form-control" id="field-fetchUrl" placeholder="Fetch URL">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="defaultBranch" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-defaultBranch">Ветвь по умолчанию</label>
+        <div class="col-sm-5">
+            <input th:field="*{defaultBranch}" th:value="${entity.defaultBranch}" type="text" class="form-control" id="field-defaultBranch" placeholder="Ветвь по умолчанию">
+        </div>
+    </div>
+</item-field>
