@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<postgresql.version>42.2.1</postgresql.version>
+		<jgit.version>5.0.2.201807311906-r</jgit.version>
 		<!-- webjars -->
 		<webjars.locator.version>0.34</webjars.locator.version>
 		<bootstrap.version>4.1.1</bootstrap.version>
@@ -98,6 +99,13 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>popper.js</artifactId>
 			<version>${popperjs.version}</version>
+		</dependency>
+
+		<!--other-->
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>${jgit.version}</version>
 		</dependency>
 	</dependencies>
 

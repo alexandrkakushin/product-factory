@@ -28,7 +28,11 @@ public class Git implements PfEntity<Git, Long> {
         return this.id;
     }
 
-    public void fetch(Path storage) {
+    public String getFetchUrl() {
+        return this.fetchUrl;
+    }
 
+    public String getDefaultBranch() {
+        return this.defaultBranch;
     }
 }

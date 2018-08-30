@@ -1,6 +1,7 @@
 package ru.pf.controller.api;
 
 import lombok.Data;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.reader.ConfReader;
-import ru.pf.service.PropertiesService;
+import ru.pf.repository.ProjectsRepository;
+import ru.pf.service.ProjectsService;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * @author a.kakushin
@@ -23,40 +25,49 @@ import java.nio.file.Path;
 public class ApiProjectsController {
 
     @Autowired
-    ConfReader confReader;
+    ProjectsService projectsService;
 
     @Autowired
-    PropertiesService propertiesService;
+    ProjectsRepository projectsRepository;
+
 
     @GetMapping("/{id}/git/fetch")
-    public ResponseEntity<ResponseGitFetch> gitFetch(@PathVariable(name = "id") Long id) {
-        ResponseGitFetch body = new ResponseGitFetch();
+    public ResponseEntity<ResponseGit> gitFetch(@PathVariable(name = "id") Long id) {
+        ResponseGit body = new ResponseGit();
+        body.setSuccess(false);
 
-        Path storage = propertiesService.getStorage();
-
-        body.setSuccess(true);
-        body.setDescription("tro-lo-lo");
+        projectsRepository.findById(id).ifPresent(
+                (Project project) -> {
+                    try {
+                        projectsService.gitFetch(project);
+                        body.setSuccess(true);
+                    } catch (IOException | GitAPIException ex) {
+                        body.setDescription(ex.getLocalizedMessage());
+                    }
+                }
+        );
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/conf")
     public ResponseEntity<Conf> conf(@PathVariable(name = "id") Long id) throws IOException {
+        Conf body = null;
 
-        Path storage = propertiesService.getStorage();
-        Path target = storage
-                .resolve(id.toString())
-                .resolve("git");
+        Optional<Project> project = projectsRepository.findById(id);
+        if (project.isPresent()) {
+            body = projectsService.getConfFromGit(project.get());
+        }
 
-        return new ResponseEntity<>(confReader.read(target), HttpStatus.OK);
+        return new ResponseEntity<>(body, body != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
     @Data
-    static class ResponseGitFetch {
+    static class ResponseGit {
         private boolean success;
         private String description;
 
-        public ResponseGitFetch() {}
+        public ResponseGit() {}
 
         public void setSuccess(boolean success) {
             this.success = success;
