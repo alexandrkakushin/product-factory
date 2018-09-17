@@ -73,4 +73,5 @@ public class ProjectsController implements PfController<Project, Long> {
         Project saved = projectsRepository.save(entity);
         return "redirect:/" + url + "/" + saved.getId();
     }
+
 }

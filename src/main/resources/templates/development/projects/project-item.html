@@ -16,7 +16,12 @@
                 <field th:replace="fragments/fields :: git"></field>
                 <field th:replace="fragments/fields :: comment"></field>
 
-                <div th:include="fragments/item :: operations(url = ${url})"></div>
+                <div>
+                    <a th:if="${entity.id != null}" th:href="@{'/'+${url}+'/' + ${entity.id} + '/conf'}" class="btn btn-outline-info" role="button" aria-disabled="true">
+                        <i class="fas fa-project-diagram" aria-hidden="true"></i> Конфигурация
+                    </a>
+                    <div th:replace="fragments/item :: operations(url = ${url})"></div>
+                </div>
             </form>
         </div>
         <footer th:replace="fragments/footer :: bootstrap"/>
