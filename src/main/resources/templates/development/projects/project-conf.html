@@ -5,6 +5,9 @@
         <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-treeview.css}" />
     </head>
     <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+
         <nav th:replace="fragments/navbar :: navbar"/>
         <div class="container-fluid pt-2">
             <nav aria-label="breadcrumb">
@@ -16,14 +19,48 @@
                 </ol>
             </nav>
 
+
+            <div class="pb-2">
+
+                <button class="btn btn-outline-success" type="button" onclick="gitFetch()">
+                    <i class="fab fa-git" aria-hidden="true"></i>  Обновить
+                </button>
+            </div>
+
             <div class="row">
                 <div class="col-sm-4">
-                    <div id="metadata" class=""></div>
+                    <div id="metadata"></div>
                 </div>
                 <div class="col-sm-8">
                     data
                 </div>
             </div>
+
+            <script>
+                function gitFetch() {
+                    $.ajax({
+                        type : "GET",
+                        contentType : "application/json",
+                        url : "conf/git/fetch",
+                        dataType : 'json',
+                        timeout : 100000,
+                        success : function(data) {
+                            $.notify('Получена последняя версия', {
+                                offset: {
+                                    x: 10,
+                                    y: 65
+                                }
+                            });
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        },
+                        done : function(e) {
+                            console.log("DONE");
+                        }
+                    });
+                }
+            </script>
 
             <script type="text/javascript" th:src="@{/js/bootstrap-treeview.js}"></script>
             <script type="text/javascript">
