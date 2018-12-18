@@ -6,8 +6,7 @@ import ru.pf.metadata.object.common.CommonModule;
 import ru.pf.metadata.object.common.Language;
 
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author a.kakushin
@@ -20,45 +19,59 @@ public class Conf extends AbstractObject<Conf> {
     private Module sessionModule;
     private Module externalConnectionModule;
 
-    private Set<CommonModule> commonModules;
-    private Set<Language> languages = new HashSet<>();
-    private Set<Constant> constants = new HashSet<>();
-    private Set<Catalog> catalogs = new HashSet<>();
-    private Set<Document> documents = new HashSet<>();
-    private Set<Enum> enums = new HashSet<>();
-    private Set<DataProcessor> dataProcessors = new HashSet<>();
+    private Set<MetadataObject> commonModules;
+    private Set<MetadataObject> sessionParameters;
+
+    private Set<MetadataObject> languages;
+    private Set<MetadataObject> constants;
+    private Set<MetadataObject> catalogs;
+    private Set<MetadataObject> documents;
+    private Set<MetadataObject> enums;
+    private Set<MetadataObject> dataProcessors;
 
 
     public Conf(Path path) {
         super(path);
-        this.commonModules = new HashSet<>();
+
+        this.commonModules = new LinkedHashSet<>();
+        this.sessionParameters = new LinkedHashSet<>();
+        this.languages = new LinkedHashSet<>();
+        this.constants = new LinkedHashSet<>();
+        this.catalogs = new LinkedHashSet<>();
+        this.documents = new LinkedHashSet<>();
+        this.enums = new LinkedHashSet<>();
+        this.dataProcessors = new LinkedHashSet<>();
     }
 
-    public Set<CommonModule> getCommonModules() {
+    public Set<MetadataObject> getCommonModules() {
         return commonModules;
     }
 
-    public Set<Language> getLanguages() {
+    public Set<MetadataObject> getSessionParameters() {
+        return sessionParameters;
+    }
+
+    public Set<MetadataObject> getLanguages() {
         return languages;
     }
 
-    public Set<Constant> getConstants() {
+    public Set<MetadataObject> getConstants() {
         return constants;
     }
 
-    public Set<Catalog> getCatalogs() {
+    public Set<MetadataObject> getCatalogs() {
         return catalogs;
     }
 
-    public Set<Document> getDocuments() {
+    public Set<MetadataObject> getDocuments() {
         return documents;
     }
 
-    public Set<Enum> getEnums() {
+    public Set<MetadataObject> getEnums() {
         return enums;
     }
 
-    public Set<DataProcessor> getDataProcessors() {
+    public Set<MetadataObject> getDataProcessors() {
         return dataProcessors;
     }
 

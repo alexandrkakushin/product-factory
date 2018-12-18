@@ -1,17 +1,25 @@
 package ru.pf.metadata.reader;
 
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
 import ru.pf.metadata.object.*;
 import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.common.CommonModule;
 import ru.pf.metadata.object.common.Language;
+import ru.pf.metadata.object.common.SessionParameter;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author a.kakushin
@@ -21,7 +29,7 @@ public class ConfReader {
 
     public Conf read(Path workPath) throws IOException {
 
-        Conf conf = null;
+        Conf conf;
 
         Path fileConfiguration = workPath.resolve("Configuration.xml");
         if (Files.exists(fileConfiguration)) {
@@ -30,98 +38,77 @@ public class ConfReader {
             throw new FileNotFoundException("File \"Configuration.xml\" not found'");
         }
 
-        /*Общие
-             Подсистемы*/
+        ObjectReader objReader = new ObjectReader(fileConfiguration);
 
-        // Общие модули
-        Path workObjects = workPath.resolve("CommonModules");
-        if (Files.exists(workObjects)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workObjects, "*.xml")) {
-                for (Path entry : entries) {
-                    CommonModule commonModule = new CommonModule(entry);
-                    commonModule.parse();
-                    conf.getCommonModules().add(commonModule);
-                }
+        String nodeChildObjects = "/MetaDataObject/Configuration/ChildObjects/";
+
+        Map<Class, Container> description = getDescription(conf);
+        for (Class objClass : description.keySet()) {
+            List<String> objectsName = objReader.readChild(nodeChildObjects + objClass.getSimpleName());
+
+            Container container = description.get(objClass);
+            if (container == null) {
+                // todo: проработать исключения
+                throw new IOException("Не определен контейнер для записи объекта");
             }
+
+            for (String name : objectsName)
+                try {
+                    Path fileXml = workPath
+                            .resolve(container.getFile())
+                            .resolve(name + ".xml");
+
+                    Constructor<?> cons = objClass.getConstructor(Path.class);
+                    MetadataObject object = (MetadataObject) cons.newInstance(fileXml);
+                    object.parse();
+
+                    container.getConf().add(object);
+
+                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | ParserConfigurationException | InvocationTargetException | SAXException | XPathExpressionException e) {
+                    e.printStackTrace();
+                }
         }
 
-             /*Параметры сеанса
-             Роли
-             Общие реквизиты
-             Планы обмена
-             Критерии отбора
-             Подписки на события
-             Регламентные задания
-             Функциональные опции
-             Параметры функциональных опций
-             Определяемые типы
-             Хранилища настроек
-             Общие формы
-             Общие команды
-             Группы команд
-             Общие макеты
-             Общие картинки
-             XDTO-пакеты
-             Web-сервисы
-             HTTP-сервисы
-             WS-ссылки
-             Элементы стиля*/
-        // Языки
-        workObjects = workPath.resolve("Languages");
-        if (Files.exists(workObjects)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workObjects, "*.xml")) {
-                for (Path entry : entries) {
-                    conf.getLanguages().add(new Language(entry));
-                }
-            }
-        }
+        return conf;
+    }
 
-        // Константы
-        workObjects = workPath.resolve("Constants");
-        if (Files.exists(workObjects)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workObjects, "*.xml")) {
-                for (Path entry : entries) {
-                    conf.getConstants().add(new Constant(entry));
-                }
-            }
-        }
+    private Map<Class, Container> getDescription(Conf conf) {
+        Map<Class, Container> result = new HashMap<>();
 
-        // Справочники
-        Path workCatalogs = workPath.resolve("Catalogs");
-        if (Files.exists(workCatalogs)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workCatalogs, "*.xml")) {
-                for (Path entry : entries) {
-                    Catalog catalog = new Catalog(entry);
-                    catalog.parse();
-                    conf.getCatalogs().add(catalog);
-                }
-            }
-        }
+    /*Общие
+         Подсистемы*/
+        result.put(CommonModule.class, new Container(conf.getCommonModules(), "CommonModules"));
+        result.put(SessionParameter.class, new Container(conf.getSessionParameters(), "SessionParameters"));
+        /*Роли
+         Общие реквизиты
+         Планы обмена
+         Критерии отбора
+         Подписки на события
+         Регламентные задания
+         Функциональные опции
+         Параметры функциональных опций
+         Определяемые типы
+         Хранилища настроек
+         Общие формы
+         Общие команды
+         Группы команд
+         Общие макеты
+         Общие картинки
+         XDTO-пакеты
+         Web-сервисы
+         HTTP-сервисы
+         WS-ссылки
+         Элементы стиля*/
+        result.put(Language.class, new Container(conf.getLanguages(), "Languages"));
 
+        //result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
+        //result.put(Catalog.class, new Container(conf.getCatalogs(), "Catalogs"));
         // Документы
         // Журналы документов
-
-        // Перечисления
-        workObjects = workPath.resolve("Enums");
-        if (Files.exists(workObjects)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workObjects, "*.xml")) {
-                for (Path entry : entries) {
-                    conf.getEnums().add(new Enum(entry));
-                }
-            }
-        }
-
+        //result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
         // Отчеты
+        //result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
 
-        // Обработки
-        workObjects = workPath.resolve("DataProcessors");
-        if (Files.exists(workObjects)) {
-            try (DirectoryStream<Path> entries = Files.newDirectoryStream(workObjects, "*.xml")) {
-                for (Path entry : entries) {
-                    conf.getDataProcessors().add(new DataProcessor(entry));
-                }
-            }
-        }
 
          /*Планы видов характеристик
          Планы счетов
@@ -134,6 +121,25 @@ public class ConfReader {
          Задачи
          Внешние источники данных*/
 
-        return conf;
+        return result;
+    }
+
+    private static class Container {
+
+        private Set<MetadataObject> conf;
+        private String file;
+
+        public Container(Set<MetadataObject> conf, String file) {
+            this.conf = conf;
+            this.file = file;
+        }
+
+        public Set<MetadataObject> getConf() {
+            return conf;
+        }
+
+        public String getFile() {
+            return file;
+        }
     }
 }

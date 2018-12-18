@@ -3,7 +3,9 @@ package ru.pf.metadata.object.common;
 import lombok.Data;
 import ru.pf.metadata.object.AbstractObject;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.type.Type;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -11,23 +13,23 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Data
-public class Language extends AbstractObject<Language> {
+public class SessionParameter extends AbstractObject<SessionParameter> {
 
-    private String languageCode;
+    private Type type;
 
-    public Language(Path path) {
+    public SessionParameter(Path path) {
         super(path);
     }
 
     @Override
-    public void parse() {
+    public void parse() throws IOException {
         Path fileXml = super.getFile().getParent().resolve(super.getFile());
         if (Files.exists(fileXml)) {
             ObjectReader objReader = new ObjectReader(fileXml);
             objReader.fillCommonField(this);
 
-            String nodeProperties = "/MetaDataObject/" + getMetadataName() + "/Properties/";
-            this.languageCode  = objReader.read(nodeProperties + "LanguageCode");
+            String nodeObject = "/MetaDataObject/" + getMetadataName();
+            this.type = new Type(objReader.read(nodeObject + "/Properties/Type/Type"));
         }
     }
 }

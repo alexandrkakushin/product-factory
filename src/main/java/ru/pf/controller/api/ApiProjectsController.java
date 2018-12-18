@@ -1,7 +1,5 @@
 package ru.pf.controller.api;
 
-import lombok.Data;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
