@@ -2,6 +2,8 @@ package ru.pf.metadata.object;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.xml.sax.SAXException;
+import ru.pf.metadata.object.common.HttpService;
+import ru.pf.metadata.object.common.XdtoPackage;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -17,7 +19,7 @@ public interface MetadataObject<T> {
 
     @JsonIgnore
     default String getMetadataName() {
-        return this.getClass().getSimpleName();
+        return AbstractObject.getMetadataName(this.getClass());
     }
 
     default String getShortName(Path path) {

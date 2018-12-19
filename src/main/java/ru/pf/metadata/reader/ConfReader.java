@@ -1,12 +1,11 @@
 package ru.pf.metadata.reader;
 
 import org.springframework.stereotype.Service;
+import org.w3c.dom.html.HTMLParagraphElement;
 import org.xml.sax.SAXException;
 import ru.pf.metadata.object.*;
 import ru.pf.metadata.object.Enum;
-import ru.pf.metadata.object.common.CommonModule;
-import ru.pf.metadata.object.common.Language;
-import ru.pf.metadata.object.common.SessionParameter;
+import ru.pf.metadata.object.common.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -44,7 +43,8 @@ public class ConfReader {
 
         Map<Class, Container> description = getDescription(conf);
         for (Class objClass : description.keySet()) {
-            List<String> objectsName = objReader.readChild(nodeChildObjects + objClass.getSimpleName());
+            String nodeMetadata = nodeChildObjects + AbstractObject.getMetadataName(objClass);
+            List<String> objectsName = objReader.readChild(nodeMetadata);
 
             Container container = description.get(objClass);
             if (container == null) {
@@ -79,26 +79,27 @@ public class ConfReader {
          Подсистемы*/
         result.put(CommonModule.class, new Container(conf.getCommonModules(), "CommonModules"));
         result.put(SessionParameter.class, new Container(conf.getSessionParameters(), "SessionParameters"));
-        /*Роли
-         Общие реквизиты
-         Планы обмена
-         Критерии отбора
-         Подписки на события
-         Регламентные задания
-         Функциональные опции
-         Параметры функциональных опций
-         Определяемые типы
-         Хранилища настроек
-         Общие формы
-         Общие команды
-         Группы команд
-         Общие макеты
-         Общие картинки
-         XDTO-пакеты
-         Web-сервисы
-         HTTP-сервисы
-         WS-ссылки
-         Элементы стиля*/
+        result.put(Role.class, new Container(conf.getRoles(), "Roles"));
+        result.put(CommonAttribute.class, new Container(conf.getCommonAttributes(), "CommonAttributes"));
+        result.put(ExchangePlan.class, new Container(conf.getExchangePlans(), "ExchangePlans"));
+        result.put(FilterCriterion.class, new Container(conf.getFilterCriteria(), "FilterCriteria"));
+        result.put(EventSubscription.class, new Container(conf.getEventSubscriptions(), "EventSubscriptions"));
+        result.put(ScheduledJob.class, new Container(conf.getScheduledJobs(), "ScheduledJobs"));
+        result.put(FunctionalOption.class, new Container(conf.getFunctionalOptions(), "FunctionalOptions"));
+        result.put(FunctionalOptionsParameter.class, new Container(conf.getFunctionalOptionsParameters(), "FunctionalOptionsParameters"));
+        result.put(DefinedType.class, new Container(conf.getDefinedTypes(), "DefinedTypes"));
+        result.put(SettingsStorage.class, new Container(conf.getSettingsStorages(), "SettingsStorages"));
+        result.put(CommonForm.class, new Container(conf.getCommonForms(), "CommonForms"));
+        result.put(CommonCommand.class, new Container(conf.getCommonCommands(), "CommonCommands"));
+        result.put(CommandGroup.class, new Container(conf.getCommandGroups(), "CommandGroups"));
+        result.put(CommonTemplate.class, new Container(conf.getCommonTemplates(), "CommonTemplates"));
+        result.put(CommonPicture.class, new Container(conf.getCommonPictures(), "CommonPictures"));
+        result.put(XdtoPackage.class, new Container(conf.getXdtoPackages(), "XDTOPackages"));
+        result.put(WebService.class, new Container(conf.getWebServices(), "WebServices"));
+        result.put(HttpService.class, new Container(conf.getHttpServices(), "HTTPServices"));
+
+        //WS-ссылки
+        result.put(StyleItem.class, new Container(conf.getStyleItems(), "StyleItems"));
         result.put(Language.class, new Container(conf.getLanguages(), "Languages"));
 
         //result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
@@ -108,7 +109,6 @@ public class ConfReader {
         //result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
         // Отчеты
         //result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
-
 
          /*Планы видов характеристик
          Планы счетов

@@ -11,6 +11,8 @@ import java.lang.String;
 public class Type {
 
     private String name;
+
+    // todo: добавить чтение деталей типа данных
     private IType details;
 
     public Type(String name) {

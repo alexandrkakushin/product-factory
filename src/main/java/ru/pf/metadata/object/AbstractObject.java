@@ -2,6 +2,8 @@ package ru.pf.metadata.object;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import ru.pf.metadata.object.common.HttpService;
+import ru.pf.metadata.object.common.XdtoPackage;
 
 import java.nio.file.Path;
 import java.util.UUID;
@@ -61,5 +63,15 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public static String getMetadataName(Class objClass) {
+        if (objClass.equals(XdtoPackage.class)) {
+            return "XDTOPackage";
+        } else if (objClass.equals(HttpService.class)) {
+            return "HTTPService";
+        }
+
+        return objClass.getSimpleName();
     }
 }
