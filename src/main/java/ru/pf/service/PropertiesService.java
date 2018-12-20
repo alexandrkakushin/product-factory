@@ -20,10 +20,15 @@ public class PropertiesService {
     public String get(String name) {
         return propertiesRepository.getByName(name)
             .map(item -> item.getValue())
-                .orElse("");
+                .orElse(null);
     }
 
     public Path getStorage() {
         return Paths.get(this.get(Properties.STORAGE));
+    }
+
+    public int getCheckNameLength() {
+        String saved = this.get(Properties.CHECK_NAME_LENGTH);
+        return saved != null ? Integer.valueOf(saved) : 0;
     }
 }

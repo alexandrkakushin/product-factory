@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.pf.controller.development.ConfController;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
+import ru.pf.service.conf.check.NameLengthCheck;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,7 +35,6 @@ public class ApiProjectsController {
     @Autowired
     ConfController confController;
 
-
     @GetMapping("/{id}/git/fetch")
     public ResponseEntity<?> gitFetch(@PathVariable(name = "id") Long id) throws IOException {
         return confController.gitFetch(id);
@@ -49,5 +51,4 @@ public class ApiProjectsController {
 
         return new ResponseEntity<>(body, body != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
-
 }
