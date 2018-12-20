@@ -1,5 +1,8 @@
 package ru.pf.metadata.object;
 
+import ru.pf.metadata.reader.ObjectReader;
+
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -7,21 +10,16 @@ import java.nio.file.Path;
  */
 public class Document extends AbstractObject<Document> {
 
-    public Document() {
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public Document(Path path) {
+        super(path);
     }
 
     @Override
     public void parse() {
-
+        Path fileXml = super.getFile().getParent().resolve(super.getFile());
+        if (Files.exists(fileXml)) {
+            ObjectReader objReader = new ObjectReader(fileXml);
+            objReader.fillCommonField(this);
+        }
     }
 }

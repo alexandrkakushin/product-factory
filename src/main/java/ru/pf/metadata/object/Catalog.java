@@ -3,6 +3,7 @@ package ru.pf.metadata.object;
 import lombok.Data;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.reader.ModuleReader;
+import ru.pf.metadata.reader.ObjectReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,8 +18,7 @@ public class Catalog extends AbstractObject<Catalog> {
 
     private boolean hierarchical;
 
-    // todo: уточнить типы иерархии
-    private String hierarchyType;
+    private HierarchyType hierarchyType;
     private boolean limitLevelCount;
     private int levelCount;
     private boolean foldersOnTop;
@@ -65,6 +65,12 @@ public class Catalog extends AbstractObject<Catalog> {
 
     @Override
     public void parse() throws IOException {
+        Path fileXml = super.getFile().getParent().resolve(super.getFile());
+        if (Files.exists(fileXml)) {
+            ObjectReader objReader = new ObjectReader(fileXml);
+            objReader.fillCommonField(this);
+        }
+
         Path fileManagerModule = super.getFile()
                 .getParent()
                 .resolve(this.getShortName(super.getFile()))
@@ -84,5 +90,9 @@ public class Catalog extends AbstractObject<Catalog> {
         if (Files.exists(fileObjectModule)) {
             this.objectModule = ModuleReader.read(fileObjectModule);
         }
+    }
+
+    public enum HierarchyType {
+        // todo: уточнить типы иерархии
     }
 }

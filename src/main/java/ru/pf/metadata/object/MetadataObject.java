@@ -15,6 +15,7 @@ import java.nio.file.Path;
  */
 public interface MetadataObject<T> {
 
+    // todo: AOP (advice)
     void parse() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException;
 
     @JsonIgnore

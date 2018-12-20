@@ -102,13 +102,13 @@ public class ConfReader {
         result.put(StyleItem.class, new Container(conf.getStyleItems(), "StyleItems"));
         result.put(Language.class, new Container(conf.getLanguages(), "Languages"));
 
-        //result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
-        //result.put(Catalog.class, new Container(conf.getCatalogs(), "Catalogs"));
-        // Документы
+        result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
+        result.put(Catalog.class, new Container(conf.getCatalogs(), "Catalogs"));
+        result.put(Document.class, new Container(conf.getDocuments(), "Documents"));
         // Журналы документов
-        //result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
+        result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
         // Отчеты
-        //result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
+        result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
 
          /*Планы видов характеристик
          Планы счетов

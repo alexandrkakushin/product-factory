@@ -1,5 +1,8 @@
 package ru.pf.metadata.object;
 
+import ru.pf.metadata.reader.ObjectReader;
+
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -13,6 +16,10 @@ public class DataProcessor extends AbstractObject<DataProcessor> {
 
     @Override
     public void parse() {
-
+        Path fileXml = super.getFile().getParent().resolve(super.getFile());
+        if (Files.exists(fileXml)) {
+            ObjectReader objReader = new ObjectReader(fileXml);
+            objReader.fillCommonField(this);
+        }
     }
 }
