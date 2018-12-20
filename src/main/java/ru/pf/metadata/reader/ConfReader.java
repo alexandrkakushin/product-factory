@@ -1,7 +1,6 @@
 package ru.pf.metadata.reader;
 
 import org.springframework.stereotype.Service;
-import org.w3c.dom.html.HTMLParagraphElement;
 import org.xml.sax.SAXException;
 import ru.pf.metadata.object.*;
 import ru.pf.metadata.object.Enum;
@@ -75,8 +74,7 @@ public class ConfReader {
     private Map<Class, Container> getDescription(Conf conf) {
         Map<Class, Container> result = new HashMap<>();
 
-    /*Общие
-         Подсистемы*/
+        result.put(Subsystem.class, new Container(conf.getSubsystems(), "Subsystems"));
         result.put(CommonModule.class, new Container(conf.getCommonModules(), "CommonModules"));
         result.put(SessionParameter.class, new Container(conf.getSessionParameters(), "SessionParameters"));
         result.put(Role.class, new Container(conf.getRoles(), "Roles"));
@@ -105,21 +103,20 @@ public class ConfReader {
         result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
         result.put(Catalog.class, new Container(conf.getCatalogs(), "Catalogs"));
         result.put(Document.class, new Container(conf.getDocuments(), "Documents"));
-        // Журналы документов
+        result.put(DocumentJournal.class, new Container(conf.getDocumentJournals(), "DocumentJournals"));
         result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
-        // Отчеты
+        result.put(Report.class, new Container(conf.getReports(), "Reports"));
         result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
-
-         /*Планы видов характеристик
-         Планы счетов
-         Планы видов расчета
-         Регистры сведений
-         Регистры накопления
-         Регистры бухгалтерии
-         Регистры расчета
-         Бизнес-процессы
-         Задачи
-         Внешние источники данных*/
+        result.put(ChartOfCharacteristicTypes.class, new Container(conf.getChartsOfCharacteristicTypes(), "ChartsOfCharacteristicTypes"));
+        result.put(ChartOfAccounts.class, new Container(conf.getChartsOfAccounts(), "ChartsOfAccounts"));
+        result.put(ChartOfCalculationTypes.class, new Container(conf.getChartsOfCalculationTypes(), "ChartsOfCalculationTypes"));
+        result.put(InformationRegister.class, new Container(conf.getInformationRegisters(), "InformationRegisters"));
+        result.put(AccumulationRegister.class, new Container(conf.getAccumulationRegisters(), "AccumulationRegisters"));
+        result.put(AccountingRegister.class, new Container(conf.getAccountingRegisters(), "AccountingRegisters"));
+        result.put(CalculationRegister.class, new Container(conf.getCalculationRegisters(), "CalculationRegisters"));
+        result.put(BusinessProcess.class, new Container(conf.getBusinessProcesses(), "BusinessProcesses"));
+        result.put(Task.class, new Container(conf.getTasks(), "Tasks"));
+        result.put(ExternalDataSource.class, new Container(conf.getExternalDataSources(), "ExternalDataSources"));
 
         return result;
     }

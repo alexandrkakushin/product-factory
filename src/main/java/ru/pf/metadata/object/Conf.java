@@ -19,6 +19,7 @@ public class Conf extends AbstractObject<Conf> {
     private Module sessionModule;
     private Module externalConnectionModule;
 
+    private Set<MetadataObject> subsystems;
     private Set<MetadataObject> commonModules;
     private Set<MetadataObject> sessionParameters;
     private Set<MetadataObject> roles;
@@ -45,13 +46,25 @@ public class Conf extends AbstractObject<Conf> {
     private Set<MetadataObject> constants;
     private Set<MetadataObject> catalogs;
     private Set<MetadataObject> documents;
+    private Set<MetadataObject> documentJournals;
     private Set<MetadataObject> enums;
+    private Set<MetadataObject> reports;
     private Set<MetadataObject> dataProcessors;
-
+    private Set<MetadataObject> chartsOfCharacteristicTypes;
+    private Set<MetadataObject> chartsOfAccounts;
+    private Set<MetadataObject> chartsOfCalculationTypes;
+    private Set<MetadataObject> informationRegisters;
+    private Set<MetadataObject> accumulationRegisters;
+    private Set<MetadataObject> accountingRegisters;
+    private Set<MetadataObject> calculationRegisters;
+    private Set<MetadataObject> businessProcesses;
+    private Set<MetadataObject> tasks;
+    private Set<MetadataObject> externalDataSources;
 
     public Conf(Path path) {
         super(path);
 
+        this.subsystems = new LinkedHashSet<>();
         this.commonModules = new LinkedHashSet<>();
         this.sessionParameters = new LinkedHashSet<>();
         this.roles = new LinkedHashSet<>();
@@ -78,8 +91,24 @@ public class Conf extends AbstractObject<Conf> {
         this.constants = new LinkedHashSet<>();
         this.catalogs = new LinkedHashSet<>();
         this.documents = new LinkedHashSet<>();
+        this.documentJournals = new LinkedHashSet<>();
         this.enums = new LinkedHashSet<>();
+        this.reports = new LinkedHashSet<>();
         this.dataProcessors = new LinkedHashSet<>();
+        this.chartsOfCharacteristicTypes = new LinkedHashSet<>();
+        this.chartsOfAccounts = new LinkedHashSet<>();
+        this.chartsOfCalculationTypes = new LinkedHashSet<>();
+        this.informationRegisters = new LinkedHashSet<>();
+        this.accumulationRegisters = new LinkedHashSet<>();
+        this.accountingRegisters = new LinkedHashSet<>();
+        this.calculationRegisters = new LinkedHashSet<>();
+        this.businessProcesses = new LinkedHashSet<>();
+        this.tasks = new LinkedHashSet<>();
+        this.externalDataSources = new LinkedHashSet<>();
+    }
+
+    public Set<MetadataObject> getSubsystems() {
+        return subsystems;
     }
 
     public Set<MetadataObject> getCommonModules() {
@@ -182,12 +211,60 @@ public class Conf extends AbstractObject<Conf> {
         return documents;
     }
 
+    public Set<MetadataObject> getDocumentJournals() {
+        return documentJournals;
+    }
+
     public Set<MetadataObject> getEnums() {
         return enums;
     }
 
+    public Set<MetadataObject> getReports() {
+        return reports;
+    }
+
     public Set<MetadataObject> getDataProcessors() {
         return dataProcessors;
+    }
+
+    public Set<MetadataObject> getChartsOfCharacteristicTypes() {
+        return chartsOfCharacteristicTypes;
+    }
+
+    public Set<MetadataObject> getChartsOfAccounts() {
+        return chartsOfAccounts;
+    }
+
+    public Set<MetadataObject> getChartsOfCalculationTypes() {
+        return chartsOfCalculationTypes;
+    }
+
+    public Set<MetadataObject> getInformationRegisters() {
+        return informationRegisters;
+    }
+
+    public Set<MetadataObject> getAccumulationRegisters() {
+        return accumulationRegisters;
+    }
+
+    public Set<MetadataObject> getAccountingRegisters() {
+        return accountingRegisters;
+    }
+
+    public Set<MetadataObject> getCalculationRegisters() {
+        return calculationRegisters;
+    }
+
+    public Set<MetadataObject> getBusinessProcesses() {
+        return businessProcesses;
+    }
+
+    public Set<MetadataObject> getTasks() {
+        return tasks;
+    }
+
+    public Set<MetadataObject> getExternalDataSources() {
+        return externalDataSources;
     }
 
     @Override
