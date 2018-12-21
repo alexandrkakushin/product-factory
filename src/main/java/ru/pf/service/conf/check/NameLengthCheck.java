@@ -2,14 +2,11 @@ package ru.pf.service.conf.check;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.Method;
 import ru.pf.metadata.object.AbstractObject;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.service.PropertiesService;
-import ru.pf.utility.Properties;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;

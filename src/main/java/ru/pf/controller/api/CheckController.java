@@ -32,23 +32,23 @@ public class CheckController {
     NameLengthCheck nameLengthCheck;
 
     @GetMapping("/namelength")
-    public ResponseCheck checkNameLength(@RequestParam(name = "project") Long projectId) throws IOException, InvocationTargetException, IllegalAccessException {
+    public ResponseNameLengthCheck checkNameLength(@RequestParam(name = "project") Long projectId) throws IOException, InvocationTargetException, IllegalAccessException {
         Optional<Project> project = projectsRepository.findById(projectId);
         if (project.isPresent()) {
             Conf conf = projectsService.getConfFromGit(project.get());
-            return new ResponseCheck(nameLengthCheck.check(conf));
+            return new ResponseNameLengthCheck(nameLengthCheck.check(conf));
         }
         return null;
     }
 
     @Data
-    private static class ResponseCheck {
+    private static class ResponseNameLengthCheck {
         private boolean result;
         private List<MetadataObject> objects;
 
-        public ResponseCheck(List<MetadataObject> objects) {
+        public ResponseNameLengthCheck(List<MetadataObject> objects) {
             if (objects != null) {
-                this.result = (objects.size() > 0);
+                this.result = (objects.size() == 0);
             }
             this.objects = objects;
         }
