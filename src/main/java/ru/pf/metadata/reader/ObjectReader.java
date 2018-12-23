@@ -74,6 +74,16 @@ public class ObjectReader {
         return Boolean.parseBoolean(null);
     }
 
+    public int readInt(String expression) {
+        try {
+            return Integer.valueOf(path.evaluate(expression, doc));
+        } catch (XPathExpressionException e) {
+            // todo: добавить свои исключения
+            e.printStackTrace();
+        }
+        return Integer.parseInt(null);
+    }
+
     public String read(String expression) {
         try {
             return path.evaluate(expression, doc);
