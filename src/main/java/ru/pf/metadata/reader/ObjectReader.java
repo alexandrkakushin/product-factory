@@ -52,7 +52,7 @@ public class ObjectReader {
         try {
             NodeList nodes = (NodeList) path.evaluate(expression, doc, XPathConstants.NODESET);
             for (int i = 0; i < nodes.getLength(); i++) {
-                result.add(nodes.item(i).getTextContent());
+                result.add(nodes.item(i).getTextContent().trim());
             }
 
             return result;
@@ -86,7 +86,7 @@ public class ObjectReader {
 
     public String read(String expression) {
         try {
-            return path.evaluate(expression, doc);
+            return path.evaluate(expression, doc).trim();
         } catch (XPathExpressionException e) {
             // todo: добавить свои исключения
             e.printStackTrace();

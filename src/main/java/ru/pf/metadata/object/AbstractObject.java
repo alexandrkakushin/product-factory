@@ -6,6 +6,7 @@ import ru.pf.metadata.object.common.HttpService;
 import ru.pf.metadata.object.common.XdtoPackage;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -73,5 +74,20 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
         }
 
         return objClass.getSimpleName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractObject<?> object = (AbstractObject<?>) o;
+
+        return uuid != null ? uuid.equals(object.uuid) : object.uuid == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid != null ? uuid.hashCode() : 0;
     }
 }
