@@ -71,10 +71,9 @@ public class ConfReader {
         return conf;
     }
 
-    private Map<Class, Container> getDescription(Conf conf) {
+    public static Map<Class, Container> getDescription(Conf conf) {
         Map<Class, Container> result = new HashMap<>();
 
-        result.put(Subsystem.class, new Container(conf.getSubsystems(), "Subsystems"));
         result.put(CommonModule.class, new Container(conf.getCommonModules(), "CommonModules"));
         result.put(SessionParameter.class, new Container(conf.getSessionParameters(), "SessionParameters"));
         result.put(Role.class, new Container(conf.getRoles(), "Roles"));
@@ -118,10 +117,12 @@ public class ConfReader {
         result.put(Task.class, new Container(conf.getTasks(), "Tasks"));
         result.put(ExternalDataSource.class, new Container(conf.getExternalDataSources(), "ExternalDataSources"));
 
+        result.put(Subsystem.class, new Container(conf.getSubsystems(), "Subsystems"));
+
         return result;
     }
 
-    private static class Container {
+    public static class Container {
 
         private Set<MetadataObject> conf;
         private String file;

@@ -10,7 +10,6 @@ import ru.pf.service.PropertiesService;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author a.kakushin
@@ -36,17 +35,12 @@ public class NameLengthCheck {
             length = defaultLength;
         }
 
-        for (java.lang.reflect.Method method : Conf.class.getMethods()) {
-            if (method.getReturnType().equals(Set.class)) {
-                Set<MetadataObject> objects = (Set<MetadataObject>) method.invoke(conf);
-                // todo: streamapi
-                for (MetadataObject object : objects) {
-                    if (((AbstractObject) object).getName().length() >= length) {
-                        result.add(object);
-                    }
-                }
+        for (MetadataObject object : conf.getAllObjects()) {
+            if (((AbstractObject) object).getName().length() >= length) {
+                result.add(object);
             }
         }
+
         return result;
     }
 }

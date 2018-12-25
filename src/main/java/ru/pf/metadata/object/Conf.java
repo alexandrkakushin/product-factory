@@ -2,11 +2,12 @@ package ru.pf.metadata.object;
 
 import lombok.Data;
 import ru.pf.metadata.Module;
-import ru.pf.metadata.object.common.CommonModule;
-import ru.pf.metadata.object.common.Language;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author a.kakushin
@@ -265,6 +266,23 @@ public class Conf extends AbstractObject<Conf> {
 
     public Set<MetadataObject> getExternalDataSources() {
         return externalDataSources;
+    }
+
+    public Set<MetadataObject> getAllObjects() {
+        Set<MetadataObject> objects = new HashSet<>();
+
+        for (java.lang.reflect.Method method : Conf.class.getMethods()) {
+            if (method.getReturnType().equals(Set.class)
+                    && !method.getName().equalsIgnoreCase("getAllObjects")) {
+                try {
+                    objects.addAll((Set<MetadataObject>) method.invoke(this));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return objects;
     }
 
     @Override

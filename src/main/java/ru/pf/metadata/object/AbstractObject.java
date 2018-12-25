@@ -1,7 +1,9 @@
 package ru.pf.metadata.object;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.object.common.HttpService;
 import ru.pf.metadata.object.common.XdtoPackage;
 
@@ -17,8 +19,11 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
 
     @JsonIgnore
     private Path file;
+
+    @JsonView(MetadataJsonView.List.class)
     private UUID uuid;
 
+    @JsonView(MetadataJsonView.List.class)
     private String name;
     private String synonym;
     private String comment;

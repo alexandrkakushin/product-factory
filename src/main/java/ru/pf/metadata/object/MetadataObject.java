@@ -1,9 +1,8 @@
 package ru.pf.metadata.object;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.xml.sax.SAXException;
-import ru.pf.metadata.object.common.HttpService;
-import ru.pf.metadata.object.common.XdtoPackage;
+import ru.pf.metadata.MetadataJsonView;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -18,7 +17,7 @@ public interface MetadataObject<T> {
     // todo: AOP (advice)
     void parse() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException;
 
-    @JsonIgnore
+    @JsonView({MetadataJsonView.List.class})
     default String getMetadataName() {
         return AbstractObject.getMetadataName(this.getClass());
     }
