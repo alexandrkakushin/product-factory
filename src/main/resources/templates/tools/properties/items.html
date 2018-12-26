@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <div class="row">
+                <div class="col-sm-8" style="text-align: left" >
+                    <h5><b th:text="${name}"></b></h5>
+                </div>
+                <div class="col-sm-4" style="text-align: right" >
+                    <a th:href="@{'/'+${url}+'/new'}" role="button" aria-pressed="true">
+                        <i class="fas fa-plus-circle" aria-hidden="true"></i> Создать
+                    </a>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Значение</th>
+                    <th scope="col">Комментарий</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${items.empty}">
+                    <td colspan="3"> No Items Available </td>
+                </tr>
+                <tr th:each="item : ${items}">
+                    <td scope="row">
+                        <span th:text="${item.id}"> # </span>
+                    </td>
+                    <td>
+                        <a th:href="@{'/'+${url}+'/'+${item.id}}">
+                            <span th:text="${item.name}"> Наименование </span>
+                        </a>
+                    </td>
+                    <td><span th:text="${item.value}"> Значение </span></td>
+                    <td><span th:text="${item.comment}"> Комментарий </span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>

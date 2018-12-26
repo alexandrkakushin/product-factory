@@ -20,6 +20,10 @@ public interface PfController<T extends PfEntity, ID> {
 
     String getTemplateItem();
 
+    default String getTemplateList() {
+        return "catalogs/items";
+    }
+
     String getName();
 
     PfRepository<T, ID> getRepository();
@@ -34,7 +38,7 @@ public interface PfController<T extends PfEntity, ID> {
         model.addAttribute("items", getRepository().findAll(Sort.by("id")));
         addAttributesItems(model);
 
-        return "catalogs/items";
+        return getTemplateList();
     }
 
     @GetMapping("/new")
