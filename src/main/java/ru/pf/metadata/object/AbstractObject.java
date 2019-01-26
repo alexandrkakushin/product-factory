@@ -25,6 +25,8 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
 
     @JsonView(MetadataJsonView.List.class)
     private String name;
+
+    @JsonView(MetadataJsonView.List.class)
     private String synonym;
     private String comment;
 

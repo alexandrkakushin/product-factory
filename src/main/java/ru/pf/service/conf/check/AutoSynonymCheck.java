@@ -1,9 +1,12 @@
 package ru.pf.service.conf.check;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @author a.kakushin
  */
-public class SynonymCheck {
+@Service
+public class AutoSynonymCheck {
 
     // todo: проверка на "автосинонимы"
 

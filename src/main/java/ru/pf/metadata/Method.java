@@ -15,6 +15,7 @@ public class Method {
     private Type type;
     private boolean isExport;
     private List<Arg> args;
+    private String body;
 
     public Method() {
         this.args = new ArrayList<>();
@@ -41,6 +42,10 @@ public class Method {
 
     public void setExport(boolean export) {
         isExport = export;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Data

@@ -285,6 +285,12 @@ public class Conf extends AbstractObject<Conf> {
         return objects;
     }
 
+    // todo
+    public Set<Module> getAllModules() {
+        Set<Module> modules = new HashSet<>();
+        return modules;
+    }
+
     @Override
     public void parse() {
 

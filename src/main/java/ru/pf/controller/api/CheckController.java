@@ -10,6 +10,8 @@ import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
+import ru.pf.service.conf.check.DescriptionMethodCheck;
+import ru.pf.service.conf.check.DuplicateViewCheck;
 import ru.pf.service.conf.check.NameLengthCheck;
 import ru.pf.service.conf.check.SubsystemCheck;
 
@@ -29,6 +31,9 @@ public class CheckController {
     ProjectsRepository projectsRepository;
 
     @Autowired
+    DuplicateViewCheck duplicateViewCheck;
+
+    @Autowired
     ProjectsService projectsService;
 
     @Autowired
@@ -36,6 +41,19 @@ public class CheckController {
 
     @Autowired
     SubsystemCheck subsystemCheck;
+
+    @Autowired
+    DescriptionMethodCheck descriptionMethodCheck;
+
+    @GetMapping("/duplicateview")
+    @JsonView({MetadataJsonView.List.class})
+    public ResponseCheck checkDuplicateSynonym(@RequestParam(name = "project") Long projectId) {
+        Conf conf = getConfFromGit(projectId);
+        if (conf != null) {
+            return new ResponseCheck(duplicateViewCheck.check(conf));
+        }
+        return null;
+    }
 
     @GetMapping("/namelength")
     @JsonView({MetadataJsonView.List.class})
@@ -54,6 +72,12 @@ public class CheckController {
         if (conf != null) {
             return new ResponseCheck(subsystemCheck.check(conf));
         }
+        return null;
+    }
+
+    @GetMapping("/method")
+    @JsonView({MetadataJsonView.List.class})
+    public ResponseCheck checkDescriptionMethod(@RequestParam(name = "project") Long projectId) {
         return null;
     }
 

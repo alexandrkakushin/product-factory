@@ -111,6 +111,7 @@ public class ObjectReader {
 
         object.setUuid(readUUID(nodeObject + "/@uuid"));
         object.setName(read(nodeObject+ "/Properties/Name"));
+        object.setSynonym(read(nodeObject + "/Properties/Synonym/item/content"));
         object.setComment(read(nodeObject+ "/Properties/Comment"));
     }
 }
