@@ -12,21 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Проверка длины имен объектов метаданных, которая не должна превышать более 80-ти символов
  * @author a.kakushin
  */
 @Service
-public class NameLengthCheck {
+public class NameLengthCheck implements ServiceCheck<MetadataObject> {
 
     private static int defaultLength = 80;
 
     @Autowired
     PropertiesService propertiesService;
 
-    /**
-     * Длина объектов метаданных не должна превышать более 80-ти символов
-     * @param conf Конфигурация
-     * @return список объектов метаданных
-     */
+    @Override
     public List<MetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
         List<MetadataObject> result = new ArrayList<>();
 
@@ -40,7 +37,6 @@ public class NameLengthCheck {
                 result.add(object);
             }
         }
-
         return result;
     }
 }

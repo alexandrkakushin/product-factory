@@ -12,11 +12,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Поиск объектов метаданных, не включенных в подсистемы
  * @author a.kakushin
  */
 @Service
-public class SubsystemCheck {
+public class SubsystemCheck implements ServiceCheck<MetadataObject> {
 
+    @Override
     public List<MetadataObject> check(Conf conf) {
         List<MetadataObject> result = new ArrayList<>();
         Set<String> included = new HashSet<>();

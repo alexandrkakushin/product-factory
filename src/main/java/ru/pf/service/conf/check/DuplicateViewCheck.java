@@ -12,8 +12,9 @@ import java.util.*;
  * @author a.kakushin
  */
 @Service
-public class DuplicateViewCheck {
+public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
 
+    @Override
     public List<MetadataObject> check(Conf conf) {
         List<MetadataObject> result = new ArrayList<>();
 

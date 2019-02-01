@@ -10,14 +10,13 @@ import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
-import ru.pf.service.conf.check.DescriptionMethodCheck;
-import ru.pf.service.conf.check.DuplicateViewCheck;
-import ru.pf.service.conf.check.NameLengthCheck;
-import ru.pf.service.conf.check.SubsystemCheck;
+import ru.pf.service.conf.check.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,43 +41,38 @@ public class CheckController {
     @Autowired
     SubsystemCheck subsystemCheck;
 
-    @Autowired
-    DescriptionMethodCheck descriptionMethodCheck;
+    @GetMapping("/{service}")
+    @JsonView(MetadataJsonView.List.class)
+    public ResponseCheck check(
+            @PathVariable(name = "service") String service, @RequestParam(name = "project") Long projectId) throws Exception {
 
-    @GetMapping("/duplicateview")
-    @JsonView({MetadataJsonView.List.class})
-    public ResponseCheck checkDuplicateSynonym(@RequestParam(name = "project") Long projectId) {
-        Conf conf = getConfFromGit(projectId);
-        if (conf != null) {
-            return new ResponseCheck(duplicateViewCheck.check(conf));
+        ServiceCheck serviceCheck = getAvailableServices().get(service);
+        if (serviceCheck != null) {
+            Conf conf = getConfFromGit(projectId);
+            if (conf != null) {
+                // todo: обработка исключений
+                try {
+                    return new ResponseCheck(getAvailableServices().get(service).check(conf));
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            throw new Exception("Service not found");
         }
+
         return null;
     }
 
-    @GetMapping("/namelength")
-    @JsonView({MetadataJsonView.List.class})
-    public ResponseCheck checkNameLength(@RequestParam(name = "project") Long projectId) throws IOException, InvocationTargetException, IllegalAccessException {
-        Conf conf = getConfFromGit(projectId);
-        if (conf != null) {
-            return new ResponseCheck(nameLengthCheck.check(conf));
-        }
-        return null;
-    }
+    private Map<String, ServiceCheck> getAvailableServices() {
+        Map<String, ServiceCheck> services = new HashMap<>();
+        services.put("namelength", nameLengthCheck);
+        services.put("subsystem", subsystemCheck);
+        services.put("duplicateview", duplicateViewCheck);
 
-    @GetMapping("/subsystem")
-    @JsonView({MetadataJsonView.List.class})
-    public ResponseCheck checkSubsystem(@RequestParam(name = "project") Long projectId) throws IOException {
-        Conf conf = getConfFromGit(projectId);
-        if (conf != null) {
-            return new ResponseCheck(subsystemCheck.check(conf));
-        }
-        return null;
-    }
-
-    @GetMapping("/method")
-    @JsonView({MetadataJsonView.List.class})
-    public ResponseCheck checkDescriptionMethod(@RequestParam(name = "project") Long projectId) {
-        return null;
+        return services;
     }
 
     private Conf getConfFromGit(Long projectId) {
