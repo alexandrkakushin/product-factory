@@ -41,6 +41,9 @@ public class CheckController {
     @Autowired
     SubsystemCheck subsystemCheck;
 
+    @Autowired
+    CommonModuleNameCheck commonModuleNameCheck;
+
     @GetMapping("/{service}")
     @JsonView(MetadataJsonView.List.class)
     public ResponseCheck check(
@@ -71,6 +74,7 @@ public class CheckController {
         services.put("namelength", nameLengthCheck);
         services.put("subsystem", subsystemCheck);
         services.put("duplicateview", duplicateViewCheck);
+        services.put("commonmodulename", commonModuleNameCheck);
 
         return services;
     }

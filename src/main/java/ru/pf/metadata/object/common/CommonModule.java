@@ -31,6 +31,22 @@ public class CommonModule extends AbstractObject<CommonModule> {
         super(path);
     }
 
+    public boolean isClientManagedApplication() {
+        return clientManagedApplication;
+    }
+
+    public boolean isServer() {
+        return server;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public boolean isServerCall() {
+        return serverCall;
+    }
+
     @Override
     public void parse() throws IOException {
 
