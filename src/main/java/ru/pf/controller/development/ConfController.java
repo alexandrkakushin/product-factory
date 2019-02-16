@@ -69,7 +69,7 @@ public class ConfController {
 
         Optional<Project> project = projectsRepository.findById(id);
         if (project.isPresent()) {
-            conf = projectsService.getConfFromGit(project.get());
+            conf = projectsService.getConf(project.get());
         }
 
         return new ResponseEntity<>(conf, conf != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);

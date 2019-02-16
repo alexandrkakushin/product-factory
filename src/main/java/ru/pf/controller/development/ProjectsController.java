@@ -54,6 +54,9 @@ public class ProjectsController implements PfController<Project, Long> {
     public void addAttributesItem(Model model) {
         model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
         model.addAttribute("gitList", gitRepository.findAll(Sort.by("id")));
+
+        // Источники исходных кодов
+        model.addAttribute("allSourceTypes", Project.SourceType.values());
     }
 
     @PostMapping("/submit")

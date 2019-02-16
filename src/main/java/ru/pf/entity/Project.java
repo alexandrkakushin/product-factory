@@ -3,6 +3,7 @@ package ru.pf.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.nio.file.Path;
 
 /**
  * @author a.kakushin
@@ -19,19 +20,40 @@ public class Project implements PfEntity<Project, Long> {
     private String name;
     private String comment;
 
+    /**
+     * Хранилище конфигурации 1С
+     */
     @ManyToOne
     @JoinColumn(name="cr_id")
     private Cr cr;
 
+    /**
+     * Git-репозиторий
+     */
     @ManyToOne
     @JoinColumn(name = "git_id")
     private Git git;
+
+    /**
+     * Каталог с файлами конфигурации
+     */
+    private String directory;
+
+    /**
+     * Источник исходных кодов
+     */
+    @Enumerated(EnumType.STRING)
+    private SourceType sourceType;
 
     public Project() {}
 
     @Override
     public Long getId() {
         return this.id;
+    }
+
+    public SourceType getSourceType() {
+        return sourceType;
     }
 
     public Cr getCr() {
@@ -48,5 +70,29 @@ public class Project implements PfEntity<Project, Long> {
 
     public void setGit(Git git) {
         this.git = git;
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public enum SourceType {
+        DIRECTORY, CR, GIT;
+
+        @Override
+        public String toString() {
+            if (this == DIRECTORY) {
+                return "Каталог";
+
+            } else if (this == CR) {
+                return "Хранилище конфигурации";
+
+            } else if (this == GIT) {
+                return "GIT";
+
+            } else {
+                return super.toString();
+            }
+        }
     }
 }

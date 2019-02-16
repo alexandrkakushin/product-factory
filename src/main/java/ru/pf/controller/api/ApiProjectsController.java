@@ -46,7 +46,7 @@ public class ApiProjectsController {
 
         Optional<Project> project = projectsRepository.findById(id);
         if (project.isPresent()) {
-            body = projectsService.getConfFromGit(project.get());
+            body = projectsService.getConf(project.get());
         }
 
         return new ResponseEntity<>(body, body != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);

@@ -12,9 +12,18 @@
 
                 <field th:replace="fragments/fields :: id"></field>
                 <field th:replace="fragments/fields :: name"></field>
+                <field th:replace="fragments/fields :: comment"></field>
+
+                <h5 class="card-title">Источники исходных кодов</h5>
+                <field th:replace="fragments/fields :: directory"></field>
                 <field th:replace="fragments/fields :: cr"></field>
                 <field th:replace="fragments/fields :: git"></field>
-                <field th:replace="fragments/fields :: comment"></field>
+
+                <div class="form-check form-check-inline" th:each="source : ${allSourceTypes}">
+                    <input class="form-check-input" type="radio" th:field="*{sourceType}" th:value="${source}">
+                    <label class="form-check-label" th:for="${#ids.prev('sourceType')}" th:text="${source}">Wireframe</label>
+                </div>
+                <hr>
 
                 <div>
                     <a th:if="${entity.id != null}" th:href="@{'/'+${url}+'/' + ${entity.id} + '/conf'}" class="btn btn-outline-info" role="button" aria-disabled="true">

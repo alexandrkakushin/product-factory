@@ -28,7 +28,7 @@
 
 <item-field th:fragment="cr" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="field-cr">CR</label>
+        <label class="col-sm-1 col-form-label" for="field-cr">Хранилище конфигурации</label>
         <div class="col-sm-5">
             <select id="field-cr" class="custom-select" th:field="*{cr.id}">
                 <option value="">Выберите хранилище конфигурации</option>
@@ -150,6 +150,15 @@
         <label class="col-sm-1 col-form-label" for="field-defaultBranch">Ветвь по умолчанию</label>
         <div class="col-sm-5">
             <input th:field="*{defaultBranch}" th:value="${entity.defaultBranch}" type="text" class="form-control" id="field-defaultBranch" placeholder="Ветвь по умолчанию">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="directory" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-name">Каталог</label>
+        <div class="col-sm-5">
+            <input th:field="*{directory}" th:value="${entity.directory}" type="text" class="form-control" id="field-directory" placeholder="Каталог">
         </div>
     </div>
 </item-field>

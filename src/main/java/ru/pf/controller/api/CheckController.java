@@ -51,7 +51,7 @@ public class CheckController {
 
         ServiceCheck serviceCheck = getAvailableServices().get(service);
         if (serviceCheck != null) {
-            Conf conf = getConfFromGit(projectId);
+            Conf conf = getConf(projectId);
             if (conf != null) {
                 // todo: обработка исключений
                 try {
@@ -79,11 +79,11 @@ public class CheckController {
         return services;
     }
 
-    private Conf getConfFromGit(Long projectId) {
+    private Conf getConf(Long projectId) {
         Optional<Project> project = projectsRepository.findById(projectId);
         if (project.isPresent()) {
             try {
-                return projectsService.getConfFromGit(project.get());
+                return projectsService.getConf(project.get());
             } catch (IOException e) {
                 e.printStackTrace();
             }
