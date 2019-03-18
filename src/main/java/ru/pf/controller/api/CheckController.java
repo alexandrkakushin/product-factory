@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 import ru.pf.service.conf.check.*;
@@ -44,9 +43,12 @@ public class CheckController {
     @Autowired
     CommonModuleNameCheck commonModuleNameCheck;
 
+    @Autowired
+    RefRefCheck refRefCheck;
+
     @GetMapping("/{service}")
     @JsonView(MetadataJsonView.List.class)
-    public ResponseCheck check(
+    public ResponseService check(
             @PathVariable(name = "service") String service, @RequestParam(name = "project") Long projectId) throws Exception {
 
         ServiceCheck serviceCheck = getAvailableServices().get(service);
@@ -55,7 +57,7 @@ public class CheckController {
             if (conf != null) {
                 // todo: обработка исключений
                 try {
-                    return new ResponseCheck(getAvailableServices().get(service).check(conf));
+                    return new ResponseService(getAvailableServices().get(service).check(conf));
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
@@ -75,6 +77,7 @@ public class CheckController {
         services.put("subsystem", subsystemCheck);
         services.put("duplicateview", duplicateViewCheck);
         services.put("commonmodulename", commonModuleNameCheck);
+        services.put("refref", refRefCheck);
 
         return services;
     }
@@ -93,11 +96,11 @@ public class CheckController {
 
     @Data
     @JsonView({MetadataJsonView.List.class})
-    private static class ResponseCheck {
+    private static class ResponseService {
         private boolean result;
-        private List<MetadataObject> objects;
+        private List<Object> objects;
 
-        public ResponseCheck(List<MetadataObject> objects) {
+        public ResponseService(List<Object> objects) {
             if (objects != null) {
                 this.result = (objects.size() == 0);
             }

@@ -75,3 +75,17 @@
 
     </div>
 </nav>
+
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+        <li class="breadcrumb-item">
+            <a th:href="@{${url}}">
+                <span th:text="${name}"></span>
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <span th:text="${entity.id == null} ? 'Новый' : ${entity.name}"></span>
+        </li>
+    </ol>
+</nav>

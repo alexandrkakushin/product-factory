@@ -1,13 +1,14 @@
 package ru.pf.metadata.object;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import ru.pf.metadata.Module;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author a.kakushin
@@ -268,6 +269,7 @@ public class Conf extends AbstractObject<Conf> {
         return externalDataSources;
     }
 
+    @JsonIgnore
     public Set<MetadataObject> getAllObjects() {
         Set<MetadataObject> objects = new HashSet<>();
 
@@ -285,12 +287,31 @@ public class Conf extends AbstractObject<Conf> {
         return objects;
     }
 
-    // todo
-    public Set<Module> getAllModules() {
-        Set<Module> modules = new HashSet<>();
+    @JsonIgnore
+    public Map<Module, MetadataObject> getAllModules() {
+        Map<Module, MetadataObject> modules = new HashMap<>();
+
+        // todo: streamAPI
+        for (MetadataObject metadataObject : getAllObjects()) {
+            for (Field field : metadataObject.getClass().getDeclaredFields()) {
+                if (field.getType() == Module.class) {
+                    field.setAccessible(true);
+                    try {
+                        Module module = (Module) field.get(metadataObject);
+                        if (module != null) {
+                            modules.put(module, metadataObject);
+                        }
+                    } catch (IllegalAccessException e) {
+                        // todo
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         return modules;
     }
 
+    // todo
     @Override
     public void parse() {
 

@@ -5,9 +5,11 @@
         <nav th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
+            <nav th:replace="fragments/navbar :: breadcrumb"/>
+
             <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Хранилище конфигурации')"></div>
 
-            <form action="#" th:action="@{'/'+${url}+'/submit'}" th:object="${entity}" method="post">
+            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <field th:replace="fragments/fields :: id"></field>

@@ -4,12 +4,21 @@
     <body>
         <nav th:replace="fragments/navbar :: navbar"/>
         <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span th:text="${name}"></span>
+                    </li>
+                </ol>
+            </nav>
+
             <div class="row">
                 <div class="col-sm-8" style="text-align: left" >
                     <h5><b th:text="${name}"></b></h5>
                 </div>
                 <div class="col-sm-4" style="text-align: right" >
-                    <a th:href="@{'/'+${url}+'/new'}" role="button" aria-pressed="true">
+                    <a th:href="@{${url}+'/new'}" role="button" aria-pressed="true">
                         <i class="fas fa-plus-circle" aria-hidden="true"></i> Создать
                     </a>
                 </div>
@@ -31,7 +40,7 @@
                         <span th:text="${item.id}"> # </span>
                     </td>
                     <td>
-                        <a th:href="@{'/'+${url}+'/'+${item.id}}">
+                        <a th:href="@{${url}+'/'+${item.id}}">
                             <span th:text="${item.name}"> Наименование </span>
                         </a>
                     </td>

@@ -1,13 +1,10 @@
 package ru.pf.controller.tools;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.controller.PfController;
+import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Property;
 import ru.pf.repository.PfRepository;
 import ru.pf.repository.PropertiesRepository;
@@ -17,8 +14,8 @@ import ru.pf.utility.Properties;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(PropertiesController.url)
-public class PropertiesController implements PfController<Property, Long> {
+@RequestMapping(PropertiesCrudController.url)
+public class PropertiesCrudController implements PfCrudController<Property, Long> {
 
     final static String url = "tools/properties";
 

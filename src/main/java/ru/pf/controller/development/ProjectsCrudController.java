@@ -5,7 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.pf.controller.PfController;
+import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Project;
 import ru.pf.repository.CrRepository;
 import ru.pf.repository.GitRepository;
@@ -16,8 +16,8 @@ import ru.pf.repository.ProjectsRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(ProjectsController.url)
-public class ProjectsController implements PfController<Project, Long> {
+@RequestMapping(ProjectsCrudController.url)
+public class ProjectsCrudController implements PfCrudController<Project, Long> {
 
     final static String url = "development/projects";
 
@@ -76,5 +76,4 @@ public class ProjectsController implements PfController<Project, Long> {
         Project saved = projectsRepository.save(entity);
         return "redirect:/" + url + "/" + saved.getId();
     }
-
 }

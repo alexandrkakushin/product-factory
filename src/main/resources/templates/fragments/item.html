@@ -11,8 +11,8 @@
     <button class="btn btn-outline-success" type="submit">
         <i class="fas fa-hdd" aria-hidden="true"></i>  Сохранить
     </button>
-    <a th:href="@{'/'+${url}+'/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
+    <a th:href="@{${url}+'/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
         <i class="fas fa-trash" aria-hidden="true"></i> Удалить
     </a>
-    <a th:href="@{'/'+${url}}" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
+    <a th:href="@{${url}}" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
 </item-operations>

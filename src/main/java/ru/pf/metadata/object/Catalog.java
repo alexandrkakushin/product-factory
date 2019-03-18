@@ -6,6 +6,7 @@ import ru.pf.metadata.Module;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -97,24 +98,21 @@ public class Catalog extends AbstractObject<Catalog> {
             this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
         }
 
-        Path fileManagerModule = super.getFile()
+        Path pathExt = super.getFile()
                 .getParent()
                 .resolve(this.getShortName(super.getFile()))
-                .resolve("Ext")
-                .resolve("ManagerModule.bsl");
+                .resolve("Ext");
 
-        if (Files.exists(fileManagerModule)) {
-            this.managerModule = ModuleReader.read(fileManagerModule);
-        }
+        if (Files.exists(pathExt)) {
+            Path fileManagerModule = pathExt.resolve("ManagerModule.bsl");
+            if (Files.exists(fileManagerModule)) {
+                this.managerModule = ModuleReader.read(fileManagerModule, Module.Type.MANAGER_MODULE);
+            }
 
-        Path fileObjectModule = super.getFile()
-                .getParent()
-                .resolve(this.getShortName(super.getFile()))
-                .resolve("Ext")
-                .resolve("ObjectModule.bsl");
-
-        if (Files.exists(fileObjectModule)) {
-            this.objectModule = ModuleReader.read(fileObjectModule);
+            Path fileObjectModule = pathExt.resolve("ObjectModule.bsl");
+            if (Files.exists(fileObjectModule)) {
+                this.objectModule = ModuleReader.read(fileObjectModule, Module.Type.OBJECT_MODULE);
+            }
         }
     }
 

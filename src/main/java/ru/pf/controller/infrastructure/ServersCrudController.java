@@ -5,7 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.pf.controller.PfController;
+import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Server;
 import ru.pf.repository.OsRepository;
 import ru.pf.repository.PfRepository;
@@ -15,8 +15,8 @@ import ru.pf.repository.ServersRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(ServersController.url)
-public class ServersController implements PfController<Server, Long> {
+@RequestMapping(ServersCrudController.url)
+public class ServersCrudController implements PfCrudController<Server, Long> {
 
     final static String url = "infrastructure/servers";
 

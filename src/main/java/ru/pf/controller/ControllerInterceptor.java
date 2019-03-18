@@ -17,7 +17,8 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         Object controller = ((HandlerMethod) handler).getBean();
         if (controller instanceof PfController) {
-            modelAndView.addObject("url", ((PfController) controller).getUrl());
+            modelAndView.addObject("url", "/" + ((PfController) controller).getUrl());
+            modelAndView.addObject("name", ((PfController) controller).getName());
         }
     }
 }

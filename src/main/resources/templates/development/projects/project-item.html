@@ -5,9 +5,11 @@
         <nav th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
+            <nav th:replace="fragments/navbar :: breadcrumb"/>
+
             <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Проект')"></div>
 
-            <form action="#" th:action="@{'/'+${url}+'/submit'}" th:object="${entity}" method="post">
+            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <field th:replace="fragments/fields :: id"></field>
@@ -26,7 +28,7 @@
                 <hr>
 
                 <div>
-                    <a th:if="${entity.id != null}" th:href="@{'/'+${url}+'/' + ${entity.id} + '/conf'}" class="btn btn-outline-info" role="button" aria-disabled="true">
+                    <a th:if="${entity.id != null}" th:href="@{${url}+'/' + ${entity.id} + '/conf'}" class="btn btn-outline-info" role="button" aria-disabled="true">
                         <i class="fas fa-project-diagram" aria-hidden="true"></i> Конфигурация
                     </a>
                     <div th:replace="fragments/item :: operations(url = ${url})"></div>

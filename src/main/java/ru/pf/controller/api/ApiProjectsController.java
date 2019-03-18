@@ -32,12 +32,15 @@ public class ApiProjectsController {
     @Autowired
     ProjectsRepository projectsRepository;
 
-    @Autowired
-    ConfController confController;
+    // @Autowired
+    // ConfController confController;
 
     @GetMapping("/{id}/git/fetch")
     public ResponseEntity<?> gitFetch(@PathVariable(name = "id") Long id) throws IOException {
-        return confController.gitFetch(id);
+        // todo: зачем это здесь?
+        // return confController.gitFetch(id);
+
+        return null;
     }
 
     @GetMapping("/{id}/conf")

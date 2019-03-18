@@ -75,7 +75,7 @@ public class CommonModule extends AbstractObject<CommonModule> {
                 .resolve("Module.bsl");
 
         if (Files.exists(fileModule)) {
-            this.module = ModuleReader.read(fileModule);
+            this.module = ModuleReader.read(fileModule, Module.Type.COMMON_MODULE);
         }
     }
 

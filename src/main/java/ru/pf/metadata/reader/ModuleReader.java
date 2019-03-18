@@ -12,17 +12,22 @@ import java.nio.file.Path;
  */
 public class ModuleReader {
 
-    public static Module read(Path bslFile) throws IOException {
+    public static Module read(Path bslFile, Module.Type type) throws IOException {
 
-        Module instance = new Module();
+        Module instance = new Module(bslFile, type);
 
+        StringBuilder sb = new StringBuilder();
         Files.lines(bslFile, StandardCharsets.UTF_8).forEach(s -> {
+            sb.append(s).append(System.getProperty("line.separator"));
+
             String doProcess = s.trim();
             if (doProcess.toLowerCase().startsWith("процедура")
                     || doProcess.toLowerCase().startsWith("функция")) {
                 instance.getMethods().add(MethodReader.read(doProcess));
             }
         });
+
+        instance.setText(sb.toString());
 
         return instance;
     }

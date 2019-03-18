@@ -18,5 +18,4 @@ public interface ServiceCheck<T> {
      * @throws IllegalAccessException
      */
     List<T> check(Conf conf) throws InvocationTargetException, IllegalAccessException;
-
 }
