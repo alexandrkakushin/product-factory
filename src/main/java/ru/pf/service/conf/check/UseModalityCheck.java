@@ -12,7 +12,7 @@ import java.util.List;
  * @author a.kakushin
  */
 @Service
-public class ModalCheck implements ServiceCheck<Method> {
+public class UseModalityCheck implements ServiceCheck<Method> {
 
     @Override
     public List<Method> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
