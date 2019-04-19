@@ -15,10 +15,15 @@ public class Method {
     private Type type;
     private boolean isExport;
     private List<Arg> args;
-    private String body;
+    private String text;
 
     public Method() {
         this.args = new ArrayList<>();
+    }
+
+    public Method(String text) {
+        this();
+        this.text = text;
     }
 
     public Method(Type type, String name, boolean isExport) {
@@ -44,8 +49,8 @@ public class Method {
         isExport = export;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Data

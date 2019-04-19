@@ -7,28 +7,26 @@ import ru.pf.metadata.Method;
  */
 public class MethodReader {
 
-    public static Method read(String line) {
-        Method method = new Method();
+    public static Method read(String text) {
+        Method method = new Method(text);
 
-        if (line.toLowerCase().startsWith("процедура")) {
+        String oneLine = text.trim();
+        if (oneLine.toLowerCase().startsWith("процедура")) {
             method.setType(Method.Type.PROCEDURE);
-            method.setName(line.substring(10, line.indexOf("(")));
+            method.setName(oneLine.substring(10, oneLine.indexOf("(")));
 
-        } else if (line.toLowerCase().startsWith("функция")) {
+        } else if (oneLine.toLowerCase().startsWith("функция")) {
             method.setType(Method.Type.FUNCTION);
-            method.setName(line.substring(8, line.indexOf("(")));
+            method.setName(oneLine.substring(8, oneLine.indexOf("(")));
         }
 
-        method.setExport(line.toLowerCase().endsWith("экспорт"));
-
-        fillArgs(method, line);
+        fillArgs(method, oneLine);
 
         return method;
     }
 
     private static void fillArgs(Method method, String line) {
-        String[] parts = line
-                .substring(line.indexOf("(") + 1, line.lastIndexOf(")"))
+        String[] parts = line.substring(line.indexOf("(") + 1, line.indexOf(")"))
                 .split(",");
 
         for (String part: parts) {

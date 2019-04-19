@@ -24,6 +24,9 @@ public class Module {
     @JsonIgnore
     private String text;
 
+    @JsonIgnore
+    private boolean errors;
+
     private List<Method> methods;
 
     public Module() {
@@ -50,6 +53,10 @@ public class Module {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setErrors(boolean errors) {
+        this.errors = errors;
     }
 
     public enum Type {

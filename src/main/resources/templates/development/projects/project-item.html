@@ -23,7 +23,7 @@
 
                 <div class="form-check form-check-inline" th:each="source : ${allSourceTypes}">
                     <input class="form-check-input" type="radio" th:field="*{sourceType}" th:value="${source}">
-                    <label class="form-check-label" th:for="${#ids.prev('sourceType')}" th:text="${source}">Wireframe</label>
+                    <label class="form-check-label" th:for="${#ids.prev('sourceType')}" th:text="${source}"></label>
                 </div>
                 <hr>
 

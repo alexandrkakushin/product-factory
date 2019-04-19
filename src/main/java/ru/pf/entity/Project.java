@@ -77,22 +77,22 @@ public class Project implements PfEntity<Project, Long> {
     }
 
     public enum SourceType {
-        DIRECTORY, CR, GIT;
+        DIRECTORY, CR, GIT
 
-        @Override
-        public String toString() {
-            if (this == DIRECTORY) {
-                return "Каталог";
-
-            } else if (this == CR) {
-                return "Хранилище конфигурации";
-
-            } else if (this == GIT) {
-                return "GIT";
-
-            } else {
-                return super.toString();
-            }
-        }
+//        @Override
+//        public String toString() {
+//            if (this == DIRECTORY) {
+//                return "Каталог";
+//
+//            } else if (this == CR) {
+//                return "Хранилище конфигурации";
+//
+//            } else if (this == GIT) {
+//                return "GIT";
+//
+//            } else {
+//                return super.toString();
+//            }
+//        }
     }
 }
