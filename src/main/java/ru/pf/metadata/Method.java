@@ -1,5 +1,6 @@
 package ru.pf.metadata;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 public class Method {
 
+    @JsonView({MetadataJsonView.List.class, MetadataJsonView.Element.class})
     private String name;
     private Type type;
     private boolean isExport;
@@ -26,13 +28,6 @@ public class Method {
         this.text = text;
     }
 
-    public Method(Type type, String name, boolean isExport) {
-        this();
-        this.name = name;
-        this.type = type;
-        this.isExport = isExport;
-    }
-
     public List<Arg> getArgs() {
         return args;
     }
@@ -45,12 +40,34 @@ public class Method {
         this.type = type;
     }
 
-    public void setExport(boolean export) {
-        isExport = export;
-    }
-
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isEmpty() {
+        boolean result = false;
+        String[] parts = this.text.split("\n");
+        for (String part : parts) {
+            String doProcess = part.trim().toLowerCase();
+            if (doProcess.isEmpty()) {
+                continue;
+            }
+
+            if (doProcess.startsWith("функция") || doProcess.startsWith("процедура")) {
+                continue;
+            }
+
+            if (doProcess.startsWith("конецфункции") || doProcess.startsWith("конецпроцедуры")) {
+                continue;
+            }
+
+            if (doProcess.startsWith("//")) {
+                continue;
+            }
+
+            result = true;
+        }
+        return result;
     }
 
     @Data
