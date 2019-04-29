@@ -45,7 +45,7 @@ public class Method {
     }
 
     public boolean isEmpty() {
-        boolean result = false;
+        boolean result = true;
         String[] parts = this.text.split("\n");
         for (String part : parts) {
             String doProcess = part.trim().toLowerCase();
@@ -65,7 +65,7 @@ public class Method {
                 continue;
             }
 
-            result = true;
+            result = false;
         }
         return result;
     }

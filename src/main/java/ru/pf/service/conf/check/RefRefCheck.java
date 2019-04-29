@@ -26,8 +26,11 @@ public class RefRefCheck implements ServiceCheck<RefRefCheck.Response> {
 
         List<RefRefCheck.Response> result = new ArrayList<>();
         for (Module module : modules.keySet()) {
-            Response response = null;
+            if (module.getText() == null) {
+                continue;
+            }
 
+            Response response = null;
             String[] lines = module.getText().split(System.getProperty("line.separator"));
             for (int i = 0; i < lines.length; i++) {
                 int found = 0;
