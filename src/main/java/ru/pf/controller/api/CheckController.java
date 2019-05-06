@@ -49,6 +49,9 @@ public class CheckController {
     @Autowired
     EmptyMethodCheck emptyMethodCheck;
 
+    @Autowired
+    UseModalityCheck useModalityCheck;
+
     @GetMapping("/{service}")
     @JsonView(MetadataJsonView.List.class)
     public ResponseService check(
@@ -82,6 +85,7 @@ public class CheckController {
         services.put("commonmodulename", commonModuleNameCheck);
         services.put("refref", refRefCheck);
         services.put("emptymethod", emptyMethodCheck);
+        services.put("usemodalitycheck", useModalityCheck);
 
         return services;
     }
