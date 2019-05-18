@@ -31,4 +31,9 @@ public class PropertiesService {
         String saved = this.get(Properties.CHECK_NAME_LENGTH);
         return saved != null ? Integer.valueOf(saved) : 0;
     }
+
+    public int getCheckLineSize() {
+        String saved = this.get(Properties.CHECK_LINE_SIZE);
+        return saved != null ? Integer.valueOf(saved) : 0;
+    }
 }

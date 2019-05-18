@@ -1,12 +1,15 @@
+
 package ru.pf.service.conf.check;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.service.PropertiesService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -14,16 +17,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * todo
- * Максимальная длина строки в модулях не должна превышать 120 символов
+ * Максимальная длина строки в модулях по умолчанию не должна превышать 120 символов
  * @author a.kakushin
  */
 @Service
 public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
 
+    static int defaultMaxSize = 120;
+
+    @Autowired
+    PropertiesService propertiesService;
+
     @Override
     public List<Response> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
         List<LineSizeCheck.Response> result = new ArrayList<>();
+
+        int maxLength = propertiesService.getCheckLineSize();
+        if (maxLength == 0) {
+            maxLength = defaultMaxSize;
+        }
 
         // todo: stream
         Map<Module, MetadataObject> modules = conf.getAllModules();
@@ -32,8 +44,7 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
             String[] lines = module.getText().split(System.getProperty("line.separator"));
 
             for (int i = 0; i < lines.length; i++) {
-                // todo: save value in properties or db
-                if (lines[i].length() >= 120) {
+                if (lines[i].length() >= maxLength) {
                     if (response == null) {
                         response = new Response(modules.get(module), module, new ArrayList<>());
                         result.add(response);
@@ -42,7 +53,6 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
                 }
             }
         }
-
         return result;
     }
 
@@ -52,8 +62,6 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
 
         private MetadataObject object;
         private Module module;
-
-        // todo: add line's text
         private List<Found> found;
 
         Response(MetadataObject object, Module module, List<Found> found) {
