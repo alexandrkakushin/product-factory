@@ -52,6 +52,9 @@ public class CheckController {
     @Autowired
     UseModalityCheck useModalityCheck;
 
+    @Autowired
+    LineSizeCheck lineSizeCheck;
+
     @GetMapping("/{service}")
     @JsonView(MetadataJsonView.List.class)
     public ResponseService check(
@@ -85,7 +88,8 @@ public class CheckController {
         services.put("commonmodulename", commonModuleNameCheck);
         services.put("refref", refRefCheck);
         services.put("emptymethod", emptyMethodCheck);
-        services.put("usemodalitycheck", useModalityCheck);
+        services.put("usemodality", useModalityCheck);
+        services.put("linesize", lineSizeCheck);
 
         return services;
     }

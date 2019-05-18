@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <headCommon th:replace="fragments/header :: common"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-treeview.css}" />
+    </head>
+    <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+        <!--todo: исправить навигационную цепочку-->
+        <nav th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Конфигурация</li>
+                </ol>
+            </nav>
+
+            <div class="pb-2">
+
+                <button class="btn btn-outline-success" type="button" onclick="gitFetch()">
+                    <i class="fab fa-git" aria-hidden="true"></i>  Обновить
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <table>
+                        <tr>
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-8">
+                    data
+                </div>
+            </div>
+
+            <script>
+                function gitFetch() {
+                    $.ajax({
+                        type : "GET",
+                        contentType : "application/json",
+                        url : "conf/git/fetch",
+                        dataType : 'json',
+                        timeout : 100000,
+                        success : function(data) {
+                            $.notify('Получена последняя версия', {
+                                offset: {
+                                    x: 10,
+                                    y: 65
+                                }
+                            });
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        },
+                        done : function(e) {
+                            console.log("DONE");
+                        }
+                    });
+                }
+            </script>
+
+            <!-- todo: remove bootstrap-treeview -->
+            <!--<script type="text/javascript" th:src="@{/js/bootstrap-treeview.js}"></script>-->
+            <!--<script type="text/javascript">-->
+                <!--$(function() {-->
+                    <!--var defaultData = [-->
+                        <!--{-->
+                            <!--text: 'Конфигурация',-->
+                            <!--href: '#parent1',-->
+                            <!--tags: ['4'],-->
+                            <!--nodes: [-->
+                                <!--{-->
+                                    <!--text: 'Общие',-->
+                                    <!--href: '#child1',-->
+                                    <!--tags: ['2'],-->
+                                    <!--nodes: [-->
+                                        <!--{-->
+                                            <!--text: 'Grandchild 1',-->
+                                            <!--href: '#grandchild1',-->
+                                            <!--tags: ['0']-->
+                                        <!--},-->
+                                        <!--{-->
+                                            <!--text: 'Grandchild 2',-->
+                                            <!--href: '#grandchild2',-->
+                                            <!--tags: ['0']-->
+                                        <!--}-->
+                                    <!--]-->
+                                <!--},-->
+                                <!--{-->
+                                    <!--text: 'Child 2',-->
+                                    <!--href: '#child2',-->
+                                    <!--tags: ['0']-->
+                                <!--}-->
+                            <!--]-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 2',-->
+                            <!--href: '#parent2',-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 3',-->
+                            <!--href: '#parent3',-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 4',-->
+                            <!--href: '#parent4',-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--},-->
+                        <!--{-->
+                            <!--text: 'Parent 5',-->
+                            <!--href: '#parent5'  ,-->
+                            <!--tags: ['0']-->
+                        <!--}-->
+                    <!--];-->
+
+                    <!--$('#metadata').treeview({-->
+                        <!--data: defaultData-->
+                    <!--});-->
+                <!--});-->
+            <!--</script>-->
+        </div>
+
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>
