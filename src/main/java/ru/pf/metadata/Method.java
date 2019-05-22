@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,6 +33,25 @@ public class Method {
         return args;
     }
 
+    public String getText() {
+        return this.text;
+    }
+
+    public String getCode() {
+        StringBuilder sb = new StringBuilder();
+
+        Arrays.asList(this.getText().split(System.lineSeparator()))
+                .stream()
+                .filter(line -> line.trim().startsWith("//"))
+                .forEach(s -> sb.append(s).append(System.lineSeparator()));
+
+        return sb.toString();
+    }
+
+    public boolean isFunction() {
+        return this.type == Type.FUNCTION;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -46,7 +66,7 @@ public class Method {
 
     public boolean isEmpty() {
         boolean result = true;
-        String[] parts = this.text.split("\n");
+        String[] parts = this.text.split(System.getProperty("line.separator"));
         for (String part : parts) {
             String doProcess = part.trim().toLowerCase();
             if (doProcess.isEmpty()) {

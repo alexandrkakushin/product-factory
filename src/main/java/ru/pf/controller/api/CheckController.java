@@ -44,6 +44,9 @@ public class CheckController {
     CommonModuleNameCheck commonModuleNameCheck;
 
     @Autowired
+    NoReturnCheck noReturnCheck;
+
+    @Autowired
     RefRefCheck refRefCheck;
 
     @Autowired
@@ -90,6 +93,7 @@ public class CheckController {
         services.put("emptymethod", emptyMethodCheck);
         services.put("usemodality", useModalityCheck);
         services.put("linesize", lineSizeCheck);
+        services.put("noreturn", noReturnCheck);
 
         return services;
     }

@@ -3,10 +3,10 @@ package ru.pf.metadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import ru.pf.metadata.object.MetadataObject;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,6 +49,17 @@ public class Module {
 
     public String getText() {
         return text;
+    }
+
+    public String getCode() {
+        StringBuilder sb = new StringBuilder();
+
+        Arrays.asList(this.getText().split(System.lineSeparator()))
+            .stream()
+                .filter(line -> line.trim().startsWith("//"))
+                .forEach(s -> sb.append(s).append(System.lineSeparator()));
+
+        return sb.toString();
     }
 
     public void setText(String text) {
