@@ -83,7 +83,7 @@ public class CheckController {
         return null;
     }
 
-    private Map<String, ServiceCheck> getAvailableServices() {
+    public Map<String, ServiceCheck> getAvailableServices() {
         Map<String, ServiceCheck> services = new HashMap<>();
         services.put("namelength", nameLengthCheck);
         services.put("subsystem", subsystemCheck);

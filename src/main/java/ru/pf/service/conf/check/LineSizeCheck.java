@@ -40,6 +40,10 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
         // todo: stream
         Map<Module, MetadataObject> modules = conf.getAllModules();
         for (Module module : modules.keySet()) {
+            if (module.getText() == null) {
+                continue;
+            }
+
             Response response = null;
             String[] lines = module.getText().split(System.getProperty("line.separator"));
 
@@ -54,6 +58,11 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
             }
         }
         return result;
+    }
+
+    @Override
+    public String getAlias() {
+        return "Длина строк";
     }
 
     @Data

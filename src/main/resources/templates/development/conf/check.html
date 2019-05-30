@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <headCommon th:replace="fragments/header :: common"/>
+    </head>
+    <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+        <!--todo: исправить навигационную цепочку-->
+        <nav th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/projects/'+${projectId}}">
+                            <span th:text="${projectId}"></span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Проверка</li>
+                </ol>
+            </nav>
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" width="70%">Правило</th>
+                    <th scope="col" width="30%">Результат</th>
+                    <!--<th scope="col">Ошибки</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:id="'row_'+${instance.key}" th:each="instance : ${services}">
+                    <td th:text="${instance.value.getAlias()}">num</td>
+                    <td th:id="'result_'+${instance.key}"></td>
+                    <!--<td th:id="'error_'+${instance.key}"></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function check(service, projectId) {
+                $('#result_' + service).html('Обработка');
+
+                $.ajax({
+                    type : "GET",
+                    contentType : "application/json",
+                    url : "/api/conf/check/" + service + "?project=" + projectId,
+                    dataType : 'json',
+                    timeout : 100000,
+                    success : function(data) {
+                        $('#result_' + service).html(data.result ? "Пройден" : "Не пройден");
+                        $('#row_' + service).addClass(data.result ? 'table-success' : 'table-warning');
+
+                        // todo: сделать нормальный вывод
+                        // if (!data.result) {
+                        //    $('#error_' + service).html(JSON.stringify(data));
+                        //}
+                    },
+                    error : function(e) {
+                        $('#row_' + service).addClass('table-danger');
+                        $('#result_' + service).html("Внутренняя ошибка");
+                    },
+                });
+            }
+        </script>
+
+        <script th:inline="javascript">
+            for (var service in [[${services}]]) {
+                check(service, [[${projectId}]]);
+            }
+        </script>
+
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>

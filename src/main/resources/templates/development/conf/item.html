@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <headCommon th:replace="fragments/header :: common"/>
+    </head>
+    <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+        <!--todo: исправить навигационную цепочку-->
+        <nav th:replace="fragments/navbar :: navbar"/>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/projects/'+${projectId}}">
+                            <span th:text="${projectId}"></span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Конфигурация</li>
+                </ol>
+            </nav>
+
+            <div class="pb-2">
+                <button class="btn btn-outline-success" type="button" onclick="gitFetch()">
+                    <i class="fab fa-git" aria-hidden="true"></i>  Обновить
+                </button>
+
+                <a th:href="@{'/development/conf/check/'+${projectId}}" class="btn btn-outline-info" role="button" aria-disabled="true">
+                    <i class="fas fa-check" aria-hidden="true"></i> Проверка
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <table>
+                            <tr th:each="object: ${objects}">
+                            <td th:text="${object.uuid}" />
+                            <td th:text="${object.name}" />
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-8">
+                    data
+                </div>
+            </div>
+
+            <script>
+                function gitFetch() {
+                    $.ajax({
+                        type : "GET",
+                        contentType : "application/json",
+                        url : "conf/git/fetch",
+                        dataType : 'json',
+                        timeout : 100000,
+                        success : function(data) {
+                            $.notify('Получена последняя версия', {
+                                offset: {
+                                    x: 10,
+                                    y: 65
+                                }
+                            });
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        },
+                        done : function(e) {
+                            console.log("DONE");
+                        }
+                    });
+                }
+            </script>
+        </div>
+
+        <footer th:replace="fragments/footer :: bootstrap"/>
+    </body>
+</html>

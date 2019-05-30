@@ -18,4 +18,9 @@ public class AutoSynonymCheck implements ServiceCheck<MetadataObject> {
     public List<MetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
         return null;
     }
+
+    @Override
+    public String getAlias() {
+        return "Автосинонимы";
+    }
 }

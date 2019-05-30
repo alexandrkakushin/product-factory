@@ -44,6 +44,11 @@ public class NoReturnCheck implements ServiceCheck<NoReturnCheck.Response> {
         return result;
     }
 
+    @Override
+    public String getAlias() {
+        return "Функции без возврата результата";
+    }
+
     @Data
     @JsonView(MetadataJsonView.List.class)
     public static class Response {

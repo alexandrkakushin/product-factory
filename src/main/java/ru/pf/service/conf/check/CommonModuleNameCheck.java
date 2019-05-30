@@ -57,4 +57,9 @@ public class CommonModuleNameCheck implements ServiceCheck<MetadataObject> {
 
         return result;
     }
+
+    @Override
+    public String getAlias() {
+        return "Имена общих модулей";
+    }
 }

@@ -12,11 +12,11 @@
             <form action="#" th:action="@{'${url}+'/submit'}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
+                <div th:include="fragments/item :: operations(url = ${url})"></div>
+
                 <field th:replace="fragments/fields :: id"></field>
                 <field th:replace="fragments/fields :: name"></field>
                 <field th:replace="fragments/fields :: comment"></field>
-
-                <div th:include="fragments/item :: operations(url = ${url})"></div>
             </form>
         </div>
         <footer th:replace="fragments/footer :: bootstrap"/>

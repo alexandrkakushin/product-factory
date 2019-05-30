@@ -39,4 +39,9 @@ public class SubsystemCheck implements ServiceCheck<MetadataObject> {
         }
         return result;
     }
+
+    @Override
+    public String getAlias() {
+        return "Не включенные в подсистемы";
+    }
 }

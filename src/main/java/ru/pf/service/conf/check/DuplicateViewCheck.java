@@ -71,4 +71,9 @@ public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
 
         return result;
     }
+
+    @Override
+    public String getAlias() {
+        return "Дубли в представлениях объектов";
+    }
 }

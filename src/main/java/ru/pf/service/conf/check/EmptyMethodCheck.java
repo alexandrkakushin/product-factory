@@ -36,6 +36,11 @@ public class EmptyMethodCheck implements ServiceCheck<EmptyMethodCheck.Response>
         return result;
     }
 
+    @Override
+    public String getAlias() {
+        return "Методы без реализации";
+    }
+
     @Data
     @JsonView(MetadataJsonView.List.class)
     public class Response {

@@ -48,6 +48,11 @@ public class RefRefCheck implements ServiceCheck<RefRefCheck.Response> {
         return result;
     }
 
+    @Override
+    public String getAlias() {
+        return "Ссылка.Ссылка";
+    }
+
     @Data
     @JsonView(MetadataJsonView.List.class)
     public class Response {

@@ -56,6 +56,11 @@ public class UseModalityCheck implements ServiceCheck<UseModalityCheck.Response>
         return result;
     }
 
+    @Override
+    public String getAlias() {
+        return "Модальные вызовы";
+    }
+
     private List<String> getModalWords() {
         List<String> words = new ArrayList<>();
 
