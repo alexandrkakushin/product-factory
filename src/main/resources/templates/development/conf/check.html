@@ -30,22 +30,109 @@
                 <tr>
                     <th scope="col" width="70%">Правило</th>
                     <th scope="col" width="30%">Результат</th>
-                    <!--<th scope="col">Ошибки</th>-->
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:id="'row_'+${instance.key}" th:each="instance : ${services}">
                     <td th:text="${instance.value.getAlias()}">num</td>
                     <td th:id="'result_'+${instance.key}"></td>
-                    <!--<td th:id="'error_'+${instance.key}"></td>-->
                 </tr>
                 </tbody>
             </table>
         </div>
 
+        <!-- Processing -->
+        <div class="modal fade" id="processing" tabindex="-1" role="dialog" aria-labelledby="processingLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="processingLabel">Обработка</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Конфигурация по выбранному правилу в обработке. Пожалуйста, подождите
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Good -->
+        <div class="modal fade" id="good" tabindex="-1" role="dialog" aria-labelledby="goodLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="goodLabel">Пройден</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        По выбранному правилу ошибок не найдено
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--No return-->
+        <div class="modal fade" id="noreturn" tabindex="-1" role="dialog" aria-labelledby="noReturnLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="noReturnLabel">Функции без возврата результата</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="body_noreturn"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
+            function fill_noReturn(response) {
+                var $table = $('<table class="table table-hover"/>');
+                $table.append($('<thead>')
+                    .append($('<tr>')
+                        .append($('<th>').text('Модуль'))
+                        .append($('<th>').text('Методы'))
+                        )
+                    );
+
+                var $body = $('<tbody>');
+                for (var iModule = 0; iModule < response.objects.length; iModule++) {
+                    var module = response.objects[iModule];
+
+                    var $tr = $('<tr>');
+                    $tr.append($('<td>').text(module.object.name));
+
+                    var $tdMethods = $('<td>');
+                    for (var iMethod = 0; iMethod < module.found.length; iMethod++) {
+                        var method = module.found[iMethod];
+                        $tdMethods.append($('<p>').text(method.name));
+                    }
+                    $tr.append($tdMethods);
+                    $body.append($tr);
+                }
+                $table.append($body);
+
+                $('#body_noreturn').append($table);
+            }
+
             function check(service, projectId) {
-                $('#result_' + service).html('Обработка');
+                $('#result_' + service).html(
+                    '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#processing">Обработка</button>'
+                );
 
                 $.ajax({
                     type : "GET",
@@ -54,13 +141,18 @@
                     dataType : 'json',
                     timeout : 100000,
                     success : function(data) {
-                        $('#result_' + service).html(data.result ? "Пройден" : "Не пройден");
+                        $('#result_' + service).html(data.result ?
+                            '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#good">Пройден</button>' :
+                            '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#' + service + '">Не пройден</button>');
+
                         $('#row_' + service).addClass(data.result ? 'table-success' : 'table-warning');
 
-                        // todo: сделать нормальный вывод
-                        // if (!data.result) {
-                        //    $('#error_' + service).html(JSON.stringify(data));
-                        //}
+                        if (!data.result) {
+                            // todo: реализовать остальные правила
+                            if (service == 'noreturn') {
+                                fill_noReturn(data);
+                            }
+                        }
                     },
                     error : function(e) {
                         $('#row_' + service).addClass('table-danger');
