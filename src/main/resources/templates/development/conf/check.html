@@ -41,57 +41,17 @@
             </table>
         </div>
 
-        <!-- Processing -->
-        <div class="modal fade" id="processing" tabindex="-1" role="dialog" aria-labelledby="processingLabel" aria-hidden="true">
+        <!--Modal-->
+        <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="label-detail" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="processingLabel">Обработка</h5>
+                        <h5 class="modal-title" id="label-detail">Label</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        Конфигурация по выбранному правилу в обработке. Пожалуйста, подождите
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Good -->
-        <div class="modal fade" id="good" tabindex="-1" role="dialog" aria-labelledby="goodLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="goodLabel">Пройден</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        По выбранному правилу ошибок не найдено
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--No return-->
-        <div class="modal fade" id="noreturn" tabindex="-1" role="dialog" aria-labelledby="noReturnLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="noReturnLabel">Функции без возврата результата</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="body_noreturn"></div>
+                    <div class="modal-body" id="body_detail"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                     </div>
@@ -100,7 +60,17 @@
         </div>
 
         <script>
+            var errors = [];
+
+            function fill_good() {
+                $('#label-detail').html('Пройден');
+                $('#body_detail').html('По выбранному правилу ошибок не найдено');
+            }
+
             function fill_noReturn(response) {
+                $('#label-detail').html('Функции без возврата результата')
+                $('#body_detail').html('');
+
                 var $table = $('<table class="table table-hover"/>');
                 $table.append($('<thead>')
                     .append($('<tr>')
@@ -126,13 +96,87 @@
                 }
                 $table.append($body);
 
-                $('#body_noreturn').append($table);
+                $('#body_detail').append($table);
+            }
+
+            function fill_refRef(response) {
+                $('#label-detail').html('Ссылка.Ссылка')
+
+                var $table = $('<table class="table table-hover"/>');
+                $table.append($('<thead>')
+                    .append($('<tr>')
+                        .append($('<th>').text('Модуль'))
+                        .append($('<th>').text('Позиции в тексте'))
+                    )
+                );
+
+                var $body = $('<tbody>');
+                for (var iModule = 0; iModule < response.objects.length; iModule++) {
+                    var module = response.objects[iModule];
+
+                    var $tr = $('<tr>');
+                    $tr.append($('<td>').text(module.object.name));
+
+                    var $tdText = $('<td>');
+                    for (var iText = 0; iText < module.found.length; iText++) {
+                        var text = module.found[iText];
+                        $tdText.append($('<p>').text(text));
+                    }
+                    $tr.append($tdText);
+                    $body.append($tr);
+                }
+                $table.append($body);
+
+                // todo: исправить
+                $('#body_detail').html('');
+                $('#body_detail').append($table);
+            }
+
+            function btnServiceOnClick(event) {
+                var attrResult = event.target.attributes.getNamedItem('pf-result');
+
+                if (attrResult && attrResult.value === "false") {
+                    var attrService = event.target.attributes.getNamedItem('service').value;
+
+                    var result = null;
+                    for (var i = 0; i < errors.length; i++) {
+                        if (errors[i].rule === attrService) {
+                            result = errors[i].result;
+                            break;
+                        }
+                    }
+
+                    if (result !== null) {
+                        if (attrService === 'noreturn') {
+                            fill_noReturn(result);
+
+                        } else if (attrService === 'refref') {
+                            fill_refRef(result);
+
+                        }
+                    } else {
+                        console.error('Отсутствует результаты правила');
+                    }
+
+                } else {
+                    fill_good();
+                }
             }
 
             function check(service, projectId) {
-                $('#result_' + service).html(
-                    '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#processing">Обработка</button>'
-                );
+                var $button = $('<button>').addClass('btn btn-link')
+                    .attr('data-toggle', 'modal')
+                    .attr('data-target', '#detailModal')
+                    .attr('type', 'button')
+                    .attr('id', 'btn_' + service)
+                    .attr('service', service)
+                    .text('Обработка')
+                    .on('click', function () {
+                        btnServiceOnClick(event);
+                    })
+                ;
+
+                $('#result_' + service).append($button);
 
                 $.ajax({
                     type : "GET",
@@ -141,17 +185,18 @@
                     dataType : 'json',
                     timeout : 100000,
                     success : function(data) {
-                        $('#result_' + service).html(data.result ?
-                            '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#good">Пройден</button>' :
-                            '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#' + service + '">Не пройден</button>');
+                        $button.text(data.result ? 'Пройден' : 'Не пройден');
+                        $button.attr('pf-result', data.result);
 
                         $('#row_' + service).addClass(data.result ? 'table-success' : 'table-warning');
 
                         if (!data.result) {
-                            // todo: реализовать остальные правила
-                            if (service == 'noreturn') {
-                                fill_noReturn(data);
-                            }
+                            errors.push(
+                                {
+                                    'rule': service,
+                                    'result': data
+                                }
+                            );
                         }
                     },
                     error : function(e) {
