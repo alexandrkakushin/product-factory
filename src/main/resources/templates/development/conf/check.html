@@ -68,7 +68,7 @@
             }
 
             function fill_noReturn(response) {
-                $('#label-detail').html('Функции без возврата результата')
+                $('#label-detail').html('Функции без возврата результата');
                 $('#body_detail').html('');
 
                 var $table = $('<table class="table table-hover"/>');
@@ -100,7 +100,7 @@
             }
 
             function fill_refRef(response) {
-                $('#label-detail').html('Ссылка.Ссылка')
+                $('#label-detail').html('Ссылка.Ссылка');
 
                 var $table = $('<table class="table table-hover"/>');
                 $table.append($('<thead>')
@@ -132,6 +132,34 @@
                 $('#body_detail').append($table);
             }
 
+            function fill_subsystem(response) {
+                $('#label-detail').html('Не включенные в подсистемы');
+
+                var $table = $('<table class="table table-hover"/>');
+                $table.append($('<thead>')
+                    .append($('<tr>')
+                        .append($('<th>').text('Тип'))
+                        .append($('<th>').text('Имя'))
+                        .append($('<th>').text('Синоним'))
+                    )
+                );
+
+                var $body = $('<tbody>');
+                for (var iObject = 0; iObject < response.objects.length; iObject++) {
+                    var object = response.objects[iObject];
+                    $body.append($('<tr>')
+                        .append($('<td>').text(object.metadataName))
+                        .append($('<td>').text(object.name))
+                        .append($('<td>').text(object.synonym))
+                    );
+                }
+                $table.append($body);
+
+                // todo: исправить
+                $('#body_detail').html('');
+                $('#body_detail').append($table);
+            }
+
             function btnServiceOnClick(event) {
                 var attrResult = event.target.attributes.getNamedItem('pf-result');
 
@@ -152,6 +180,9 @@
 
                         } else if (attrService === 'refref') {
                             fill_refRef(result);
+
+                        } else if (attrService === 'subsystem') {
+                            fill_subsystem(result);
 
                         }
                     } else {
