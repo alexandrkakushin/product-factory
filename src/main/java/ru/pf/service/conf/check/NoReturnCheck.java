@@ -31,7 +31,7 @@ public class NoReturnCheck implements ServiceCheck<NoReturnCheck.Response> {
 
             for (Method method : module.getMethods()) {
                 if (method.isFunction()) {
-                    if (method.getCode().toLowerCase().indexOf("возврат") != -1) {
+                    if (method.getCode().toLowerCase().indexOf("возврат") == -1) {
                         if (response == null) {
                             response = new Response(modules.get(module), module, new ArrayList<>());
                             result.add(response);

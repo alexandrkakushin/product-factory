@@ -42,7 +42,7 @@ public class Method {
 
         Arrays.asList(this.getText().split(System.lineSeparator()))
                 .stream()
-                .filter(line -> line.trim().startsWith("//"))
+                .filter(line -> !line.trim().startsWith("//"))
                 .forEach(s -> sb.append(s).append(System.lineSeparator()));
 
         return sb.toString();
