@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <headCommon th:replace="fragments/header :: common"/>
+        <headCommon th:replace="fragments/header :: common"></headCommon>
     </head>
     <body>
         <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
 
         <!--todo: исправить навигационную цепочку-->
-        <nav th:replace="fragments/navbar :: navbar"/>
+        <nav th:replace="fragments/navbar :: navbar"></nav>
         <div class="container-fluid pt-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
                     <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
                     <li class="breadcrumb-item ">
+                        <!--/*@thymesVar id="projectId" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                         <a th:href="@{'/development/projects/'+${projectId}}">
                             <span th:text="${projectId}"></span>
                         </a>
                     </li>
                     <li class="breadcrumb-item ">
+                        <!--/*@thymesVar id="projectId" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                         <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Проверка</li>
@@ -33,6 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                <!--/*@thymesVar id="instance" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                 <tr th:id="'row_'+${instance.key}" th:each="instance : ${services}">
                     <td th:text="${instance.value.getAlias()}">num</td>
                     <td th:id="'result_'+${instance.key}"></td>
@@ -60,7 +63,12 @@
         </div>
 
         <script>
-            var errors = [];
+            let errors = [];
+
+            function fill_empty() {
+                $('#label-detail').html('Отсутсвует реализация');
+                $('#body_detail').html('Отсутствует реализация отображения правила');
+            }
 
             function fill_good() {
                 $('#label-detail').html('Пройден');
@@ -71,7 +79,7 @@
                 $('#label-detail').html('Функции без возврата результата');
                 $('#body_detail').html('');
 
-                var $table = $('<table class="table table-hover"/>');
+                let $table = $('<table class="table table-hover"/>');
                 $table.append($('<thead>')
                     .append($('<tr>')
                         .append($('<th>').text('Модуль'))
@@ -79,16 +87,16 @@
                         )
                     );
 
-                var $body = $('<tbody>');
-                for (var iModule = 0; iModule < response.objects.length; iModule++) {
-                    var module = response.objects[iModule];
+                let $body = $('<tbody>');
+                for (let iItem = 0; iItem < response.objects.length; iItem++) {
+                    let item = response.objects[iItem];
 
-                    var $tr = $('<tr>');
-                    $tr.append($('<td>').text(module.object.name));
+                    let $tr = $('<tr>');
+                    $tr.append($('<td>').text(moduleString(item)));
 
-                    var $tdMethods = $('<td>');
-                    for (var iMethod = 0; iMethod < module.found.length; iMethod++) {
-                        var method = module.found[iMethod];
+                    let $tdMethods = $('<td>');
+                    for (let iMethod = 0; iMethod < item.found.length; iMethod++) {
+                        let method = item.found[iMethod];
                         $tdMethods.append($('<p>').text(method.name));
                     }
                     $tr.append($tdMethods);
@@ -110,16 +118,15 @@
                     )
                 );
 
-                var $body = $('<tbody>');
-                for (var iModule = 0; iModule < response.objects.length; iModule++) {
-                    var module = response.objects[iModule];
+                let $body = $('<tbody>');
+                for (let iItem = 0; iItem < response.objects.length; iItem++) {
+                    let item = response.objects[iItem];
+                    let $tr = $('<tr>');
 
-                    var $tr = $('<tr>');
-                    $tr.append($('<td>').text(module.object.name));
-
-                    var $tdText = $('<td>');
-                    for (var iText = 0; iText < module.found.length; iText++) {
-                        var text = module.found[iText];
+                    $tr.append($('<td>').text(moduleString(item)));
+                    let $tdText = $('<td>');
+                    for (let iText = 0; iText < item.found.length; iText++) {
+                        let text = item.found[iText];
                         $tdText.append($('<p>').text(text));
                     }
                     $tr.append($tdText);
@@ -144,9 +151,9 @@
                     )
                 );
 
-                var $body = $('<tbody>');
-                for (var iObject = 0; iObject < response.objects.length; iObject++) {
-                    var object = response.objects[iObject];
+                let $body = $('<tbody>');
+                for (let iObject = 0; iObject < response.objects.length; iObject++) {
+                    const object = response.objects[iObject];
                     $body.append($('<tr>')
                         .append($('<td>').text(object.metadataName))
                         .append($('<td>').text(object.name))
@@ -160,14 +167,34 @@
                 $('#body_detail').append($table);
             }
 
+            /**
+             * Формирование полного имени модуля для прикладных объектов, например Справочники, Документы и т.д.
+             * @param item          Информация о найденном модуле
+             * @param item.object   Объект метаданных
+             * @param item.module   Модуль объекта метаданных
+             * @returns {string}
+             */
+            function moduleString(item) {
+                if (item.module.type === 'COMMON_MODULE') {
+                    return item.object.name;
+                } else {
+                    let moduleTypeString = '';
+                    switch (item.module.type) {
+                        case 'MANAGER_MODULE': moduleTypeString = 'Модуль менеджера'; break;
+                        case 'OBJECT_MODULE' : moduleTypeString = 'Модуль объекта'; break;
+                        default : moduleTypeString = 'Тип не определен';
+                    }
+                    return `${item.object.name} (${moduleTypeString})`;
+                }
+            }
+
             function btnServiceOnClick(event) {
-                var attrResult = event.target.attributes.getNamedItem('pf-result');
+                let attrResult = event.target.attributes.getNamedItem('pf-result');
 
-                if (attrResult && attrResult.value === "false") {
-                    var attrService = event.target.attributes.getNamedItem('service').value;
-
-                    var result = null;
-                    for (var i = 0; i < errors.length; i++) {
+                if (attrResult.value === "false") {
+                    let attrService = event.target.attributes.getNamedItem('service').value;
+                    let result = null;
+                    for (let i = 0; i < errors.length; i++) {
                         if (errors[i].rule === attrService) {
                             result = errors[i].result;
                             break;
@@ -184,18 +211,19 @@
                         } else if (attrService === 'subsystem') {
                             fill_subsystem(result);
 
+                        } else {
+                            fill_empty();
                         }
                     } else {
-                        console.error('Отсутствует результаты правила');
+                        fill_empty();
                     }
-
                 } else {
                     fill_good();
                 }
             }
 
             function check(service, projectId) {
-                var $button = $('<button>').addClass('btn btn-link')
+                let $button = $('<button>').addClass('btn btn-link')
                     .attr('data-toggle', 'modal')
                     .attr('data-target', '#detailModal')
                     .attr('type', 'button')
@@ -204,8 +232,7 @@
                     .text('Обработка')
                     .on('click', function () {
                         btnServiceOnClick(event);
-                    })
-                ;
+                    });
 
                 $('#result_' + service).append($button);
 
@@ -230,20 +257,20 @@
                             );
                         }
                     },
-                    error : function(e) {
+                    error : function(ex) {
                         $('#row_' + service).addClass('table-danger');
-                        $('#result_' + service).html("Внутренняя ошибка");
+                        $('#result_' + service).html(`Внутренняя ошибка ${ex}`);
                     },
                 });
             }
         </script>
 
         <script th:inline="javascript">
-            for (var service in [[${services}]]) {
+            for (let service in [[${services}]]) {
                 check(service, [[${projectId}]]);
             }
         </script>
 
-        <footer th:replace="fragments/footer :: bootstrap"/>
+        <footer th:replace="fragments/footer :: bootstrap"></footer>
     </body>
 </html>
