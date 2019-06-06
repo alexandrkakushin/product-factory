@@ -75,6 +75,56 @@
                 $('#body_detail').html('По выбранному правилу ошибок не найдено');
             }
 
+            function fill_commonModuleName(response) {
+                $('#label-detail').html('Имена общих модулей');
+
+                var $table = $('<table class="table table-hover"/>');
+                $table.append($('<thead>')
+                    .append($('<tr>')
+                        .append($('<th>').text('Имя'))
+                    )
+                );
+
+                let $body = $('<tbody>');
+                for (let iObject = 0; iObject < response.objects.length; iObject++) {
+                    const object = response.objects[iObject];
+                    $body.append($('<tr>')
+                        .append($('<td>').text(object.name))
+                    );
+                }
+                $table.append($body);
+
+                // todo: исправить
+                $('#body_detail').html('');
+                $('#body_detail').append($table);
+            }
+
+            function fill_nameLength(response) {
+                $('#label-detail').html('Длина имен объектов метаданных');
+
+                var $table = $('<table class="table table-hover"/>');
+                $table.append($('<thead>')
+                    .append($('<tr>')
+                        .append($('<th>').text('Тип'))
+                        .append($('<th>').text('Имя'))
+                    )
+                );
+
+                let $body = $('<tbody>');
+                for (let iObject = 0; iObject < response.objects.length; iObject++) {
+                    const object = response.objects[iObject];
+                    $body.append($('<tr>')
+                        .append($('<td>').text(object.metadataName))
+                        .append($('<td>').text(object.name))
+                    );
+                }
+                $table.append($body);
+
+                // todo: исправить
+                $('#body_detail').html('');
+                $('#body_detail').append($table);
+            }
+
             function fill_noReturn(response) {
                 $('#label-detail').html('Функции без возврата результата');
                 $('#body_detail').html('');
@@ -147,7 +197,6 @@
                     .append($('<tr>')
                         .append($('<th>').text('Тип'))
                         .append($('<th>').text('Имя'))
-                        .append($('<th>').text('Синоним'))
                     )
                 );
 
@@ -157,7 +206,6 @@
                     $body.append($('<tr>')
                         .append($('<td>').text(object.metadataName))
                         .append($('<td>').text(object.name))
-                        .append($('<td>').text(object.synonym))
                     );
                 }
                 $table.append($body);
@@ -202,7 +250,13 @@
                     }
 
                     if (result !== null) {
-                        if (attrService === 'noreturn') {
+                        if (attrService === 'commonmodulename') {
+                            fill_commonModuleName(result);
+
+                        } else if (attrService === 'namelength') {
+                            fill_nameLength(result);
+
+                        } else if (attrService === 'noreturn') {
                             fill_noReturn(result);
 
                         } else if (attrService === 'refref') {
