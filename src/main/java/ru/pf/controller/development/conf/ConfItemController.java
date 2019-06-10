@@ -14,7 +14,9 @@ import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,23 +39,48 @@ public class ConfItemController {
         if (projectOptional.isPresent()) {
             model.addAttribute("projectId", id);
 
-            model.addAttribute("objects", projectsService.getConf(projectOptional.get()).getAllObjects()
+            List<ConfObject> objects = projectsService.getConf(projectOptional.get()).getAllObjects()
                     .stream()
                     .map(item -> new ConfObject(item))
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
+
+            // todo: реализовать данный функционал в самой конфигурации
+            Set<String> metadataNames = objects
+                    .stream()
+                    .map(item -> item.getMetadataName())
+                    .collect(Collectors.toSet());
+
+            model.addAttribute("objects", objects);
+            model.addAttribute("metadataNames", metadataNames);
         }
 
         return "/development/conf/item";
+    }
+
+    @GetMapping("/{id}/{uuid}")
+    public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) {
+        Optional<Project> projectOptional = projectsRepository.findById(id);
+        if (projectOptional.isPresent()) {
+            model.addAttribute("projectId", id);
+        }
+
+        return "/development/conf/metadata-item";
     }
 
     @Data
     public class ConfObject {
         private UUID uuid;
         private String name;
+        private String metadataName;
 
         public ConfObject(MetadataObject metadataObject) {
             this.uuid = ((AbstractObject) metadataObject).getUuid();
             this.name = ((AbstractObject) metadataObject).getName();
+            this.metadataName = metadataObject.getMetadataName();
+        }
+
+        public String getMetadataName() {
+            return metadataName;
         }
     }
 }

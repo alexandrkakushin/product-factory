@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <headCommon th:replace="fragments/header :: common"/>
+        <headCommon th:replace="fragments/header :: common"></headCommon>
     </head>
     <body>
         <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
 
         <!--todo: исправить навигационную цепочку-->
-        <nav th:replace="fragments/navbar :: navbar"/>
+        <nav th:replace="fragments/navbar :: navbar"></nav>
         <div class="container-fluid pt-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -24,7 +24,7 @@
 
             <div class="pb-2">
                 <button class="btn btn-outline-success" type="button" onclick="gitFetch()">
-                    <i class="fab fa-git" aria-hidden="true"></i>  Обновить
+                    <i class="fas fa-sync" aria-hidden="true"></i>  Обновить
                 </button>
 
                 <a th:href="@{'/development/conf/check/'+${projectId}}" class="btn btn-outline-info" role="button" aria-disabled="true">
@@ -34,17 +34,55 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <table>
-                            <tr th:each="object: ${objects}">
-                            <td th:text="${object.uuid}" />
-                            <td th:text="${object.name}" />
+                     <div id="accordion">
+                        <div class="card" th:each="instance : ${metadataNames}">
+                            <div th:id="'heading_'+${instance}" class="card-header">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse"
+                                            th:attr="data-target='#collapse_'+${instance}, aria-controls='collapse_'+${instance}"
+                                            aria-expanded="false">
+                                            <span th:text="${instance}"></span>
+                                    </button>
+                                    <span th:id="'badge_'+${instance}" class="badge badge-info">0</span>
+                                </h5>
+                            </div>
+
+                            <div th:id="'collapse_'+${instance}" class="collapse" th:attr="aria-labelledby='heading_'+${instance}" data-parent="#accordion">
+                                <div th:id="'content_'+${instance}" class="card-body"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <table class="table table-hover">
+                        <tr>
+                            <td>Общее количество объектов</td>
+                            <td id="totalObjects">Подсчет...</td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-sm-8">
-                    data
-                </div>
             </div>
+
+            <script th:inline="javascript">
+                let objects = [[${objects}]];
+                let totalObjects = 0;
+
+                for (let iObject = 0; iObject < objects.length; iObject ++) {
+                    let instance = objects[iObject];
+                    let $content = $('#content_' + instance.metadataName);
+                    $content
+                        .append($('<a>').attr("href", `/development/conf/item/[[${projectId}]]/${instance.uuid}`).text(instance.name))
+                        .append($('<br>'));
+
+                    let $badge = $('#badge_' + instance.metadataName);
+                    $badge.html(parseInt($badge.text()) + 1);
+
+                    totalObjects++;
+                }
+
+                $('#totalObjects').html(totalObjects);
+            </script>
 
             <script>
                 function gitFetch() {
@@ -64,15 +102,12 @@
                         },
                         error : function(e) {
                             console.log("ERROR: ", e);
-                        },
-                        done : function(e) {
-                            console.log("DONE");
                         }
                     });
                 }
             </script>
         </div>
 
-        <footer th:replace="fragments/footer :: bootstrap"/>
+        <footer th:replace="fragments/footer :: bootstrap"></footer>
     </body>
 </html>

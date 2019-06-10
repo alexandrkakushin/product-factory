@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <headCommon th:replace="fragments/header :: common"></headCommon>
+    </head>
+    <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+        <!--todo: исправить навигационную цепочку-->
+        <nav th:replace="fragments/navbar :: navbar"></nav>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/projects/'+${projectId}}">
+                            <span th:text="${projectId}"></span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Объект метаданных</li>
+                </ol>
+            </nav>
+        </div>
+
+        <footer th:replace="fragments/footer :: bootstrap"></footer>
+    </body>
+</html>
