@@ -2,8 +2,8 @@ package ru.pf.metadata.object.common;
 
 import lombok.Data;
 import ru.pf.metadata.object.AbstractObject;
-import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.type.Picture;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,8 +18,7 @@ public class CommandGroup extends AbstractObject<CommandGroup> {
     private Category category;
     private Representation representation;
     private String toolTip;
-
-    // todo: поле Picture сделать отдельным типом данных
+    private Picture picture;
 
     public CommandGroup(Path path) {
         super(path);
@@ -39,6 +38,7 @@ public class CommandGroup extends AbstractObject<CommandGroup> {
             this.representation = Representation.valueByName(
                     objReader.read(nodeProperties + "Representation"));
             this.toolTip = objReader.read(nodeProperties + "ToolTip");
+            this.picture = new Picture(objReader, nodeProperties + "Picture");
         }
     }
 
