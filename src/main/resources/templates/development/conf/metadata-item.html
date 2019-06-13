@@ -21,7 +21,9 @@
                     <li class="breadcrumb-item ">
                         <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Объект метаданных</li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span th:text="${objectName}"></span>
+                    </li>
                 </ol>
             </nav>
         </div>

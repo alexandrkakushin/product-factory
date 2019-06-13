@@ -58,10 +58,16 @@ public class ConfItemController {
     }
 
     @GetMapping("/{id}/{uuid}")
-    public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) {
+    public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) throws IOException {
         Optional<Project> projectOptional = projectsRepository.findById(id);
         if (projectOptional.isPresent()) {
             model.addAttribute("projectId", id);
+        }
+
+        MetadataObject object = projectsService.getConf(projectOptional.get())
+                .getObject(UUID.fromString(uuid));
+        if (object != null) {
+            model.addAttribute("objectName", ((AbstractObject) object).getName());
         }
 
         return "/development/conf/metadata-item";

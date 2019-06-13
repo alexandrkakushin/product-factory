@@ -311,6 +311,16 @@ public class Conf extends AbstractObject<Conf> {
         return modules;
     }
 
+    public MetadataObject getObject(UUID uuid) {
+        for (MetadataObject object : this.getAllObjects()) {
+            if (((AbstractObject) object).getUuid().equals(uuid)) {
+                return object;
+            }
+        }
+
+        return null;
+    }
+
     // todo
     @Override
     public void parse() {
