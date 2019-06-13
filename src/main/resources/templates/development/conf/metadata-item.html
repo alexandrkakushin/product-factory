@@ -22,11 +22,67 @@
                         <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span th:text="${objectName}"></span>
+                        <span th:text="${object.name}"></span>
                     </li>
                 </ol>
             </nav>
         </div>
+
+        <table id='properties' class="table table-hover">
+            <tbody>
+                <tr>
+                    <td>UUID</td>
+                    <td><span th:text="${object.uuid}"></span></td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td><span th:text="${object.name}"></span></td>
+                </tr>
+                <tr>
+                    <td>Синоним</td>
+                    <td><span th:text="${object.synonym}"></span></td>
+                </tr>
+                <tr>
+                    <td>Комментарий</td>
+                    <td><span th:text="${object.comment}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script th:inline="javascript">
+            let object = [[${object}]];
+
+            function addLine(name, value) {
+                $('#properties > tbody:last-child')
+                    .append($('<tr>')
+                        .append($('<td>').text(name))
+                        .append($('<td>').text(value))
+                    );
+            }
+
+            if (object.metadataName === 'CommonModule') {
+                addLine('Глобальный', object.global);
+                addLine('Клиент (управляемое приложение)', object.clientManagedApplication);
+                addLine('Клиент (обычное приложение)', object.clientOrdinaryApplication);
+                addLine('Сервер', object.server);
+                addLine('Внешнее соединение', object.externalConnection);
+                addLine('Вызов сервера', object.serverCall);
+                addLine('Привелегированный', object.privileged);
+
+                let returnValuesReuse = null;
+                if (object.returnValuesReuse === 'DONT_USE') {
+                    returnValuesReuse = 'Не использовать';
+
+                } else if (object.returnValuesReuse === 'DURING_REQUEST') {
+                    returnValuesReuse = 'На время вызова';
+
+                } else if (object.returnValuesReuse === 'DURING_SESSION') {
+                    returnValuesReuse = 'На время сеанса';
+                }
+
+                addLine('Повторное использование', returnValuesReuse);
+            }
+        </script>
 
         <footer th:replace="fragments/footer :: bootstrap"></footer>
     </body>

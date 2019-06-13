@@ -67,7 +67,7 @@ public class ConfItemController {
         MetadataObject object = projectsService.getConf(projectOptional.get())
                 .getObject(UUID.fromString(uuid));
         if (object != null) {
-            model.addAttribute("objectName", ((AbstractObject) object).getName());
+            model.addAttribute("object", ((AbstractObject) object));
         }
 
         return "/development/conf/metadata-item";
