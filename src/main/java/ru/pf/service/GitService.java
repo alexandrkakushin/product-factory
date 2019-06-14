@@ -17,12 +17,10 @@ import java.nio.file.Path;
 public class GitService {
 
     @Autowired
-    PropertiesService propertiesService;
+    ProjectsService projectsService;
 
     public void fetch(Project project) throws GitAPIException, IOException {
-        Path storage = propertiesService.getStorage();
-        Path target = storage
-                .resolve(project.getId().toString())
+        Path target = projectsService.getTemporaryLocation(project)
                 .resolve("git");
 
         if (!Files.exists(target)) {

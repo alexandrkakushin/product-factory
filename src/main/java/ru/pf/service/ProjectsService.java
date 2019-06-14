@@ -65,4 +65,8 @@ public class ProjectsService {
             throw new IOException("Неизвестный тип источника исходных кодов");
         }
     }
+
+    public Path getTemporaryLocation(Project project) {
+        return propertiesService.getStorage().resolve(project.getId().toString());
+    }
 }

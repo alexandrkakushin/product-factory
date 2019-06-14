@@ -3,7 +3,10 @@ package ru.pf.controller.api;
 import lombok.Data;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
@@ -11,8 +14,14 @@ import ru.pf.metadata.object.Conf;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.GitService;
 import ru.pf.service.ProjectsService;
+import ru.pf.service.PropertiesService;
+import ru.pf.service.ZipService;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -24,6 +33,9 @@ public class ConfController {
 
     @Autowired
     GitService gitService;
+
+    @Autowired
+    ZipService zipService;
 
     @Autowired
     ProjectsService projectsService;
@@ -60,6 +72,30 @@ public class ConfController {
         }
 
         return new ResponseEntity<>(body, body != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/{id}/conf/download")
+    public ResponseEntity<InputStreamResource> downloadZip(@PathVariable(name = "id") Long id) throws IOException {
+
+        Optional<Project> projectOptional = projectsRepository.findById(id);
+        if (projectOptional.isPresent()) {
+            Path location = projectsService.getTemporaryLocation(projectOptional.get());
+            if (Files.exists(location)) {
+                ByteArrayOutputStream baos = zipService.createWithSubdir(location);
+                InputStreamResource resource = new InputStreamResource(
+                        new ByteArrayInputStream(baos.toByteArray()));
+
+                String fileName = "project_" + projectOptional.get().getId() + "_conf.zip";
+
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .contentLength(baos.size())
+                        .body(resource);
+            }
+        }
+
+        return null;
     }
 
     @Data

@@ -52,6 +52,10 @@ public class Project implements PfEntity<Project, Long> {
         return this.id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public SourceType getSourceType() {
         return sourceType;
     }
