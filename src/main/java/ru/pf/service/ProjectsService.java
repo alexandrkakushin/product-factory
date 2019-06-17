@@ -23,6 +23,12 @@ public class ProjectsService {
     @Autowired
     ConfReader confReader;
 
+    // todo: реализовать обновление из источников
+    //    updateFromGit
+    //    updateFromCr
+    //    updateFromDirectory
+    //    updateFromFTP
+
     private Conf getConfFromGit(Project project) throws IOException {
         Path storage = propertiesService.getStorage();
         Path target = storage

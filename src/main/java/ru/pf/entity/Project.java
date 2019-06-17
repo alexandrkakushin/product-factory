@@ -3,7 +3,6 @@ package ru.pf.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 /**
  * @author a.kakushin
@@ -81,7 +80,7 @@ public class Project implements PfEntity<Project, Long> {
     }
 
     public enum SourceType {
-        DIRECTORY, CR, GIT
+        FILE_ZIP, FILE_CF, DIRECTORY, CR, GIT
 
 //        @Override
 //        public String toString() {
