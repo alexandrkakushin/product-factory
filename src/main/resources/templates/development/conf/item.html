@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <headCommon th:replace="fragments/header :: common"></headCommon>
+        <meta th:name="_csrf" th:content="${_csrf.token}"/>
+        <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     </head>
     <body>
         <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
@@ -23,7 +25,7 @@
             </nav>
 
             <div class="pb-2">
-                <button class="btn btn-outline-success" type="button" onclick="gitFetch()">
+                <button class="btn btn-outline-success" type="button" onclick="updateConf()">
                     <i class="fas fa-sync" aria-hidden="true"></i>  Обновить
                 </button>
 
@@ -86,23 +88,41 @@
                 }
 
                 $('#totalObjects').html(totalObjects);
+
+                $(function () {
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+                    $(document).ajaxSend(function(e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                });
             </script>
 
             <script>
-                function gitFetch() {
+                function updateConf() {
                     $.ajax({
-                        type : "GET",
+                        type : "POST",
                         contentType : "application/json",
-                        url : "conf/git/fetch",
+                        url : `/api/projects/[[${projectId}]]/update`,
                         dataType : 'json',
                         timeout : 100000,
                         success : function(data) {
-                            $.notify('Получена последняя версия', {
+                            let text = data.success === true ?
+                                'Обновление выполнено успешно' :
+                                data.description === null ? 'Ошибка обновления' : data.description;
+
+                            $.notify(text, {
                                 offset: {
                                     x: 10,
-                                    y: 65
-                                }
+                                    y: 75
+                                },
+                                type: data.success === true ? 'info' : 'danger'
                             });
+
+                            // todo: убрать после получения конфигурации (rest)
+                            if (data.success === true) {
+                                document.location.reload(true);
+                            }
                         },
                         error : function(e) {
                             console.log("ERROR: ", e);

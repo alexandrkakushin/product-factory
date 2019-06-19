@@ -1,7 +1,6 @@
 package ru.pf.metadata.object;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import ru.pf.metadata.Module;
 

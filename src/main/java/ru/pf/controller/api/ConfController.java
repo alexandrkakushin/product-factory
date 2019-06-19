@@ -1,7 +1,6 @@
 package ru.pf.controller.api;
 
 import lombok.Data;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
 import ru.pf.repository.ProjectsRepository;
-import ru.pf.service.GitService;
 import ru.pf.service.ProjectsService;
-import ru.pf.service.PropertiesService;
 import ru.pf.service.ZipService;
 
 import java.io.ByteArrayInputStream;
@@ -32,9 +29,6 @@ import java.util.Optional;
 public class ConfController {
 
     @Autowired
-    GitService gitService;
-
-    @Autowired
     ZipService zipService;
 
     @Autowired
@@ -43,17 +37,17 @@ public class ConfController {
     @Autowired
     ProjectsRepository projectsRepository;
 
-    @PostMapping("/{id}/git/fetch")
-    public ResponseEntity<?> gitFetch(@PathVariable(name = "id") Long id) throws IOException {
-        ConfController.ResponseGit body = new ConfController.ResponseGit();
+    @PostMapping("/{id}/update")
+    public ResponseEntity<?> update(@PathVariable(name = "id") Long id) {
+        ConfController.ResponseUpdate body = new ConfController.ResponseUpdate();
         body.setSuccess(false);
 
         projectsRepository.findById(id).ifPresent(
                 (Project project) -> {
                     try {
-                        gitService.fetch(project);
-                        body.setSuccess(true);
-                    } catch (IOException | GitAPIException ex) {
+                        body.setSuccess(
+                                projectsService.update(project));
+                    } catch (IOException  ex) {
                         body.setDescription(ex.getLocalizedMessage());
                     }
                 }
@@ -99,11 +93,11 @@ public class ConfController {
     }
 
     @Data
-    static class ResponseGit {
+    static class ResponseUpdate{
         private boolean success;
         private String description;
 
-        public ResponseGit() {}
+        public ResponseUpdate() {}
 
         public void setSuccess(boolean success) {
             this.success = success;
