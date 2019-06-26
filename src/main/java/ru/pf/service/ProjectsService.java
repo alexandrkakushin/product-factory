@@ -86,7 +86,7 @@ public class ProjectsService {
 
     public Conf getConf(Project project) throws IOException {
         Path directory = getTemporaryLocation(project);
-        if (Files.exists(directory)) {
+        if (Files.exists(directory.resolve("Configuration.xml"))) {
             return confReader.read(directory);
         } else {
             return new Conf(null);
