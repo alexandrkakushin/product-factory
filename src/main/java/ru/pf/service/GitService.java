@@ -20,8 +20,7 @@ public class GitService {
     ProjectsService projectsService;
 
     public void fetch(Project project) throws GitAPIException, IOException {
-        Path target = projectsService.getTemporaryLocation(project)
-                .resolve("git");
+        Path target = projectsService.getTemporaryLocation(project);
 
         if (!Files.exists(target)) {
             Files.createDirectories(target);

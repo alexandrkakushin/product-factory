@@ -1,5 +1,6 @@
 package ru.pf.service;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pf.entity.Project;
@@ -22,6 +23,9 @@ public class ProjectsService {
 
     @Autowired
     PropertiesService propertiesService;
+
+    @Autowired
+    GitService gitService;
 
     @Autowired
     ConfReader confReader;
@@ -50,14 +54,20 @@ public class ProjectsService {
         return false;
     }
 
-    private boolean updateFromGit(Project project) {
-        return false;
+    private boolean updateFromGit(Project project) throws IOException {
+        try {
+            gitService.fetch(project);
+            return true;
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean update(Project project) throws IOException {
 
         Path temp = getTemporaryLocation(project);
-        if (Files.exists(temp)) {
+        if (project.getSourceType() == Project.SourceType.DIRECTORY && Files.exists(temp)) {
             Files.walk(temp)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
