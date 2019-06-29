@@ -23,6 +23,9 @@ public class Cr implements PfEntity<Cr, Long> {
     private String tcp;
     private String http;
 
+    private String login;
+    private String password;
+
     public Cr() {}
 
     @Override

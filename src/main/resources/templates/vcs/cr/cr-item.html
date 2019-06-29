@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: common"/>
     <body>
         <nav th:replace="fragments/navbar :: navbar"/>
@@ -18,6 +18,8 @@
                 <field th:replace="fragments/fields :: name"></field>
                 <field th:replace="fragments/fields :: tcp"></field>
                 <field th:replace="fragments/fields :: http"></field>
+                <field th:replace="fragments/fields :: login"></field>
+                <field th:replace="fragments/fields :: password"></field>
                 <field th:replace="fragments/fields :: comment"></field>
             </form>
         </div>
