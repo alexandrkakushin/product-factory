@@ -20,8 +20,7 @@ public class Cr implements PfEntity<Cr, Long> {
     private String name;
     private String comment;
 
-    private String tcp;
-    private String http;
+    private String address;
 
     private String login;
     private String password;
@@ -31,5 +30,17 @@ public class Cr implements PfEntity<Cr, Long> {
     @Override
     public Long getId() {
         return this.id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

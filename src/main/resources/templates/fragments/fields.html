@@ -113,6 +113,15 @@
     </div>
 </item-field>
 
+<item-field th:fragment="address" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-address">Адрес</label>
+        <div class="col-sm-5">
+            <input th:field="*{address}" th:value="${entity.address}" type="text" class="form-control" id="field-address" placeholder="Адрес">
+        </div>
+    </div>
+</item-field>
+
 <item-field th:fragment="property" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="field-parameter">Параметр</label>

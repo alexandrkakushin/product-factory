@@ -21,14 +21,19 @@ import java.util.Comparator;
 @Service
 public class ProjectsService {
 
-    @Autowired
-    PropertiesService propertiesService;
+    // todo: перенести получение временных директорий с PropertiesService, чтобы исключить зависимость
 
     @Autowired
-    GitService gitService;
+    private PropertiesService propertiesService;
 
     @Autowired
-    ConfReader confReader;
+    private GitService gitService;
+
+    @Autowired
+    private ConfReader confReader;
+
+    @Autowired
+    private CrService crService;
 
     private boolean updateFromDirectory(Project project) throws IOException {
         Path temp = getTemporaryLocation(project);
@@ -51,7 +56,12 @@ public class ProjectsService {
     }
 
     private boolean updateFromCr(Project project) {
-        return false;
+        try {
+            return crService.fetch(project);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private boolean updateFromGit(Project project) throws IOException {
