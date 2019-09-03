@@ -32,7 +32,15 @@ public class Property implements PfEntity<Property, Long> {
         return this.id;
     }
 
+    public String getName() {
+    	return name;
+    }
+        
     public String getValue() {
         return value;
+    }
+    
+    public String getComment() {
+    	return comment;
     }
 }

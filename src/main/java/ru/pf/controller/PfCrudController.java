@@ -12,7 +12,7 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-public interface PfCrudController<T extends PfEntity, ID> extends PfController {
+public interface PfCrudController<T extends PfEntity<?, ?>, ID> extends PfController {
 
     String getTemplateItem();
 
@@ -62,7 +62,7 @@ public interface PfCrudController<T extends PfEntity, ID> extends PfController {
 
     @RequestMapping("/delete/{id}")
     default String delete(@PathVariable(name = "id") ID id) {
-        // todo: переделать на Async XHR
+        // TODO: переделать на Async XHR
         getRepository().deleteById(id);
         return "redirect:/" + getUrl();
     }

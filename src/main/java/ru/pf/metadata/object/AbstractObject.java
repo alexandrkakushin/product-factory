@@ -1,15 +1,15 @@
 package ru.pf.metadata.object;
 
+import java.nio.file.Path;
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.Data;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.object.common.HttpService;
 import ru.pf.metadata.object.common.XdtoPackage;
-
-import java.nio.file.Path;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author a.kakushin
@@ -73,7 +73,7 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
         this.comment = comment;
     }
 
-    public static String getMetadataName(Class objClass) {
+    public static String getMetadataName(Class<?> objClass) {
         if (objClass.equals(XdtoPackage.class)) {
             return "XDTOPackage";
         } else if (objClass.equals(HttpService.class)) {

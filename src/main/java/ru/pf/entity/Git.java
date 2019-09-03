@@ -3,7 +3,6 @@ package ru.pf.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 /**
  * @author a.kakushin
@@ -28,6 +27,14 @@ public class Git implements PfEntity<Git, Long> {
         return this.id;
     }
 
+    public String getName() {
+		return name;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+        
     public String getFetchUrl() {
         return this.fetchUrl;
     }

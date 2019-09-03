@@ -291,7 +291,7 @@ public class Conf extends AbstractObject<Conf> {
         Map<Module, MetadataObject> modules = new HashMap<>();
 
         // todo: streamAPI
-        for (MetadataObject metadataObject : getAllObjects()) {
+        for (MetadataObject<?> metadataObject : getAllObjects()) {
             for (Field field : metadataObject.getClass().getDeclaredFields()) {
                 if (field.getType() == Module.class) {
                     field.setAccessible(true);
@@ -310,9 +310,9 @@ public class Conf extends AbstractObject<Conf> {
         return modules;
     }
 
-    public MetadataObject getObject(UUID uuid) {
-        for (MetadataObject object : this.getAllObjects()) {
-            if (((AbstractObject) object).getUuid().equals(uuid)) {
+    public MetadataObject<?> getObject(UUID uuid) {
+        for (MetadataObject<?> object : this.getAllObjects()) {
+            if (((AbstractObject<?>) object).getUuid().equals(uuid)) {
                 return object;
             }
         }
@@ -320,7 +320,7 @@ public class Conf extends AbstractObject<Conf> {
         return null;
     }
 
-    // todo
+    // TODO
     @Override
     public void parse() {
 

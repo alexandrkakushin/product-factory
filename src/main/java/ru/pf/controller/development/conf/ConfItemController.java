@@ -64,25 +64,36 @@ public class ConfItemController {
             model.addAttribute("projectId", id);
         }
 
-        MetadataObject object = projectsService.getConf(projectOptional.get())
+        MetadataObject<?> object = projectsService.getConf(projectOptional.get())
                 .getObject(UUID.fromString(uuid));
         if (object != null) {
-            model.addAttribute("object", ((AbstractObject) object));
+            model.addAttribute("object", ((AbstractObject<?>) object));
         }
 
         return "/development/conf/metadata-item";
     }
 
-    @Data
     public class ConfObject {
+        
         private UUID uuid;
         private String name;
         private String metadataName;
 
-        public ConfObject(MetadataObject metadataObject) {
-            this.uuid = ((AbstractObject) metadataObject).getUuid();
-            this.name = ((AbstractObject) metadataObject).getName();
+        public ConfObject() {}
+
+        public ConfObject(MetadataObject<?> metadataObject) {
+            this();            
+            this.uuid = ((AbstractObject<?>) metadataObject).getUuid();
+            this.name = ((AbstractObject<?>) metadataObject).getName();
             this.metadataName = metadataObject.getMetadataName();
+        }
+
+        public UUID getUuid() {
+            return this.uuid;
+        }
+        
+        public String getName() {
+            return this.name;
         }
 
         public String getMetadataName() {

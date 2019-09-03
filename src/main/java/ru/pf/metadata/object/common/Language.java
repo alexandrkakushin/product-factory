@@ -30,9 +30,4 @@ public class Language extends AbstractObject<Language> {
             this.languageCode  = objReader.read(nodeProperties + "LanguageCode");
         }
     }
-
-    @Override
-    public String getMetadataSynonym() {
-        return super.getMetadataSynonym();
-    }
 }

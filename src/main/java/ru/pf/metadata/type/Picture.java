@@ -41,8 +41,20 @@ public class Picture {
             setStd(this.ref);
         }
     }
+    
+    public boolean isStd() {
+		return isStd;
+	}
 
-    public void setStd(java.lang.String ref) {
+	public java.lang.String getRef() {
+		return ref;
+	}
+
+	public boolean isLoadTransparent() {
+		return loadTransparent;
+	}
+
+	public void setStd(java.lang.String ref) {
         this.isStd = ref.startsWith("StdPicture.");
     }
 }

@@ -41,7 +41,7 @@ public class ConfReader {
         String nodeChildObjects = "/MetaDataObject/Configuration/ChildObjects/";
 
         Map<Class, Container> description = getDescription(conf);
-        for (Class objClass : description.keySet()) {
+        for (Class<?> objClass : description.keySet()) {
             String nodeMetadata = nodeChildObjects + AbstractObject.getMetadataName(objClass);
             List<String> objectsName = objReader.readChild(nodeMetadata);
 
@@ -58,7 +58,7 @@ public class ConfReader {
                             .resolve(name + ".xml");
 
                     Constructor<?> cons = objClass.getConstructor(Path.class);
-                    MetadataObject object = (MetadataObject) cons.newInstance(fileXml);
+                    MetadataObject<?> object = (MetadataObject<?>) cons.newInstance(fileXml);
                     object.parse();
 
                     container.getConf().add(object);

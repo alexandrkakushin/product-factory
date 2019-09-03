@@ -1,16 +1,14 @@
 package ru.pf.metadata.object;
 
-import lombok.Data;
-import org.aspectj.apache.bcel.classfile.Code;
-import ru.pf.metadata.Module;
-import ru.pf.metadata.reader.ModuleReader;
-import ru.pf.metadata.reader.ObjectReader;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
+
+import lombok.Data;
+import ru.pf.metadata.Module;
+import ru.pf.metadata.reader.ModuleReader;
+import ru.pf.metadata.reader.ObjectReader;
 
 /**
  * @author a.kakushin

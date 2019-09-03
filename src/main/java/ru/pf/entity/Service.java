@@ -26,4 +26,12 @@ public class Service implements PfEntity<Service, Long>{
     public Long getId() {
         return this.id;
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public String getComment() {
+		return comment;
+	}    
 }

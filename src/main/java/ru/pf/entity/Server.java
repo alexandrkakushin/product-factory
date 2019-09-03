@@ -35,6 +35,10 @@ public class Server implements PfEntity<Server, Long>{
         return this.id;
     }
 
+    public String getName() {
+    	return name;
+    }
+    
     public Os getOs() {
         return os;
     }
@@ -42,4 +46,20 @@ public class Server implements PfEntity<Server, Long>{
     public void setOs(Os os) {
         this.os = os;
     }
+    
+	public Integer getCpu() {
+		return cpu;
+	}
+
+	public Integer getRam() {
+		return ram;
+	}
+
+	public String getIp4() {
+		return ip4;
+	}
+
+	public String getComment() {
+		return comment;
+	}
 }

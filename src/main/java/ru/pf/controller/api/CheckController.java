@@ -63,11 +63,11 @@ public class CheckController {
     public ResponseService check(
             @PathVariable(name = "service") String service, @RequestParam(name = "project") Long projectId) throws Exception {
 
-        ServiceCheck serviceCheck = getAvailableServices().get(service);
+        ServiceCheck<?> serviceCheck = getAvailableServices().get(service);
         if (serviceCheck != null) {
             Conf conf = getConf(projectId);
             if (conf != null) {
-                // todo: обработка исключений
+                // TODO: обработка исключений
                 try {
                     return new ResponseService(getAvailableServices().get(service).check(conf));
                 } catch (InvocationTargetException e) {

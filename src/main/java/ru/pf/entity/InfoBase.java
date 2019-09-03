@@ -23,4 +23,12 @@ public class InfoBase implements PfEntity<InfoBase, Long> {
     public Long getId() {
         return this.id;
     }
+    
+    public String getName() {
+		return name;
+	}
+
+	public String getComment() {
+		return comment;
+	}    
 }

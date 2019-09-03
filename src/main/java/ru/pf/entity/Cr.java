@@ -31,8 +31,16 @@ public class Cr implements PfEntity<Cr, Long> {
     public Long getId() {
         return this.id;
     }
+    
+    public String getName() {
+		return name;
+	}
 
-    public String getAddress() {
+	public String getComment() {
+		return comment;
+	}
+
+	public String getAddress() {
         return address;
     }
 
