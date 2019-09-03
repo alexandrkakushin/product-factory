@@ -12,4 +12,5 @@ public class ProductFactoryApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
+
 }
