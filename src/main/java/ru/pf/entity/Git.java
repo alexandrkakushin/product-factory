@@ -1,15 +1,16 @@
 package ru.pf.entity;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author a.kakushin
  */
 @Entity
 @Table(name = "GIT")
-@Data
 public class Git implements PfEntity<Git, Long> {
 
     @Id

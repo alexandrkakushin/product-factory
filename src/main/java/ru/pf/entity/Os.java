@@ -1,8 +1,10 @@
 package ru.pf.entity;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Сущность "Операционная система"
@@ -10,7 +12,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "OS")
-@Data
 public class Os implements PfEntity<Os, Long> {
 
     @Id

@@ -1,8 +1,12 @@
 package ru.pf.entity;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Сущность "Сервер"
@@ -10,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "SERVERS")
-@Data
 public class Server implements PfEntity<Server, Long>{
 
     @Id
