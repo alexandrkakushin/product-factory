@@ -3,6 +3,7 @@ package ru.pf.metadata.object;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import ru.pf.metadata.Module;
+import ru.pf.metadata.object.common.CommonModule;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +14,7 @@ import java.util.*;
  * @author a.kakushin
  */
 @Data
-public class Conf extends AbstractObject<Conf> {
+public class Conf extends AbstractMetadataObject {
 
     private Module ordinaryApplicationModule;
     private Module managedApplicationModule;
@@ -291,7 +292,7 @@ public class Conf extends AbstractObject<Conf> {
         Map<Module, MetadataObject> modules = new HashMap<>();
 
         // todo: streamAPI
-        for (MetadataObject<?> metadataObject : getAllObjects()) {
+        for (MetadataObject metadataObject : getAllObjects()) {
             for (Field field : metadataObject.getClass().getDeclaredFields()) {
                 if (field.getType() == Module.class) {
                     field.setAccessible(true);
@@ -310,19 +311,13 @@ public class Conf extends AbstractObject<Conf> {
         return modules;
     }
 
-    public MetadataObject<?> getObject(UUID uuid) {
-        for (MetadataObject<?> object : this.getAllObjects()) {
-            if (((AbstractObject<?>) object).getUuid().equals(uuid)) {
+    public MetadataObject getObject(UUID uuid) {
+        for (MetadataObject object : this.getAllObjects()) {
+            if (((AbstractMetadataObject) object).getUuid().equals(uuid)) {
                 return object;
             }
         }
 
         return null;
-    }
-
-    // TODO
-    @Override
-    public void parse() {
-
     }
 }

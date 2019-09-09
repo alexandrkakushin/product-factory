@@ -1,7 +1,7 @@
 package ru.pf.service.conf.check;
 
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractObject;
+import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.object.common.Subsystem;
@@ -29,9 +29,9 @@ public class SubsystemCheck implements ServiceCheck<MetadataObject> {
 
         Set<MetadataObject> objects = conf.getAllObjects();
         for (MetadataObject object : objects) {
-            Class objectClass = object.getClass();
+            Class<?> objectClass = object.getClass();
             if (!objectClass.equals(Subsystem.class)) {
-                String mdRef = object.getMetadataName() + "." + ((AbstractObject) object).getName();
+                String mdRef = object.getXmlName() + "." + ((AbstractMetadataObject) object).getName();
                 if (!included.contains(mdRef)) {
                     result.add(object);
                 }

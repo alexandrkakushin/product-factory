@@ -1,24 +1,25 @@
 package ru.pf.metadata.object.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import ru.pf.metadata.object.AbstractObject;
-import ru.pf.metadata.reader.ObjectReader;
-
-import java.nio.file.Files;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.reader.ObjectReader;
+
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Subsystem extends AbstractObject<Subsystem> {
+public class Subsystem extends AbstractMetadataObject {
 
     private Set<String> items;
     private Set<Subsystem> child;
@@ -48,31 +49,28 @@ public class Subsystem extends AbstractObject<Subsystem> {
     }
 
     @Override
-    public void parse() {
-        Path fileXml = super.getFile().getParent().resolve(super.getFile());
-        if (Files.exists(fileXml)) {
-            ObjectReader objReader = new ObjectReader(fileXml);
-            objReader.fillCommonField(this);
+    public ObjectReader parse() throws IOException {
+        ObjectReader objReader = super.parse();
 
-            // Чтение подчиненых подсистем
-            List<String> childXml = objReader.readChild("/MetaDataObject/Subsystem/ChildObjects/Subsystem");
-            for (String item : childXml) {
-                Path childPath = fileXml.getParent()
-                        .resolve(this.getShortName(fileXml))
-                        .resolve("Subsystems")
-                        .resolve(item + ".xml");
+        // Чтение подчиненых подсистем
+        List<String> childXml = objReader.readChild("/MetaDataObject/Subsystem/ChildObjects/Subsystem");
+        for (String item : childXml) {
+            Path childPath = super.getFile().getParent()
+                    .resolve(this.getShortName(super.getFile()))
+                    .resolve("Subsystems")
+                    .resolve(item + ".xml");
 
-                Subsystem children = new Subsystem(childPath);
-                children.parse();
+            Subsystem children = new Subsystem(childPath);
+            children.parse();
 
-                this.child.add(children);
-            }
-
-            // Чтение объектов, включенных в подсистему
-            List<String> itemsXml = objReader.readChild("/MetaDataObject/Subsystem/Properties/Content/Item");
-            for (String item : itemsXml) {
-                this.items.add(item);
-            }
+            this.child.add(children);
         }
+
+        // Чтение объектов, включенных в подсистему
+        List<String> itemsXml = objReader.readChild("/MetaDataObject/Subsystem/Properties/Content/Item");
+        for (String item : itemsXml) {
+            this.items.add(item);
+        }
+        return objReader;
     }
 }

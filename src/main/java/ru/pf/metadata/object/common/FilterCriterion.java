@@ -1,29 +1,17 @@
 package ru.pf.metadata.object.common;
 
-import lombok.Data;
-import ru.pf.metadata.object.AbstractObject;
-import ru.pf.metadata.reader.ObjectReader;
-
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+
+import lombok.Data;
+import ru.pf.metadata.object.AbstractMetadataObject;
 
 /**
  * @author a.kakushin
  */
 @Data
-public class FilterCriterion extends AbstractObject<FilterCriterion> {
+public class FilterCriterion extends AbstractMetadataObject {
 
     public FilterCriterion(Path path) {
         super(path);
-    }
-
-    @Override
-    public void parse() throws IOException {
-        Path fileXml = super.getFile().getParent().resolve(super.getFile());
-        if (Files.exists(fileXml)) {
-            ObjectReader objReader = new ObjectReader(fileXml);
-            objReader.fillCommonField(this);
-        }
     }
 }

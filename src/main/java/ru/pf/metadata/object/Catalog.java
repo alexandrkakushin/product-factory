@@ -14,7 +14,7 @@ import ru.pf.metadata.reader.ObjectReader;
  * @author a.kakushin
  */
 @Data
-public class Catalog extends AbstractObject<Catalog> {
+public class Catalog extends AbstractMetadataObject {
 
     private boolean hierarchical;
 
@@ -64,37 +64,33 @@ public class Catalog extends AbstractObject<Catalog> {
     }
 
     @Override
-    public void parse() throws IOException {
-        Path fileXml = super.getFile().getParent().resolve(super.getFile());
-        if (Files.exists(fileXml)) {
-            ObjectReader objReader = new ObjectReader(fileXml);
-            objReader.fillCommonField(this);
+    public ObjectReader parse() throws IOException {
+        ObjectReader objReader = super.parse();
 
-            String nodeProperties = "/MetaDataObject/" + getMetadataName() + "/Properties/";
-            this.hierarchical  = objReader.readBool(nodeProperties + "Hierarchical");
-            this.hierarchyType = HierarchyType.valueByName(
-                    objReader.read(nodeProperties + "HierarchyType"));
+        String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
+        this.hierarchical  = objReader.readBool(nodeProperties + "Hierarchical");
+        this.hierarchyType = HierarchyType.valueByName(
+                objReader.read(nodeProperties + "HierarchyType"));
 
-            this.limitLevelCount = objReader.readBool(nodeProperties + "LimitLevelCount");
-            this.levelCount = objReader.readInt(nodeProperties + "LevelCount");
-            this.foldersOnTop = objReader.readBool(nodeProperties + "FoldersOnTop");
-            this.useStandardCommands = objReader.readBool(nodeProperties + "UseStandardCommands");
+        this.limitLevelCount = objReader.readBool(nodeProperties + "LimitLevelCount");
+        this.levelCount = objReader.readInt(nodeProperties + "LevelCount");
+        this.foldersOnTop = objReader.readBool(nodeProperties + "FoldersOnTop");
+        this.useStandardCommands = objReader.readBool(nodeProperties + "UseStandardCommands");
 
-            this.subordinationUse = SubordinationUse.valueByName(
-                    objReader.read(nodeProperties + "SubordinationUse"));
+        this.subordinationUse = SubordinationUse.valueByName(
+                objReader.read(nodeProperties + "SubordinationUse"));
 
-            this.codeLength = objReader.readInt(nodeProperties + "CodeLength");
-            this.descriptionLength = objReader.readInt(nodeProperties + "DescriptionLength");
+        this.codeLength = objReader.readInt(nodeProperties + "CodeLength");
+        this.descriptionLength = objReader.readInt(nodeProperties + "DescriptionLength");
 
-            this.codeType = CodeType.valueByName(
-                    objReader.read(nodeProperties + "CodeType"));
+        this.codeType = CodeType.valueByName(
+                objReader.read(nodeProperties + "CodeType"));
 
-            this.codeSeries = CodeSeries.valueByName(
-                    objReader.read(nodeProperties + "CodeSeries"));
-            this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
-            this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
-            this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
-        }
+        this.codeSeries = CodeSeries.valueByName(
+                objReader.read(nodeProperties + "CodeSeries"));
+        this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
+        this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
+        this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
 
         Path pathExt = super.getFile()
                 .getParent()
@@ -112,6 +108,8 @@ public class Catalog extends AbstractObject<Catalog> {
                 this.objectModule = ModuleReader.read(fileObjectModule, Module.Type.OBJECT_MODULE);
             }
         }
+
+        return objReader;
     }
 
     public enum HierarchyType {

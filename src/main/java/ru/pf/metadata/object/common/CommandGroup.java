@@ -1,7 +1,7 @@
 package ru.pf.metadata.object.common;
 
 import lombok.Data;
-import ru.pf.metadata.object.AbstractObject;
+import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.type.Picture;
 
@@ -13,7 +13,7 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Data
-public class CommandGroup extends AbstractObject<CommandGroup> {
+public class CommandGroup extends AbstractMetadataObject {
 
     private Category category;
     private Representation representation;
@@ -25,21 +25,19 @@ public class CommandGroup extends AbstractObject<CommandGroup> {
     }
 
     @Override
-    public void parse() throws IOException {
-        Path fileXml = super.getFile().getParent().resolve(super.getFile());
-        if (Files.exists(fileXml)) {
-            ObjectReader objReader = new ObjectReader(fileXml);
-            objReader.fillCommonField(this);
+    public ObjectReader parse() throws IOException {
+        ObjectReader objReader = super.parse();
 
-            String nodeProperties = "/MetaDataObject/" + getMetadataName() + "/Properties/";
-            this.category = Category.valueByName(
-                    objReader.read(nodeProperties + "Category"));
+        String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
+        this.category = Category.valueByName(
+                objReader.read(nodeProperties + "Category"));
 
-            this.representation = Representation.valueByName(
-                    objReader.read(nodeProperties + "Representation"));
-            this.toolTip = objReader.read(nodeProperties + "ToolTip");
-            this.picture = new Picture(objReader, nodeProperties + "Picture");
-        }
+        this.representation = Representation.valueByName(
+                objReader.read(nodeProperties + "Representation"));
+        this.toolTip = objReader.read(nodeProperties + "ToolTip");
+        this.picture = new Picture(objReader, nodeProperties + "Picture");
+
+        return objReader;
     }
 
     // todo: вынести в отдельный тип данных

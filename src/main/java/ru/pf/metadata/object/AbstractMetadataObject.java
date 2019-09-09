@@ -1,5 +1,6 @@
 package ru.pf.metadata.object;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -8,14 +9,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import ru.pf.metadata.MetadataJsonView;
-import ru.pf.metadata.object.common.HttpService;
-import ru.pf.metadata.object.common.XdtoPackage;
+import ru.pf.metadata.reader.ObjectReader;
 
 /**
  * @author a.kakushin
  */
 @Data
-public abstract class AbstractObject<T> implements MetadataObject<T> {
+public abstract class AbstractMetadataObject implements MetadataObject {
 
     @JsonIgnore
     private Path file;
@@ -30,10 +30,10 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
     private String synonym;
     private String comment;
 
-    public AbstractObject() {
+    public AbstractMetadataObject() {
     }
 
-    public AbstractObject(Path file) {
+    public AbstractMetadataObject(Path file) {
         this.file = file;
     }
 
@@ -73,22 +73,12 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
         this.comment = comment;
     }
 
-    public static String getMetadataName(Class<?> objClass) {
-        if (objClass.equals(XdtoPackage.class)) {
-            return "XDTOPackage";
-        } else if (objClass.equals(HttpService.class)) {
-            return "HTTPService";
-        }
-
-        return objClass.getSimpleName();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractObject<?> object = (AbstractObject<?>) o;
+        AbstractMetadataObject object = (AbstractMetadataObject) o;
 
         return uuid != null ? uuid.equals(object.uuid) : object.uuid == null;
     }
@@ -97,4 +87,13 @@ public abstract class AbstractObject<T> implements MetadataObject<T> {
     public int hashCode() {
         return uuid != null ? uuid.hashCode() : 0;
     }
+
+    @Override
+    public ObjectReader parse() throws IOException {
+        Path fileXml = this.getFile().getParent().resolve(this.getFile());
+        ObjectReader objReader = new ObjectReader(fileXml);
+        objReader.fillCommonField(this);
+
+        return objReader;
+    }    
 }

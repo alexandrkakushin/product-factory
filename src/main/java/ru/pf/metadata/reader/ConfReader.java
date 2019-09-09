@@ -1,23 +1,62 @@
 package ru.pf.metadata.reader;
 
-import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
-import ru.pf.metadata.object.*;
-import ru.pf.metadata.object.Enum;
-import ru.pf.metadata.object.common.*;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
+
+import ru.pf.metadata.object.AccountingRegister;
+import ru.pf.metadata.object.AccumulationRegister;
+import ru.pf.metadata.object.BusinessProcess;
+import ru.pf.metadata.object.CalculationRegister;
+import ru.pf.metadata.object.Catalog;
+import ru.pf.metadata.object.ChartOfAccounts;
+import ru.pf.metadata.object.ChartOfCalculationTypes;
+import ru.pf.metadata.object.ChartOfCharacteristicTypes;
+import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.object.Constant;
+import ru.pf.metadata.object.DataProcessor;
+import ru.pf.metadata.object.Document;
+import ru.pf.metadata.object.DocumentJournal;
+import ru.pf.metadata.object.ExternalDataSource;
+import ru.pf.metadata.object.InformationRegister;
+import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.Report;
+import ru.pf.metadata.object.Task;
+import ru.pf.metadata.object.common.CommandGroup;
+import ru.pf.metadata.object.common.CommonAttribute;
+import ru.pf.metadata.object.common.CommonCommand;
+import ru.pf.metadata.object.common.CommonForm;
+import ru.pf.metadata.object.common.CommonModule;
+import ru.pf.metadata.object.common.CommonPicture;
+import ru.pf.metadata.object.common.CommonTemplate;
+import ru.pf.metadata.object.common.DefinedType;
+import ru.pf.metadata.object.common.EventSubscription;
+import ru.pf.metadata.object.common.ExchangePlan;
+import ru.pf.metadata.object.common.FilterCriterion;
+import ru.pf.metadata.object.common.FunctionalOption;
+import ru.pf.metadata.object.common.FunctionalOptionsParameter;
+import ru.pf.metadata.object.common.HttpService;
+import ru.pf.metadata.object.common.Language;
+import ru.pf.metadata.object.common.Role;
+import ru.pf.metadata.object.common.ScheduledJob;
+import ru.pf.metadata.object.common.SessionParameter;
+import ru.pf.metadata.object.common.SettingsStorage;
+import ru.pf.metadata.object.common.StyleItem;
+import ru.pf.metadata.object.common.Subsystem;
+import ru.pf.metadata.object.common.WebService;
+import ru.pf.metadata.object.common.XdtoPackage;
 
 /**
  * @author a.kakushin
@@ -40,28 +79,32 @@ public class ConfReader {
 
         String nodeChildObjects = "/MetaDataObject/Configuration/ChildObjects/";
 
-        Map<Class, Container> description = getDescription(conf);
-        for (Class<?> objClass : description.keySet()) {
-            String nodeMetadata = nodeChildObjects + AbstractObject.getMetadataName(objClass);
-            List<String> objectsName = objReader.readChild(nodeMetadata);
-
-            Container container = description.get(objClass);
-            if (container == null) {
-                // todo: проработать исключения
-                throw new IOException("Не определен контейнер для записи объекта");
+        for (Relation relation : getRelations(conf)) {      
+            // При разборе XML-файла конфигурации имена узлов не соответсвуют
+            // именам Java-классов 
+            String nodeName = null;
+            if (relation.getObjClass().equals(XdtoPackage.class)) {
+                nodeName = "XDTOPackage";
+            } else if (relation.getObjClass().equals(HttpService.class)) {
+                nodeName = "HTTPService";
+            } else {
+                nodeName = relation.getObjClass().getSimpleName();
             }
-
+            
+            List<String> objectsName = objReader.readChild(nodeChildObjects + nodeName);
             for (String name : objectsName)
                 try {
                     Path fileXml = workPath
-                            .resolve(container.getFile())
+                            .resolve(relation.getFile())
                             .resolve(name + ".xml");
 
+                    Class<?> objClass = relation.getObjClass();
+
                     Constructor<?> cons = objClass.getConstructor(Path.class);
-                    MetadataObject<?> object = (MetadataObject<?>) cons.newInstance(fileXml);
+                    MetadataObject object = (MetadataObject) cons.newInstance(fileXml);
                     object.parse();
 
-                    container.getConf().add(object);
+                    relation.getConf().add(object);
 
                 } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | ParserConfigurationException | InvocationTargetException | SAXException | XPathExpressionException e) {
                     e.printStackTrace();
@@ -71,73 +114,155 @@ public class ConfReader {
         return conf;
     }
 
-    public static Map<Class, Container> getDescription(Conf conf) {
-        Map<Class, Container> result = new HashMap<>();
+    public static Set<Relation> getRelations(Conf conf) {
+        Set<Relation> result = new HashSet<>();
 
-        result.put(CommonModule.class, new Container(conf.getCommonModules(), "CommonModules"));
-        result.put(SessionParameter.class, new Container(conf.getSessionParameters(), "SessionParameters"));
-        result.put(Role.class, new Container(conf.getRoles(), "Roles"));
-        result.put(CommonAttribute.class, new Container(conf.getCommonAttributes(), "CommonAttributes"));
-        result.put(ExchangePlan.class, new Container(conf.getExchangePlans(), "ExchangePlans"));
-        result.put(FilterCriterion.class, new Container(conf.getFilterCriteria(), "FilterCriteria"));
-        result.put(EventSubscription.class, new Container(conf.getEventSubscriptions(), "EventSubscriptions"));
-        result.put(ScheduledJob.class, new Container(conf.getScheduledJobs(), "ScheduledJobs"));
-        result.put(FunctionalOption.class, new Container(conf.getFunctionalOptions(), "FunctionalOptions"));
-        result.put(FunctionalOptionsParameter.class, new Container(conf.getFunctionalOptionsParameters(), "FunctionalOptionsParameters"));
-        result.put(DefinedType.class, new Container(conf.getDefinedTypes(), "DefinedTypes"));
-        result.put(SettingsStorage.class, new Container(conf.getSettingsStorages(), "SettingsStorages"));
-        result.put(CommonForm.class, new Container(conf.getCommonForms(), "CommonForms"));
-        result.put(CommonCommand.class, new Container(conf.getCommonCommands(), "CommonCommands"));
-        result.put(CommandGroup.class, new Container(conf.getCommandGroups(), "CommandGroups"));
-        result.put(CommonTemplate.class, new Container(conf.getCommonTemplates(), "CommonTemplates"));
-        result.put(CommonPicture.class, new Container(conf.getCommonPictures(), "CommonPictures"));
-        result.put(XdtoPackage.class, new Container(conf.getXdtoPackages(), "XDTOPackages"));
-        result.put(WebService.class, new Container(conf.getWebServices(), "WebServices"));
-        result.put(HttpService.class, new Container(conf.getHttpServices(), "HTTPServices"));
+        result.add(new Relation(
+            conf.getCommonModules(), CommonModule.class, "CommonModules"));
 
-        //WS-ссылки
-        result.put(StyleItem.class, new Container(conf.getStyleItems(), "StyleItems"));
-        result.put(Language.class, new Container(conf.getLanguages(), "Languages"));
+        result.add(new Relation(
+            conf.getSessionParameters(), SessionParameter.class, "SessionParameters"));
 
-        result.put(Constant.class, new Container(conf.getConstants(), "Constants"));
-        result.put(Catalog.class, new Container(conf.getCatalogs(), "Catalogs"));
-        result.put(Document.class, new Container(conf.getDocuments(), "Documents"));
-        result.put(DocumentJournal.class, new Container(conf.getDocumentJournals(), "DocumentJournals"));
-        result.put(Enum.class, new Container(conf.getEnums(), "Enums"));
-        result.put(Report.class, new Container(conf.getReports(), "Reports"));
-        result.put(DataProcessor.class, new Container(conf.getDataProcessors(), "DataProcessors"));
-        result.put(ChartOfCharacteristicTypes.class, new Container(conf.getChartsOfCharacteristicTypes(), "ChartsOfCharacteristicTypes"));
-        result.put(ChartOfAccounts.class, new Container(conf.getChartsOfAccounts(), "ChartsOfAccounts"));
-        result.put(ChartOfCalculationTypes.class, new Container(conf.getChartsOfCalculationTypes(), "ChartsOfCalculationTypes"));
-        result.put(InformationRegister.class, new Container(conf.getInformationRegisters(), "InformationRegisters"));
-        result.put(AccumulationRegister.class, new Container(conf.getAccumulationRegisters(), "AccumulationRegisters"));
-        result.put(AccountingRegister.class, new Container(conf.getAccountingRegisters(), "AccountingRegisters"));
-        result.put(CalculationRegister.class, new Container(conf.getCalculationRegisters(), "CalculationRegisters"));
-        result.put(BusinessProcess.class, new Container(conf.getBusinessProcesses(), "BusinessProcesses"));
-        result.put(Task.class, new Container(conf.getTasks(), "Tasks"));
-        result.put(ExternalDataSource.class, new Container(conf.getExternalDataSources(), "ExternalDataSources"));
+        result.add(new Relation(
+            conf.getRoles(), Role.class, "Roles"));
 
-        result.put(Subsystem.class, new Container(conf.getSubsystems(), "Subsystems"));
+        result.add(new Relation(
+            conf.getCommonAttributes(), CommonAttribute.class, "CommonAttributes"));
+
+        result.add(new Relation(
+            conf.getExchangePlans(), ExchangePlan.class, "ExchangePlans"));
+
+        result.add(new Relation(
+            conf.getFilterCriteria(), FilterCriterion.class, "FilterCriteria"));
+
+        result.add(new Relation(
+            conf.getEventSubscriptions(), EventSubscription.class, "EventSubscriptions"));
+
+        result.add(new Relation(
+            conf.getScheduledJobs(), ScheduledJob.class, "ScheduledJobs"));
+
+        result.add(new Relation(
+            conf.getFunctionalOptions(), FunctionalOption.class, "FunctionalOptions"));
+
+        result.add(new Relation(
+            conf.getFunctionalOptionsParameters(), FunctionalOptionsParameter.class, "FunctionalOptionsParameters"));
+
+        result.add(new Relation(
+            conf.getDefinedTypes(), DefinedType.class, "DefinedTypes"));
+
+        result.add(new Relation(
+            conf.getSettingsStorages(), SettingsStorage.class, "SettingsStorages"));
+
+        result.add(new Relation(
+            conf.getCommonForms(), CommonForm.class, "CommonForms"));
+
+        result.add(new Relation(
+            conf.getCommonCommands(), CommonCommand.class, "CommonCommands"));
+
+        result.add(new Relation(
+            conf.getCommandGroups(), CommandGroup.class, "CommandGroups"));
+
+        result.add(new Relation(
+            conf.getCommonTemplates(), CommonTemplate.class, "CommonTemplates"));
+
+        result.add(new Relation(
+            conf.getCommonPictures(), CommonPicture.class, "CommonPictures"));
+
+        result.add(new Relation(
+            conf.getXdtoPackages(), XdtoPackage.class, "XDTOPackages"));
+
+        result.add(new Relation(
+            conf.getWebServices(), WebService.class, "WebServices"));
+
+        result.add(new Relation(
+            conf.getHttpServices(), HttpService.class, "HTTPServices"));            
+
+        // TODO: WS-ссылки
+
+        result.add(new Relation(
+            conf.getStyleItems(), StyleItem.class, "StyleItems"));
+
+        result.add(new Relation(
+            conf.getLanguages(), Language.class, "Languages"));
+
+        result.add(new Relation(
+            conf.getConstants(), Constant.class, "Constants"));
+
+        result.add(new Relation(
+            conf.getCatalogs(), Catalog.class, "Catalogs"));
+
+        result.add(new Relation(
+            conf.getDocuments(), Document.class, "Documents"));
+
+        result.add(new Relation(
+            conf.getDocumentJournals(), DocumentJournal.class, "DocumentJournals"));
+
+        result.add(new Relation(
+            conf.getEnums(), Enum.class, "Enums"));
+
+        result.add(new Relation(
+            conf.getReports(), Report.class, "Reports"));
+
+        result.add(new Relation(
+            conf.getDataProcessors(), DataProcessor.class, "DataProcessors"));
+
+        result.add(new Relation(
+            conf.getChartsOfCharacteristicTypes(), ChartOfCharacteristicTypes.class, "ChartsOfCharacteristicTypes"));
+
+        result.add(new Relation(
+            conf.getChartsOfAccounts(), ChartOfAccounts.class, "ChartsOfAccounts"));
+
+        result.add(new Relation(
+            conf.getChartsOfCalculationTypes(), ChartOfCalculationTypes.class, "ChartsOfCalculationTypes"));
+
+        result.add(new Relation(
+            conf.getInformationRegisters(), InformationRegister.class, "InformationRegisters"));
+
+        result.add(new Relation(
+            conf.getAccumulationRegisters(), AccumulationRegister.class, "AccumulationRegisters"));
+
+        result.add(new Relation(
+            conf.getAccountingRegisters(), AccountingRegister.class, "AccountingRegisters"));
+
+        result.add(new Relation(
+            conf.getCalculationRegisters(), CalculationRegister.class, "CalculationRegisters"));
+
+        result.add(new Relation(
+            conf.getBusinessProcesses(), BusinessProcess.class, "BusinessProcesses"));
+
+        result.add(new Relation(
+            conf.getTasks(), Task.class, "Tasks"));
+
+        result.add(new Relation(
+            conf.getExternalDataSources(), ExternalDataSource.class, "ExternalDataSources"));            
+
+        result.add(new Relation(conf.getSubsystems(), Subsystem.class, "Subsystems"));
 
         return result;
     }
 
-    public static class Container {
+    public static class Relation {
 
         private Set<MetadataObject> conf;
+        private Class<?> objClass;
         private String file;
 
-        public Container(Set<MetadataObject> conf, String file) {
+        public Relation(Set<MetadataObject> conf, Class<?> objClass, String file) {
             this.conf = conf;
+            this.objClass = objClass;
             this.file = file;
         }
 
         public Set<MetadataObject> getConf() {
-            return conf;
+            return this.conf;
         }
 
         public String getFile() {
-            return file;
+            return this.file;
+        }
+
+        public Class<?> getObjClass() {
+            return this.objClass;
         }
     }
 }

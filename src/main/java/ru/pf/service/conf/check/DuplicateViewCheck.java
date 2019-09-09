@@ -1,7 +1,7 @@
 package ru.pf.service.conf.check;
 
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractObject;
+import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 
@@ -39,9 +39,9 @@ public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
 
             duplicate.clear();
             for (MetadataObject object : objects) {
-                String viewObject = ((AbstractObject) object).getSynonym();
+                String viewObject = ((AbstractMetadataObject) object).getSynonym();
                 if (viewObject.isEmpty()) {
-                    viewObject = ((AbstractObject) object).getName();
+                    viewObject = ((AbstractMetadataObject) object).getName();
                 }
 
                 for (MetadataObject potentialDuplicate : objects) {
@@ -49,9 +49,9 @@ public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
                         continue;
                     }
 
-                    String viewPotential = ((AbstractObject) potentialDuplicate).getSynonym();
+                    String viewPotential = ((AbstractMetadataObject) potentialDuplicate).getSynonym();
                     if (viewPotential.isEmpty()) {
-                        viewPotential = ((AbstractObject) potentialDuplicate).getName();
+                        viewPotential = ((AbstractMetadataObject) potentialDuplicate).getName();
                     }
 
                     if (viewObject.equalsIgnoreCase(viewPotential)) {

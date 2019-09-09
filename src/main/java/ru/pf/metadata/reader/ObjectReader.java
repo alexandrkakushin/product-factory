@@ -3,9 +3,7 @@ package ru.pf.metadata.reader;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import ru.pf.metadata.object.AbstractObject;
-import ru.pf.metadata.object.MetadataObject;
-
+import ru.pf.metadata.object.AbstractMetadataObject;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -105,9 +103,9 @@ public class ObjectReader {
     }
 
 
-    public void fillCommonField(AbstractObject object) {
+    public void fillCommonField(AbstractMetadataObject object) {
 
-        String nodeObject = "/MetaDataObject/" + object.getMetadataName();
+        String nodeObject = "/MetaDataObject/" + object.getXmlName();
 
         object.setUuid(readUUID(nodeObject + "/@uuid"));
         object.setName(read(nodeObject+ "/Properties/Name"));

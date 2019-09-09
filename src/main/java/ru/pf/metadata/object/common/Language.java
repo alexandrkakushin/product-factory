@@ -1,9 +1,10 @@
 package ru.pf.metadata.object.common;
 
 import lombok.Data;
-import ru.pf.metadata.object.AbstractObject;
+import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -11,7 +12,7 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Data
-public class Language extends AbstractObject<Language> {
+public class Language extends AbstractMetadataObject {
 
     private String languageCode;
 
@@ -20,14 +21,12 @@ public class Language extends AbstractObject<Language> {
     }
 
     @Override
-    public void parse() {
-        Path fileXml = super.getFile().getParent().resolve(super.getFile());
-        if (Files.exists(fileXml)) {
-            ObjectReader objReader = new ObjectReader(fileXml);
-            objReader.fillCommonField(this);
+    public ObjectReader parse() throws IOException {
+        ObjectReader objReader = super.parse();
 
-            String nodeProperties = "/MetaDataObject/" + getMetadataName() + "/Properties/";
-            this.languageCode  = objReader.read(nodeProperties + "LanguageCode");
-        }
+        String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
+        this.languageCode  = objReader.read(nodeProperties + "LanguageCode");
+        
+        return objReader;
     }
 }

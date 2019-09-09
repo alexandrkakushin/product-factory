@@ -2,7 +2,7 @@ package ru.pf.service.conf.check;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractObject;
+import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.service.PropertiesService;
@@ -33,7 +33,7 @@ public class NameLengthCheck implements ServiceCheck<MetadataObject> {
         }
 
         for (MetadataObject object : conf.getAllObjects()) {
-            if (((AbstractObject) object).getName().length() >= length) {
+            if (((AbstractMetadataObject) object).getName().length() >= length) {
                 result.add(object);
             }
         }
