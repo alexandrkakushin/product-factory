@@ -1,14 +1,19 @@
 package ru.pf.metadata.object;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import ru.pf.metadata.Module;
-import ru.pf.metadata.object.common.CommonModule;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin
@@ -317,7 +322,6 @@ public class Conf extends AbstractMetadataObject {
                 return object;
             }
         }
-
         return null;
     }
 }

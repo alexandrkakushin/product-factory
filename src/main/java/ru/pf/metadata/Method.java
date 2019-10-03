@@ -95,10 +95,10 @@ public class Method {
         private String name;
         private String defaultValue;
 
-        public Arg() {
-        }
+        public Arg() {}
 
         public Arg(String name, String defaultValue) {
+            this();
             this.name = name;
             this.defaultValue = defaultValue;
         }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <headCommon th:replace="fragments/header :: common"></headCommon>
     </head>
@@ -26,28 +26,36 @@
                     </li>
                 </ol>
             </nav>
+        
+            <table id='properties' class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="w-25" scope="col">Метаданные</th>
+                        <th class="w-75" scope="col">
+                            <span th:text="${object.listPresentation}"></span>
+                        </th>
+                    </tr>
+                </thead>                
+                <tbody>
+                    <tr>
+                        <td>UUID</td>
+                        <td><span th:text="${object.uuid}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td><span th:text="${object.name}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Синоним</td>
+                        <td><span th:text="${object.synonym}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Комментарий</td>
+                        <td><span th:text="${object.comment}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-        <table id='properties' class="table table-hover">
-            <tbody>
-                <tr>
-                    <td>UUID</td>
-                    <td><span th:text="${object.uuid}"></span></td>
-                </tr>
-                <tr>
-                    <td>Имя</td>
-                    <td><span th:text="${object.name}"></span></td>
-                </tr>
-                <tr>
-                    <td>Синоним</td>
-                    <td><span th:text="${object.synonym}"></span></td>
-                </tr>
-                <tr>
-                    <td>Комментарий</td>
-                    <td><span th:text="${object.comment}"></span></td>
-                </tr>
-            </tbody>
-        </table>
 
         <script th:inline="javascript">
             let object = [[${object}]];
@@ -113,10 +121,10 @@
                     );
             }
 
-            if (object.metadataName === 'CommandGroup') {
+            if (object.xmlName === 'CommandGroup') {
                 addProperties_CommandGroup(object);
 
-            } else if (object.metadataName === 'CommonModule') {
+            } else if (object.xmlName === 'CommonModule') {
                 addProperties_CommonModule(object);
             }
         </script>

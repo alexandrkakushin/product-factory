@@ -70,7 +70,7 @@ public class ConfItemController {
             model.addAttribute("object", ((AbstractMetadataObject) object));
         }
 
-        return "/development/conf/metadata-item";
+        return "/development/conf/metadata-item/common";
     }
 
     public static class Metadata {

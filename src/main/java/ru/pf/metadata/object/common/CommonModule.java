@@ -1,6 +1,7 @@
 package ru.pf.metadata.object.common;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ModuleReader;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class CommonModule extends AbstractMetadataObject {
 
     private boolean global;

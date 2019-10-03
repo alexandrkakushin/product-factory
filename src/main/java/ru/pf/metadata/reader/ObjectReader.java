@@ -3,6 +3,8 @@ package ru.pf.metadata.reader;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import lombok.Data;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +22,7 @@ import java.util.UUID;
 /**
  * @author a.kakushin
  */
+@Data
 public class ObjectReader {
 
     static XPath path = XPathFactory.newInstance().newXPath();

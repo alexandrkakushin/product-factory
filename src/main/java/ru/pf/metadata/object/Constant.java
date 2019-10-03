@@ -2,11 +2,13 @@ package ru.pf.metadata.object;
 
 import java.nio.file.Path;
 
+import lombok.Data;
 import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin
  */
+@Data
 public class Constant extends AbstractMetadataObject {
 
     private Module valueManagerModule;

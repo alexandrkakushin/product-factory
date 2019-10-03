@@ -30,10 +30,10 @@ public abstract class AbstractMetadataObject implements MetadataObject {
     private String synonym;
     private String comment;
 
-    public AbstractMetadataObject() {
-    }
+    public AbstractMetadataObject() {}
 
     public AbstractMetadataObject(Path file) {
+        this();
         this.file = file;
     }
 
