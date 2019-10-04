@@ -21,6 +21,9 @@
                     <li class="breadcrumb-item ">
                         <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
                     </li>
+                    <li class="breadcrumb-item">
+                        <a th:text="${object.listPresentation}" th:href="@{'/development/conf/item/'+${projectId}}"></a>
+                    </li>        
                     <li class="breadcrumb-item active" aria-current="page">
                         <span th:text="${object.name}"></span>
                     </li>

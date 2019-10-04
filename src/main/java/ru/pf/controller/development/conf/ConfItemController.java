@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.common.CommonModule;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 
@@ -70,7 +71,13 @@ public class ConfItemController {
             model.addAttribute("object", ((AbstractMetadataObject) object));
         }
 
-        return "/development/conf/metadata-item/common";
+        // TODO: получать по имени класса
+        String pathModel = "/development/conf/metadata-item/common";
+        if (object instanceof CommonModule) {
+            pathModel = "/development/conf/metadata-item/commonmodule";
+        }
+
+        return pathModel;
     }
 
     public static class Metadata {

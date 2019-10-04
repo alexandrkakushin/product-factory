@@ -20,6 +20,11 @@ public class MethodReader {
             method.setName(oneLine.substring(8, oneLine.indexOf("(")));
         }
 
+        // TODO: ключевые слова могут быть в тексте
+        if (oneLine.toLowerCase().contains("экспорт")) {
+            method.setExport(true);
+        }
+
         fillArgs(method, oneLine);
 
         return method;
