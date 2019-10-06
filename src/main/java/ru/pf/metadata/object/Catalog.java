@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.Set;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
@@ -14,6 +15,7 @@ import ru.pf.metadata.reader.ObjectReader;
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Catalog extends AbstractMetadataObject {
 
     private boolean hierarchical;
@@ -54,13 +56,8 @@ public class Catalog extends AbstractMetadataObject {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public String getListPresentation() {
+        return "Справочники";
     }
 
     @Override

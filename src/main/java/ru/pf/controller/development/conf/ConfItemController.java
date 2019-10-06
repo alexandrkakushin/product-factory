@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.object.common.CommonModule;
 import ru.pf.repository.ProjectsRepository;
@@ -75,6 +76,9 @@ public class ConfItemController {
         String pathModel = "/development/conf/metadata-item/common";
         if (object instanceof CommonModule) {
             pathModel = "/development/conf/metadata-item/commonmodule";
+
+        } else if (object instanceof Catalog) {
+            pathModel = "/development/conf/metadata-item/catalog";
         }
 
         return pathModel;
