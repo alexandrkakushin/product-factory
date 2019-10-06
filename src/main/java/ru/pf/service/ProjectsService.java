@@ -66,7 +66,7 @@ public class ProjectsService {
 
     private boolean updateFromGit(Project project) throws IOException {
         try {
-            gitService.fetch(project);
+            gitService.pull(project);
             return true;
         } catch (GitAPIException e) {
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class GitService {
     @Autowired
     ProjectsService projectsService;
 
-    public void fetch(Project project) throws GitAPIException, IOException {
+    public void pull(Project project) throws GitAPIException, IOException {
         Path target = projectsService.getTemporaryLocation(project);
 
         if (!Files.exists(target)) {
@@ -27,7 +27,9 @@ public class GitService {
         }
 
         if (Files.exists(target.resolve(".git"))) {
-            Git.open(target.toFile()).fetch();
+            Git repository = Git.open(target.toFile());
+            repository.pull().call();
+            
         } else {
             Git.cloneRepository()
                     .setURI(project.getGit().getFetchUrl())
