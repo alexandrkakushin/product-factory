@@ -43,9 +43,6 @@
                     <a class="nav-link active" id="pills-property-tab" data-toggle="pill" href="#pills-property" role="tab" aria-controls="pills-property" aria-selected="true">Основные свойства</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-object-tab" data-toggle="pill" href="#pills-object" role="tab" aria-controls="pills-object" aria-selected="false">Модуль объекта</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" id="pills-manager-tab" data-toggle="pill" href="#pills-manager" role="tab" aria-controls="pills-manager" aria-selected="false">Модуль менеджера</a>
                 </li>
             </ul>
@@ -81,22 +78,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Модуль объекта -->
-                <div class="tab-pane fade" id="pills-object" role="tabpanel" aria-labelledby="pills-object-tab">
-                    <table id='objectModule_methods' class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="w-75" scope="col">Имя</th>  
-                                <th class="text-center" scope="col">Функция</th>                              
-                                <th class="text-center" scope="col">Пустой</th>
-                                <th class="text-center" scope="col">Экспортный</th>
-                                <th class="text-center" scope="col">Текст</th>                                
-                            </tr>
-                        </thead>                
-                        <tbody></tbody>
-                    </table>        
                 </div>
 
                 <!-- Модуль менеджера -->
@@ -142,25 +123,7 @@
         <script th:inline="javascript">
             let object = [[${object}]];
 
-            function addProperties(object) {
-                // Иерархия
-                addProperty('Иерархический', object.hierarchical);
-                if (object.hierarchical) {
-                    let hierarchyType = null;
-                    if (object.hierarchyType == 'HIERARCHY_OF_ITEMS') {
-                        hierarchyType = 'Иерархия элементов';
-                    } else if (object.hierarchyType == 'HIERARCHY_FOLDERS_AND_ITEMS') {
-                        hierarchyType = 'Иерархия групп и элементов';
-                    }
-                    addProperty('Вид иерархии', hierarchyType);
-                    addProperty('Размещать группы сверху', object.foldersOnTop);
-
-                    addProperty('Ограничение количества уровней иерархии', object.limitLevelCount);
-                    if (object.limitLevelCount) {
-                        addProperty('Количество уровней иерархии', object.levelCount)
-                    }
-                }
-
+            function addProperties (object) {
                 addProperty('Использовать стандартные команды', object.useStandardCommands);
             }
 
@@ -194,7 +157,7 @@
                     );
             }
 
-            let modules = ['managerModule', 'objectModule'];
+            let modules = ['managerModule'];
             for (let m = 0; m < modules.length; m++) {
                 if (object[modules[m]]) {
                     for (let i = 0; i < object[modules[m]].methods.length; i++) {
