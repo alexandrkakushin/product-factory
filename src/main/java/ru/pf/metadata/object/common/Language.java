@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
 
@@ -11,6 +12,7 @@ import ru.pf.metadata.reader.ObjectReader;
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Language extends AbstractMetadataObject {
 
     private String languageCode;
@@ -27,5 +29,10 @@ public class Language extends AbstractMetadataObject {
         this.languageCode  = objReader.read(nodeProperties + "LanguageCode");
         
         return objReader;
+    }
+
+    @Override
+    public String getListPresentation() {
+        return "Языки";
     }
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <headCommon th:replace="fragments/header :: common"></headCommon>
+    </head>
+    <body>
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+        <!--todo: исправить навигационную цепочку-->
+        <nav th:replace="fragments/navbar :: navbar"></nav>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/projects/'+${projectId}}">
+                            <span th:text="${projectId}"></span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item ">
+                        <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a th:text="${object.listPresentation}" th:href="@{'/development/conf/item/'+${projectId}}"></a>
+                    </li>        
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span th:text="${object.name}"></span>
+                    </li>
+                </ol>
+            </nav>
+        
+            <table id='properties' class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="w-25" scope="col">Метаданные</th>
+                        <th class="w-75" scope="col">
+                            <span th:text="${object.listPresentation}"></span>
+                        </th>
+                    </tr>
+                </thead>                
+                <tbody>
+                    <tr>
+                        <td>UUID</td>
+                        <td><span th:text="${object.uuid}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td><span th:text="${object.name}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Синоним</td>
+                        <td><span th:text="${object.synonym}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Комментарий</td>
+                        <td><span th:text="${object.comment}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Код языка</td>
+                        <td><span th:text="${object.languageCode}"></span></td>
+                    </tr>                    
+                </tbody>
+            </table>
+        </div>
+
+        <footer th:replace="fragments/footer :: bootstrap"></footer>
+    </body>
+</html>
