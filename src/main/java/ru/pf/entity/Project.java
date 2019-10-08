@@ -10,11 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author a.kakushin
  */
 @Entity
 @Table(name = "PROJECTS")
+@Data
 public class Project implements PfEntity<Project, Long> {
 
     @Id
@@ -48,45 +51,6 @@ public class Project implements PfEntity<Project, Long> {
      */
     @Enumerated(EnumType.STRING)
     private SourceType sourceType;
-
-    public Project() {}
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    
-    public String getComment() {
-    	return comment;
-    }
-
-    public SourceType getSourceType() {
-        return sourceType;
-    }
-
-    public Cr getCr() {
-        return cr;
-    }
-
-    public void setCr(Cr cr) {
-        this.cr = cr;
-    }
-
-    public Git getGit() {
-        return git;
-    }
-
-    public void setGit(Git git) {
-        this.git = git;
-    }
-
-    public String getDirectory() {
-        return directory;
-    }
 
     public enum SourceType {
         FILE_ZIP, FILE_CF, DIRECTORY, CR, GIT
