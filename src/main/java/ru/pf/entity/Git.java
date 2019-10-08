@@ -6,11 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author a.kakushin
  */
 @Entity
 @Table(name = "GIT")
+@Data
 public class Git implements PfEntity<Git, Long> {
 
     @Id
@@ -22,25 +25,5 @@ public class Git implements PfEntity<Git, Long> {
 
     private String fetchUrl;
     private String defaultBranch;
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getName() {
-		return name;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-        
-    public String getFetchUrl() {
-        return this.fetchUrl;
-    }
-
-    public String getDefaultBranch() {
-        return this.defaultBranch;
-    }
+    
 }
