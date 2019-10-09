@@ -45,6 +45,9 @@
                 <li class="nav-item">
                     <a class="nav-link" id="pills-manager-tab" data-toggle="pill" href="#pills-manager" role="tab" aria-controls="pills-manager" aria-selected="false">Модуль менеджера</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-values-tab" data-toggle="pill" href="#pills-values" role="tab" aria-controls="pills-values" aria-selected="false">Значения</a>
+                </li>
             </ul>
 
             <div class="tab-content" id="pills-tabContent">
@@ -95,6 +98,30 @@
                         <tbody></tbody>
                     </table>        
                 </div>
+
+                <!-- Значения перечисления -->
+                <div class="tab-pane fade" id="pills-values" role="tabpanel" aria-labelledby="pills-values-tab">
+                    <table id='enumValues' class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w-75" scope="col">Имя</th>  
+                                <th class="text-center" scope="col">Синоним</th>                              
+                                <th class="text-center" scope="col">Комментарий</th>
+                            </tr>
+                        </thead>                
+                        <tbody>
+                            <tr th:if="${object.values.empty}">
+                                <td colspan="3"> Значения отсутствуют </td>
+                            </tr>
+                            <tr th:each="item : ${object.values}">
+                                <td><span th:text="${item.name}"> Имя </span></td>
+                                <td class="text-center"><span th:text="${item.synonym}"> Синоним </span></td>
+                                <td class="text-center"><span th:text="${item.comment}"> Комментарий </span></td>
+                            </tr>        
+                        </tbody>
+                    </table>        
+                </div>
+
             </div>
         </div>
 

@@ -3,7 +3,10 @@ package ru.pf.metadata.object;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,9 +48,25 @@ public class Enum extends AbstractMetadataObject {
     public ObjectReader parse() throws IOException {
         ObjectReader objReader = super.parse();
 
-        String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
-        this.useStandardCommands  = objReader.readBool(nodeProperties + "UseStandardCommands");
-        
+        String nodeRoot = "/MetaDataObject/" + getXmlName();
+
+        this.useStandardCommands  = objReader.readBool(nodeRoot + "Properties/UseStandardCommands");
+
+        // Enum values
+        this.values = new HashSet<>();
+        List<String> enumsUuid = objReader.readChild(nodeRoot + "/ChildObjects/EnumValue/@uuid");       
+        enumsUuid.forEach(
+            uuid -> {
+                this.values.add(
+                    new EnumValue(UUID.fromString(uuid), 
+                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Name"),
+                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Synonym/item/content"), 
+                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Comment")
+                    )
+                );
+            }
+        );
+
         Path pathExt = super.getFile()
                 .getParent()
                 .resolve(this.getShortName(super.getFile()))
@@ -71,9 +90,16 @@ public class Enum extends AbstractMetadataObject {
     @Data
     public class EnumValue {
 
+        private UUID uuid;
         private String name;
         private String synonym;
         private String comment;
 
+        public EnumValue(UUID uuid, String name, String synonym, String comment) {
+            this.uuid = uuid;
+            this.name = name;
+            this.synonym = synonym;
+            this.comment = comment;
+        }
     }
 }
