@@ -19,6 +19,7 @@ import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.common.CommonForm;
 import ru.pf.metadata.object.common.CommonModule;
 import ru.pf.metadata.object.common.Language;
 import ru.pf.repository.ProjectsRepository;
@@ -78,6 +79,9 @@ public class ConfItemController {
         String pathModel = "/development/conf/metadata-item/common";
         if (object instanceof CommonModule) {
             pathModel = "/development/conf/metadata-item/commonmodule";
+
+        } else if (object instanceof CommonForm) {
+            pathModel = "/development/conf/metadata-item/form";
 
         } else if (object instanceof Language) {
             pathModel = "/development/conf/metadata-item/language";

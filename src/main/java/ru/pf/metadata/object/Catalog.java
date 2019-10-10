@@ -46,7 +46,10 @@ public class Catalog extends AbstractMetadataObject {
 
     // todo: <ChoiceMode>BothWays</ChoiceMode>
 
+    private Set<Attribute> standardAttributes;
     private Set<Attribute> attributes;
+
+    private Set<Form> forms;
 
     private Module managerModule;
     private Module objectModule;

@@ -73,6 +73,7 @@ public class Module {
     public enum Type {
         MANAGER_MODULE,
         OBJECT_MODULE,
-        COMMON_MODULE
+        COMMON_MODULE,
+        FORM_MODULE
     }
 }
