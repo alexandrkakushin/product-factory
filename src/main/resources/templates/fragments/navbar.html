@@ -89,3 +89,27 @@
         </li>
     </ol>
 </nav>
+
+<!-- breadcrumb для объекта метаданных -->
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="breadcrumb-object" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+        <li class="breadcrumb-item"><a href="/development/projects">Проекты</a></li>
+        <li class="breadcrumb-item">
+            <a th:href="@{'/development/projects/'+${projectId}}">
+                <span th:text="${projectId}"></span>
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a th:text="${object.listPresentation}" th:href="@{'/development/conf/item/'+${projectId}}"></a>
+        </li>    
+        <li class="breadcrumb-item active" aria-current="page">
+            <span th:text="${object.name}"></span>
+        </li>
+    </ol>
+</nav>
+
+

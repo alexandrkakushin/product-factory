@@ -61,7 +61,7 @@ public class ConfItemController {
         return "/development/conf/item";
     }
 
-    @GetMapping("/{id}/{uuid}")
+    @GetMapping("/{id}/object/{uuid}")
     public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) throws IOException {
         Optional<Project> projectOptional = projectsRepository.findById(id);
         if (projectOptional.isPresent()) {

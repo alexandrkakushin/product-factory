@@ -57,11 +57,12 @@ public class Enum extends AbstractMetadataObject {
         List<String> enumsUuid = objReader.readChild(nodeRoot + "/ChildObjects/EnumValue/@uuid");       
         enumsUuid.forEach(
             uuid -> {
+                String propertiesNode = nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties";
                 this.values.add(
                     new EnumValue(UUID.fromString(uuid), 
-                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Name"),
-                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Synonym/item/content"), 
-                        objReader.read(nodeRoot + "/ChildObjects/EnumValue[@uuid='" + uuid + "']/Properties/Comment")
+                        objReader.read(propertiesNode + "/Name"),
+                        objReader.read(propertiesNode + "/Synonym/item/content"), 
+                        objReader.read(propertiesNode + "/Comment")
                     )
                 );
             }

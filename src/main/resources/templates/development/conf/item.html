@@ -78,7 +78,7 @@
                     let instance = objects[iObject];
                     let $content = $('#content_' + instance.metadataName);
                     $content
-                        .append($('<a>').attr("href", `/development/conf/item/[[${projectId}]]/${instance.uuid}`).text(instance.name))
+                        .append($('<a>').attr("href", `/development/conf/item/[[${projectId}]]/object/${instance.uuid}`).text(instance.name))
                         .append($('<br>'));
 
                     let $badge = $('#badge_' + instance.metadataName);
