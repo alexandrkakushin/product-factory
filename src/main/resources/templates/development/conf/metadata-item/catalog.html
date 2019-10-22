@@ -29,6 +29,10 @@
                 <li class="nav-item">
                     <a class="nav-link" id="pills-manager-tab" data-toggle="pill" href="#pills-manager" role="tab" aria-controls="pills-manager" aria-selected="false">Модуль менеджера</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-forms-tab" data-toggle="pill" href="#pills-forms" role="tab" aria-controls="pills-forms" aria-selected="false">Формы</a>
+                </li>
             </ul>
 
             <div class="tab-content" id="pills-tabContent">
@@ -95,6 +99,22 @@
                         <tbody></tbody>
                     </table>        
                 </div>
+
+                <!-- Формы -->
+                <div class="tab-pane fade" id="pills-forms" role="tabpanel" aria-labelledby="pills-forms-tab">
+                    <table id='forms' class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="" scope="col">Имя</th>  
+                                <th class="" scope="col">UUID</th>                                
+                                <th class="" scope="col">Синоним</th>                              
+                                <th class="" scope="col">Комментарий</th>                                
+                            </tr>
+                        </thead>                
+                        <tbody></tbody>
+                    </table>        
+                </div>
+
             </div>
         </div>
 
@@ -184,6 +204,20 @@
                     }
                 }
             }
+
+            function addForm(form) {
+                $('#forms > tbody:last-child')
+                    .append($('<tr>')
+                        .append($('<td>').text(form.name))
+                        .append($('<td>').text(form.uuid))                        
+                        .append($('<td>').text(form.synonym))
+                        .append($('<td>').text(form.comment))
+                    );                
+            }
+
+            for (let f = 0; f < object.forms.length; f++) {
+                addForm(object.forms[f]);    
+            }            
 
             function btnServiceOnClick(event) {
                 let attrMethod = event.target.attributes.getNamedItem('method').value;

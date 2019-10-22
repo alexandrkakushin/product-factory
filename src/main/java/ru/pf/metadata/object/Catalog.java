@@ -8,6 +8,7 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
+import ru.pf.metadata.behavior.Forms;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 
@@ -49,6 +50,7 @@ public class Catalog extends AbstractMetadataObject {
     private Set<Attribute> standardAttributes;
     private Set<Attribute> attributes;
 
+    @Forms
     private Set<Form> forms;
 
     private Module managerModule;
@@ -68,6 +70,8 @@ public class Catalog extends AbstractMetadataObject {
         ObjectReader objReader = super.parse();
 
         String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
+        String nodeRoot = "/MetaDataObject/" + getXmlName();
+        
         this.hierarchical  = objReader.readBool(nodeProperties + "Hierarchical");
         this.hierarchyType = HierarchyType.valueByName(
                 objReader.read(nodeProperties + "HierarchyType"));
@@ -91,7 +95,7 @@ public class Catalog extends AbstractMetadataObject {
         this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
         this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
         this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
-
+        
         Path pathExt = super.getFile()
                 .getParent()
                 .resolve(this.getShortName(super.getFile()))

@@ -1,6 +1,7 @@
 package ru.pf.metadata.object;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import ru.pf.metadata.MetadataJsonView;
+import ru.pf.metadata.behavior.Forms;
 import ru.pf.metadata.reader.ObjectReader;
 
 /**
@@ -30,7 +32,8 @@ public abstract class AbstractMetadataObject implements MetadataObject {
     private String synonym;
     private String comment;
 
-    public AbstractMetadataObject() {}
+    public AbstractMetadataObject() {
+    }
 
     public AbstractMetadataObject(Path file) {
         this();
@@ -75,8 +78,10 @@ public abstract class AbstractMetadataObject implements MetadataObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         AbstractMetadataObject object = (AbstractMetadataObject) o;
 
@@ -93,6 +98,19 @@ public abstract class AbstractMetadataObject implements MetadataObject {
         Path fileXml = this.getFile().getParent().resolve(this.getFile());
         ObjectReader objReader = new ObjectReader(fileXml);
         objReader.fillCommonField(this);
+
+        // annotation @Forms
+        for (Field field : this.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            if (field.isAnnotationPresent(Forms.class)) {
+                try {
+                    field.set(this, objReader.readForms(this));
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
 
         return objReader;
     }    
