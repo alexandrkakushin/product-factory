@@ -15,7 +15,7 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class CommonModule extends AbstractMetadataObject {
 
     private boolean global;

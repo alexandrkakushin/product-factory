@@ -1,6 +1,7 @@
 package ru.pf.controller.development.conf;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.pf.entity.Project;
+import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.Enum;
@@ -74,6 +76,21 @@ public class ConfItemController {
         if (object != null) {
             model.addAttribute("object", ((AbstractMetadataObject) object));
         }
+
+        // annotation @Forms
+        String fieldForms = ""; 
+        boolean hasForms = false;        
+        for (Field field : object.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            if (field.isAnnotationPresent(Forms.class)) {
+                hasForms = true;
+                fieldForms = field.getName();
+                break;
+            }
+        }
+        model.addAttribute("hasForms", hasForms);
+        model.addAttribute("fieldForms", fieldForms);
+
 
         // TODO: получать по имени класса
         String pathModel = "/development/conf/metadata-item/common";

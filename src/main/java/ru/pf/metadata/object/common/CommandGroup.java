@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.type.Picture;
@@ -12,6 +13,7 @@ import ru.pf.metadata.type.Picture;
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CommandGroup extends AbstractMetadataObject {
 
     private Category category;
@@ -38,6 +40,11 @@ public class CommandGroup extends AbstractMetadataObject {
 
         return objReader;
     }
+
+    @Override
+    public String getListPresentation() {        
+        return "Группы команд";
+    }    
 
     // todo: вынести в отдельный тип данных
     public enum Representation {

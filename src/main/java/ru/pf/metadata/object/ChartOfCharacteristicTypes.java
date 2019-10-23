@@ -1,21 +1,28 @@
 package ru.pf.metadata.object;
 
-import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Set;
 
-import ru.pf.metadata.reader.ObjectReader;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.pf.metadata.annotation.Forms;
 
 /**
  * @author a.kakushin
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ChartOfCharacteristicTypes extends AbstractMetadataObject {
+
+    @Forms
+    private Set<Form> forms;
 
     public ChartOfCharacteristicTypes(Path path) {
         super(path);
     }
 
     @Override
-    public ObjectReader parse() throws IOException {
-        return super.parse();
-    }
+    public String getListPresentation() {        
+        return "Планы видов характеристик";
+    }        
 }

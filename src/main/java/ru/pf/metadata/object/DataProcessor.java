@@ -5,7 +5,7 @@ import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.pf.metadata.behavior.Forms;
+import ru.pf.metadata.annotation.Forms;
 
 /**
  * @author a.kakushin
@@ -14,11 +14,15 @@ import ru.pf.metadata.behavior.Forms;
 @EqualsAndHashCode(callSuper = true)
 public class DataProcessor extends AbstractMetadataObject {
 
+    @Forms
+    private Set<Form> forms;
+
     public DataProcessor(Path path) {
         super(path);
     }
 
-    @Forms
-    Set<Form> forms;
-
+    @Override
+    public String getListPresentation() {        
+        return "Обработки";
+    }        
 }

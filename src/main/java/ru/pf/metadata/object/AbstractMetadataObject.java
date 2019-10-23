@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import ru.pf.metadata.MetadataJsonView;
-import ru.pf.metadata.behavior.Forms;
+import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.reader.ObjectReader;
 
 /**
@@ -109,6 +109,7 @@ public abstract class AbstractMetadataObject implements MetadataObject {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                break;
             }
         }
 

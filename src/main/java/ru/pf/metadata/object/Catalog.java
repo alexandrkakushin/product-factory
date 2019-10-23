@@ -8,7 +8,7 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
-import ru.pf.metadata.behavior.Forms;
+import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 

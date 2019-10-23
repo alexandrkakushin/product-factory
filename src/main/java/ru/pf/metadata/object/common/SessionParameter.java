@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.type.Type;
@@ -12,6 +13,7 @@ import ru.pf.metadata.type.Type;
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SessionParameter extends AbstractMetadataObject {
 
     private Type type;
@@ -19,6 +21,11 @@ public class SessionParameter extends AbstractMetadataObject {
     public SessionParameter(Path path) {
         super(path);
     }
+
+    @Override
+    public String getListPresentation() {        
+        return "Параметры сеанса";
+    }    
 
     @Override
     public ObjectReader parse() throws IOException {

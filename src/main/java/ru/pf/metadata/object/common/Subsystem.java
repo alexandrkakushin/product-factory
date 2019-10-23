@@ -49,6 +49,11 @@ public class Subsystem extends AbstractMetadataObject {
     }
 
     @Override
+    public String getListPresentation() {        
+        return "Подсистемы";
+    }    
+
+    @Override
     public ObjectReader parse() throws IOException {
         ObjectReader objReader = super.parse();
 

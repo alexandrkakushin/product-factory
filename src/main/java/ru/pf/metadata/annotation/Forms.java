@@ -1,4 +1,4 @@
-package ru.pf.metadata.behavior;
+package ru.pf.metadata.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
