@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import ru.pf.metadata.annotation.PlainModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
 
 /**
@@ -12,6 +13,9 @@ import ru.pf.metadata.object.AbstractMetadataObject;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class HttpService extends AbstractMetadataObject {
+
+    @PlainModule
+    private Module module;
 
     public HttpService(Path path) {
         super(path);

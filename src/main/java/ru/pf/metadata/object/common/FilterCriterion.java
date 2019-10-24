@@ -6,6 +6,7 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.annotation.Forms;
+import ru.pf.metadata.annotation.ManagerModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Form;
 
@@ -18,6 +19,9 @@ public class FilterCriterion extends AbstractMetadataObject {
 
     @Forms
     private Set<Form> forms;
+
+    @ManagerModule
+    private Module managerModule;
 
     public FilterCriterion(Path path) {
         super(path);

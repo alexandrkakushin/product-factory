@@ -6,6 +6,8 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.annotation.Forms;
+import ru.pf.metadata.annotation.ManagerModule;
+import ru.pf.metadata.annotation.RecordSetModule;
 
 /**
  * @author a.kakushin
@@ -16,6 +18,12 @@ public class InformationRegister extends AbstractMetadataObject {
 
     @Forms
     private Set<Form> forms;
+
+    @RecordSetModule
+    private Module recordSetModule;
+
+    @ManagerModule
+    private Module managerModule;    
 
     public InformationRegister(Path path) {
         super(path);

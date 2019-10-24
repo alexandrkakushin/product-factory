@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.Forms;
+import ru.pf.metadata.annotation.ManagerModule;
+import ru.pf.metadata.annotation.ObjectModule;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 
@@ -53,8 +55,11 @@ public class Catalog extends AbstractMetadataObject {
     @Forms
     private Set<Form> forms;
 
-    private Module managerModule;
+    @ObjectModule
     private Module objectModule;
+
+    @ManagerModule
+    private Module managerModule;
 
     public Catalog(Path path) {
         super(path);

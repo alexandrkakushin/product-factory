@@ -74,6 +74,10 @@ public class Module {
         MANAGER_MODULE,
         OBJECT_MODULE,
         COMMON_MODULE,
-        FORM_MODULE
+        FORM_MODULE,
+        COMMAND_MODULE,
+        PLAIN_MODULE,
+        VALUE_MANAGER_MODULE,
+        RECORD_SET_MODULE
     }
 }
