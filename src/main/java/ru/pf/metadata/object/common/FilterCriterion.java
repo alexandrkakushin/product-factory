@@ -9,6 +9,7 @@ import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.annotation.ManagerModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Form;
+import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin

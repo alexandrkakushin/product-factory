@@ -15,6 +15,9 @@ import java.util.List;
 public class ModuleReader {
 
     public static Module read(Path bslFile, Module.Type type) throws IOException {
+        if (!Files.exists(bslFile)) {
+            return null;
+        }
 
         Module instance = new Module(bslFile, type);
 

@@ -2,6 +2,7 @@ package ru.pf.metadata.object;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -10,8 +11,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import ru.pf.metadata.MetadataJsonView;
+import ru.pf.metadata.annotation.CommandModule;
 import ru.pf.metadata.annotation.Forms;
+import ru.pf.metadata.annotation.ManagerModule;
+import ru.pf.metadata.annotation.ObjectModule;
+import ru.pf.metadata.annotation.PlainModule;
+import ru.pf.metadata.annotation.RecordSetModule;
+import ru.pf.metadata.annotation.ValueManagerModule;
+import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin
@@ -99,18 +108,53 @@ public abstract class AbstractMetadataObject implements MetadataObject {
         ObjectReader objReader = new ObjectReader(fileXml);
         objReader.fillCommonField(this);
 
-        // annotation @Forms
+        Path pathExt = this.getFile()
+            .getParent()
+            .resolve(this.getShortName(this.getFile()))
+            .resolve("Ext");
+
+        // annotations
         for (Field field : this.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            if (field.isAnnotationPresent(Forms.class)) {
-                try {
+
+            try {
+                // Forms
+                if (field.isAnnotationPresent(Forms.class)) {                    
                     field.set(this, objReader.readForms(this));
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+
+                } else {
+                    if (Files.exists(pathExt)) {
+                        // Modules
+                        if (field.isAnnotationPresent(CommandModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("CommandModule.bsl"),
+                                Module.Type.COMMAND_MODULE));
+
+                        } else if (field.isAnnotationPresent(ObjectModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("ObjectModule.bsl"),
+                                Module.Type.OBJECT_MODULE));
+
+                        } else if (field.isAnnotationPresent(ManagerModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("ManagerModule.bsl"),
+                                Module.Type.MANAGER_MODULE));
+
+                        } else if (field.isAnnotationPresent(PlainModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("Module.bsl"),
+                                Module.Type.PLAIN_MODULE));
+
+                        } else if (field.isAnnotationPresent(RecordSetModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("RecordSetModule.bsl"),
+                            Module.Type.RECORD_SET_MODULE));
+
+                        } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
+                            field.set(this, ModuleReader.read(pathExt.resolve("ValueManagerModule.bsl"),
+                            Module.Type.VALUE_MANAGER_MODULE));
+                        }     
+                    }
                 }
-                break;
-            }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }            
         }
 
         return objReader;

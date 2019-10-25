@@ -1,7 +1,6 @@
 package ru.pf.metadata.object;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.annotation.ManagerModule;
 import ru.pf.metadata.annotation.ObjectModule;
-import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 
 /**
@@ -101,23 +99,6 @@ public class Catalog extends AbstractMetadataObject {
         this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
         this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
         
-        Path pathExt = super.getFile()
-                .getParent()
-                .resolve(this.getShortName(super.getFile()))
-                .resolve("Ext");
-
-        if (Files.exists(pathExt)) {
-            Path fileManagerModule = pathExt.resolve("ManagerModule.bsl");
-            if (Files.exists(fileManagerModule)) {
-                this.managerModule = ModuleReader.read(fileManagerModule, Module.Type.MANAGER_MODULE);
-            }
-
-            Path fileObjectModule = pathExt.resolve("ObjectModule.bsl");
-            if (Files.exists(fileObjectModule)) {
-                this.objectModule = ModuleReader.read(fileObjectModule, Module.Type.OBJECT_MODULE);
-            }
-        }
-
         return objReader;
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.annotation.CommandModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin
