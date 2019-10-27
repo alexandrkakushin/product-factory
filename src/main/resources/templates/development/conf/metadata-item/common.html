@@ -1,173 +1,61 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <headCommon th:replace="fragments/header :: common"></headCommon>
-    </head>
+    <head th:include="fragments/header :: common"></head>
     <body>
         <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+        
+        <script th:inline="javascript">
+            let fields = [[${fields}]];
+            let object = [[${object}]];    
+        </script>
 
+        <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>                        
+        <script type="text/javascript" th:src="@{/js/metadata/modules.js}"></script>                
+        <script type="text/javascript" th:src="@{/js/metadata/forms.js}"></script>                
+
+        <script type="text/javascript" th:src="@{/js/metadata/object/common-module.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/object/command-group.js}"></script>                        
+
+        <highlight th:replace="fragments/highlight :: init"/>
+        
         <nav th:replace="fragments/navbar :: navbar"></nav>
 
         <div class="container-fluid pt-2">
             <nav th:replace="fragments/navbar :: breadcrumb-object"></nav>        
            
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-property-tab" data-toggle="pill" href="#pills-property" role="tab" aria-controls="pills-property" aria-selected="true">Основные свойства</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-forms-tab" data-toggle="pill" href="#pills-forms" role="tab" aria-controls="pills-forms" aria-selected="false">Формы</a>
-                </li>
+                <li th:replace="fragments/metadata-properties :: li-nav-item"></li>        
+
+                <li th:replace="fragments/metadata-modules :: li-nav-object"></li>        
+                <li th:replace="fragments/metadata-modules :: li-nav-manager"></li>        
+                <li th:replace="fragments/metadata-modules :: li-nav-recordSet"></li>        
+                <li th:replace="fragments/metadata-modules :: li-nav-plain"></li>        
+                <li th:replace="fragments/metadata-modules :: li-nav-valueManager"></li>        
+                <li th:replace="fragments/metadata-modules :: li-nav-command"></li>        
+
+                <li th:replace="fragments/metadata-forms :: li-nav-item"></li>      
             </ul>    
             
             <div class="tab-content" id="pills-tabContent">
-                <!-- Основные свойства -->
-                <div class="tab-pane fade show active" id="pills-property" role="tabpanel" aria-labelledby="pills-property-tab">
-                    <table id='properties' class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="w-25" scope="col">Метаданные</th>
-                                <th class="w-75" scope="col">
-                                    <span th:text="${object.listPresentation}"></span>
-                                </th>
-                            </tr>
-                        </thead>                
-                        <tbody>
-                            <tr>
-                                <td>UUID</td>
-                                <td><span th:text="${object.uuid}"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Имя</td>
-                                <td><span th:text="${object.name}"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Синоним</td>
-                                <td><span th:text="${object.synonym}"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Комментарий</td>
-                                <td><span th:text="${object.comment}"></span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div th:replace="fragments/metadata-properties :: div-items"></div>        
 
-                <!-- Формы -->
-                <div class="tab-pane fade" id="pills-forms" role="tabpanel" aria-labelledby="pills-forms-tab">
-                    <table id='forms' class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="" scope="col">Имя</th>  
-                                <th class="" scope="col">UUID</th>                                
-                                <th class="" scope="col">Синоним</th>                              
-                                <th class="" scope="col">Комментарий</th>                                
-                            </tr>
-                        </thead>                
-                        <tbody></tbody>
-                    </table>        
-                </div>
+                <div th:replace="fragments/metadata-modules :: div-object"></div>        
+                <div th:replace="fragments/metadata-modules :: div-manager"></div>        
+                <div th:replace="fragments/metadata-modules :: div-recordSet"></div>        
+                <div th:replace="fragments/metadata-modules :: div-plain"></div>        
+                <div th:replace="fragments/metadata-modules :: div-valueManager"></div>        
+                <div th:replace="fragments/metadata-modules :: div-command"></div>        
+
+                <div th:replace="fragments/metadata-forms :: div-items"></div>        
             </div>            
         </div>
 
-        <!-- Forms -->
-        <script th:inline="javascript">
-            let hasForms = [[${hasForms}]];
-            let fieldForms = [[${fieldForms}]];
+        <div th:replace="fragments/metadata-modules :: method-text"></div> 
 
-            function addForm(form) {
-                $('#forms > tbody:last-child')
-                    .append($('<tr>')
-                        .append($('<td>').text(form.name))
-                        .append($('<td>').text(form.uuid))                        
-                        .append($('<td>').text(form.synonym))
-                        .append($('<td>').text(form.comment))
-                    );                
-            }
-
-            function addForms() {
-                if (hasForms == true) {
-                    for (let f = 0; f < object[fieldForms].length; f++) {
-                        addForm(object.forms[f]);    
-                    }            
-                } else {
-                    $('#pills-forms-tab').css("visibility","hidden");
-                }
-            }
-        </script>
-
-        <script th:inline="javascript">
-            let object = [[${object}]];
-
-            function addProperties_CommonModule (object) {
-                addLine('Глобальный', object.global);
-                addLine('Клиент (управляемое приложение)', object.clientManagedApplication);
-                addLine('Клиент (обычное приложение)', object.clientOrdinaryApplication);
-                addLine('Сервер', object.server);
-                addLine('Внешнее соединение', object.externalConnection);
-                addLine('Вызов сервера', object.serverCall);
-                addLine('Привелегированный', object.privileged);
-
-                let returnValuesReuse = null;
-                if (object.returnValuesReuse === 'DONT_USE') {
-                    returnValuesReuse = 'Не использовать';
-
-                } else if (object.returnValuesReuse === 'DURING_REQUEST') {
-                    returnValuesReuse = 'На время вызова';
-
-                } else if (object.returnValuesReuse === 'DURING_SESSION') {
-                    returnValuesReuse = 'На время сеанса';
-                }
-
-                addLine('Повторное использование', returnValuesReuse);
-            }
-
-            function addProperties_CommandGroup(object) {
-                // todo: вынести в типы данных
-                let category = null;
-                if (object.category === 'NAVIGATION_PANEL') {
-                    category = 'Панель навигации';
-                } else if (object.category === 'FORM_NAVIGATION_PANEL') {
-                    category = 'Панель навигации формы';
-                } else if (object.category === 'ACTIONS_PANEL') {
-                    category = 'Панель действий';
-                } else if (object.category === 'FORM_COMMAND_BAR') {
-                    category = 'Командная панель формы';
-                }
-                addLine('Категория', category);
-
-                // todo: вынести в типы данных
-                let representation = null;
-                if (object.representation === 'PICTURE_AND_TEXT') {
-                    representation = 'Картинка и текст';
-                } else if (object.representation === 'PICTURE') {
-                    representation = 'Картинка';
-                } else if (object.representation === 'TEXT') {
-                    representation = 'Текст';
-                } else if (object.representation === 'AUTO') {
-                    representation = 'Авто';
-                }
-                addLine('Отображение', representation);
-
-                addLine('Подсказка', object.toolTip);
-            }
-
-            function addLine(name, value) {
-                $('#properties > tbody:last-child')
-                    .append($('<tr>')
-                        .append($('<td>').text(name))
-                        .append($('<td>').text(value))
-                    );
-            }
-
-            if (object.xmlName === 'CommandGroup') {
-                addProperties_CommandGroup(object);
-
-            } else if (object.xmlName === 'CommonModule') {
-                addProperties_CommonModule(object);
-            }
-
+        <script>
+            addProperties();
             addForms();
+            addModules();            
         </script>
 
         <footer th:replace="fragments/footer :: bootstrap"></footer>

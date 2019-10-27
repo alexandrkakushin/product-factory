@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
+import ru.pf.metadata.annotation.PlainModule;
 
 /**
  * @author a.kakushin
@@ -13,6 +14,7 @@ import ru.pf.metadata.Module;
 @EqualsAndHashCode(callSuper = true)
 public class Form extends AbstractMetadataObject {
 
+    @PlainModule
 	private Module module;
 
     public Form(Path path) {

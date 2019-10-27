@@ -3,6 +3,7 @@ package ru.pf.metadata.object.common;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
+import ru.pf.metadata.annotation.PlainModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
@@ -27,6 +28,7 @@ public class CommonModule extends AbstractMetadataObject {
     private boolean privileged;
     private ReturnValuesReuse returnValuesReuse;
 
+    @PlainModule
     private Module module;
 
     public CommonModule(Path path) {
@@ -68,14 +70,6 @@ public class CommonModule extends AbstractMetadataObject {
         this.serverCall = objReader.readBool(nodeProperties + "ServerCall");
         this.privileged = objReader.readBool(nodeProperties + "Privileged");
         this.returnValuesReuse = ReturnValuesReuse.valueByName(objReader.read(nodeProperties + "ReturnValuesReuse"));
-
-        // object module
-        Path fileModule = super.getFile().getParent().resolve(this.getShortName(super.getFile())).resolve("Ext")
-                .resolve("Module.bsl");
-
-        if (Files.exists(fileModule)) {
-            this.module = ModuleReader.read(fileModule, Module.Type.COMMON_MODULE);
-        }
 
         return objReader;
     }

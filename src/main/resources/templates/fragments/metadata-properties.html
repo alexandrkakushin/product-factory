@@ -1,0 +1,37 @@
+
+<li xmlns:th="http://www.thymeleaf.org" th:fragment="li-nav-item" class="nav-item">
+    <a class="nav-link active" id="pills-property-tab" data-toggle="pill" href="#pills-property" role="tab" aria-controls="pills-property" aria-selected="true">Основные свойства</a>
+</li>
+
+<!-- Основные свойства -->
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="div-items" class="tab-pane fade show active" id="pills-property" role="tabpanel" aria-labelledby="pills-property-tab">
+    <table id='properties' class="table table-hover">
+        <thead>
+            <tr>
+                <th class="w-25" scope="col">Метаданные</th>
+                <th class="w-75" scope="col">
+                    <span th:text="${object.listPresentation}"></span>
+                </th>
+            </tr>
+        </thead>                
+        <tbody>
+            <tr>
+                <td>UUID</td>
+                <td><span th:text="${object.uuid}"></span></td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td><span th:text="${object.name}"></span></td>
+            </tr>
+            <tr>
+                <td>Синоним</td>
+                <td><span th:text="${object.synonym}"></span></td>
+            </tr>
+            <tr>
+                <td>Комментарий</td>
+                <td><span th:text="${object.comment}"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    

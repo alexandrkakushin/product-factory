@@ -52,6 +52,10 @@ public class Module {
     }
 
     public String getCode() {
+        if (this.getText() == null) {
+            return null;
+        }
+        
         StringBuilder sb = new StringBuilder();
 
         Arrays.asList(this.getText().split(System.lineSeparator()))

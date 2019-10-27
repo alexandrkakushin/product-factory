@@ -1,0 +1,11 @@
+
+<init xmlns:th="http://www.thymeleaf.org" th:fragment="div-nav-item">
+    <script type="text/javascript" th:src="@{/webjars/highlightjs/highlight.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/highlightjs/languages/1c.min.js}"></script>
+    <script>
+        hljs.configure({
+            languages: ["1C"]
+        })
+        hljs.initHighlighting();      
+    </script>
+</init>
