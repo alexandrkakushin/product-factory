@@ -6,11 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author a.kakushin
  */
 @Entity
 @Table(name = "INFOBASES")
+@Data
 public class InfoBase implements PfEntity<InfoBase, Long> {
 
     @Id
@@ -20,16 +23,4 @@ public class InfoBase implements PfEntity<InfoBase, Long> {
     private String name;
     private String comment;
 
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-    
-    public String getName() {
-		return name;
-	}
-
-	public String getComment() {
-		return comment;
-	}    
 }

@@ -6,12 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * Сущность "Операционная система"
  * @author a.kakushin
  */
 @Entity
 @Table(name = "OS")
+@Data
 public class Os implements PfEntity<Os, Long> {
 
     @Id
@@ -20,19 +23,5 @@ public class Os implements PfEntity<Os, Long> {
 
     private String name;
     private String comment;
-
-    public Os() {}
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-    
-    public String getName() {
-		return name;
-	}
-
-	public String getComment() {
-		return comment;
-	}    
+   
 }

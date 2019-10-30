@@ -6,12 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * Сущность "Служба сервера"
  * @author a.kakushin
  */
 @Entity
 @Table(name = "SERVICES")
+@Data
 public class Service implements PfEntity<Service, Long>{
 
     @Id
@@ -20,19 +23,5 @@ public class Service implements PfEntity<Service, Long>{
 
     private String name;
     private String comment;
-
-    public Service() {}
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-	public String getName() {
-		return name;
-	}
-
-	public String getComment() {
-		return comment;
-	}    
+      
 }

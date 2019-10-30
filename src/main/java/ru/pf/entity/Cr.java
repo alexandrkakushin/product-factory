@@ -6,12 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * CR - Configuration Repository
  * @author a.kakushin
  */
 @Entity
 @Table(name = "CR")
+@Data
 public class Cr implements PfEntity<Cr, Long> {
 
     @Id
@@ -26,30 +29,5 @@ public class Cr implements PfEntity<Cr, Long> {
     private String login;
     private String password;
 
-    public Cr() {}
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-    
-    public String getName() {
-		return name;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public String getAddress() {
-        return address;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    private String version;
 }

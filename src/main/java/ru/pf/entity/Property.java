@@ -7,11 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author a.kakushin
  */
 @Entity
 @Table(name = "PROPERTIES")
+@Data
 public class Property implements PfEntity<Property, Long> {
 
     @Id
@@ -26,23 +29,4 @@ public class Property implements PfEntity<Property, Long> {
 
     private String comment;
 
-    public Property() {
-    }
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getName() {
-    	return name;
-    }
-        
-    public String getValue() {
-        return value;
-    }
-    
-    public String getComment() {
-    	return comment;
-    }
 }
