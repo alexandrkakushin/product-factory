@@ -192,3 +192,12 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="version" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-name">Версия</label>
+        <div class="col-sm-5">
+            <input th:field="*{version}" th:value="${entity.version}" type="text" class="form-control" id="field-name" placeholder="Версия">
+        </div>
+    </div>
+</item-field>
