@@ -61,10 +61,10 @@
                 </div>
 
                 <div class="col-sm-8">
-                    <table class="table table-hover">
+                    <table id="table-info-objects" class="table table-hover">
                         <tr>
-                            <td>Общее количество объектов</td>
-                            <td id="totalObjects">Подсчет...</td>
+                            <td class="w-75">Общее количество объектов</td>
+                            <td id="totalObjects"></td>                                                       
                         </tr>
                     </table>
                 </div>
@@ -104,13 +104,15 @@
             </script>
 
             <script>
-                function updateConf() {
+                function updateConf() {                    
+                    $('#totalObjects').html("Обновление ...");
+                            
                     $.ajax({
                         type : "POST",
                         contentType : "application/json",
                         url : `/api/projects/[[${projectId}]]/update`,
                         dataType : 'json',
-                        timeout : 100000,
+                        timeout : 0,
                         success : function(data) {
                             let text = data.success === true ?
                                 'Обновление выполнено успешно' :
