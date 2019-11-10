@@ -23,7 +23,7 @@ public class CrService {
     @Autowired
     private ProjectsService projectsService;
 
-    public boolean fetch(Project project) throws IOException {
+    public boolean pull(Project project) throws IOException {
         Path target = projectsService.getTemporaryLocation(project);
         Path pathIb = target.resolve(".cr");
 
@@ -117,10 +117,13 @@ public class CrService {
     private String thickClient() throws FileNotFoundException {
         Path application = null;
         if (isWindows()) {
-            // todo: реализовать работу на Windows
+            // 
         } else {
-            // todo: пока костыль
-            application = Paths.get("/opt/1C/v8.3/x86_64/1cv8");
+            // Возможно установить только платформу только одной версии
+            application = Paths.get("/opt/1C/v8.3/i386/1cv8");
+            if (!Files.exists(application)) {
+                application = Paths.get("/opt/1C/v8.3/x86_64/1cv8");
+            }            
         }
 
         if (!Files.exists(application)) {

@@ -57,7 +57,7 @@ public class ProjectsService {
 
     private boolean updateFromCr(Project project) {
         try {
-            return crService.fetch(project);
+            return crService.pull(project);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

@@ -36,4 +36,8 @@ public class PropertiesService {
         String saved = this.get(Properties.CHECK_LINE_SIZE);
         return saved != null ? Integer.valueOf(saved) : 0;
     }
+
+    public Path getDirVersions1C() {
+        return Paths.get(this.get(Properties.DIR_VERSIONS_1C));
+    }
 }
