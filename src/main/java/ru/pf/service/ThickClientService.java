@@ -41,7 +41,9 @@ public class ThickClientService {
         final List<Path> directories = new ArrayList<>();
         final List<Path> existsing = new ArrayList<>();
 
-        directories.add(propertiesService.getDirVersions1C());
+        if (!propertiesService.getDirVersions1C().toString().isEmpty()) {
+            directories.add(propertiesService.getDirVersions1C());
+        }        
 
         if (isWindows()) {
             directories.add(Paths.get("C:\\Program Files\\1cv8"));
