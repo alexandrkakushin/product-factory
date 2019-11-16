@@ -201,3 +201,35 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="host" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-name">Хост</label>
+        <div class="col-sm-5">
+            <input th:field="*{host}" th:value="${entity.host}" type="text" class="form-control" id="field-name" placeholder="Хост">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="path" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-name">Каталог</label>
+        <div class="col-sm-5">
+            <input th:field="*{path}" th:value="${entity.path}" type="text" class="form-control" id="field-name" placeholder="Каталог">
+        </div>
+    </div>
+</item-field>
+
+<item-field th:id = "input_Designer" th:fragment="designer" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-cr">Конфигуратор</label>
+        <div class="col-sm-5">
+            <select id="field-designer" class="custom-select" th:field="*{designer.id}">
+                <option value="">Выберите конфигуратор</option>
+                <option th:each="designer : ${designerList}" th:value="${designer.id}">
+                    <p th:text="${designer.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>

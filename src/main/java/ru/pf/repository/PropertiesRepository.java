@@ -8,7 +8,7 @@ import java.util.Optional;
  * Репозиторий для получения настроек
  * @author a.kakushin
  */
-public interface PropertiesRepository extends PfRepository<Property, Long> {
+public interface PropertiesRepository extends PfRepository<Property> {
 
     @Override
     default Property newInstance() {

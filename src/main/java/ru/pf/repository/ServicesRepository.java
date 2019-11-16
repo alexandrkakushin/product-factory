@@ -6,7 +6,7 @@ import ru.pf.entity.Service;
  * Репозиторий "Сервисы"
  * @author a.kakushin
  */
-public interface ServicesRepository extends PfRepository<Service, Long> {
+public interface ServicesRepository extends PfRepository<Service> {
 
     @Override
     default Service newInstance() {

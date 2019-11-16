@@ -18,7 +18,7 @@ import lombok.Data;
 @Entity
 @Table(name = "PROJECTS")
 @Data
-public class Project implements PfEntity<Project, Long> {
+public class Project implements PfEntity<Project> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -72,9 +72,9 @@ public class Catalog extends AbstractMetadataObject {
     public ObjectReader parse() throws IOException {
         ObjectReader objReader = super.parse();
 
-        String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
         String nodeRoot = "/MetaDataObject/" + getXmlName();
         
+        String nodeProperties = nodeRoot + "/Properties/";
         this.hierarchical  = objReader.readBool(nodeProperties + "Hierarchical");
         this.hierarchyType = HierarchyType.valueByName(
                 objReader.read(nodeProperties + "HierarchyType"));

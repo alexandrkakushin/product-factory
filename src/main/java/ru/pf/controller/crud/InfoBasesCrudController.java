@@ -1,9 +1,8 @@
-package ru.pf.controller.development;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.InfoBase;
 import ru.pf.repository.InfoBasesRepository;
 import ru.pf.repository.PfRepository;
@@ -13,7 +12,7 @@ import ru.pf.repository.PfRepository;
  */
 @Controller
 @RequestMapping(InfoBasesCrudController.url)
-public class InfoBasesCrudController implements PfCrudController<InfoBase, Long> {
+public class InfoBasesCrudController implements PfCrudController<InfoBase> {
 
     final static String url = "development/infobases";
 
@@ -36,7 +35,7 @@ public class InfoBasesCrudController implements PfCrudController<InfoBase, Long>
     }
 
     @Override
-    public PfRepository<InfoBase, Long> getRepository() {
+    public PfRepository<InfoBase> getRepository() {
         return this.infoBasesRepository;
     }
 }

@@ -26,12 +26,8 @@ import ru.pf.metadata.annotation.PlainModule;
 import ru.pf.metadata.annotation.RecordSetModule;
 import ru.pf.metadata.annotation.ValueManagerModule;
 import ru.pf.metadata.object.AbstractMetadataObject;
-import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.MetadataObject;
-import ru.pf.metadata.object.common.CommonForm;
-import ru.pf.metadata.object.common.CommonModule;
-import ru.pf.metadata.object.common.Language;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 

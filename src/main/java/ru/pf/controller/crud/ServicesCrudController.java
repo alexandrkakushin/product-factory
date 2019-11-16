@@ -1,9 +1,8 @@
-package ru.pf.controller.infrastructure;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Service;
 import ru.pf.repository.PfRepository;
 import ru.pf.repository.ServicesRepository;
@@ -13,7 +12,7 @@ import ru.pf.repository.ServicesRepository;
  */
 @Controller
 @RequestMapping(ServicesCrudController.url)
-public class ServicesCrudController implements PfCrudController<Service, Long> {
+public class ServicesCrudController implements PfCrudController<Service> {
 
     final static String url = "infrastructure/services";
 
@@ -36,7 +35,7 @@ public class ServicesCrudController implements PfCrudController<Service, Long> {
     }
 
     @Override
-    public PfRepository<Service, Long> getRepository() {
+    public PfRepository<Service> getRepository() {
         return this.servicesRepository;
     }
 }

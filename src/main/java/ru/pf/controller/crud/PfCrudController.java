@@ -1,9 +1,11 @@
-package ru.pf.controller;
+package ru.pf.controller.crud;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import ru.pf.controller.PfController;
 import ru.pf.entity.PfEntity;
 import ru.pf.repository.PfRepository;
 
@@ -12,7 +14,7 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-public interface PfCrudController<T extends PfEntity<?, ?>, ID> extends PfController {
+public interface PfCrudController<T extends PfEntity<?>> extends PfController {
 
     String getTemplateItem();
 
@@ -20,7 +22,7 @@ public interface PfCrudController<T extends PfEntity<?, ?>, ID> extends PfContro
         return "catalogs/items";
     }
 
-    PfRepository<T, ID> getRepository();
+    PfRepository<T> getRepository();
 
     default void addAttributesItems(Model model) {}
 
@@ -44,8 +46,8 @@ public interface PfCrudController<T extends PfEntity<?, ?>, ID> extends PfContro
     }
 
     @GetMapping("/{id}")
-    default String form(@PathVariable(name = "id") Long id, Model model) {
-        T entity =  getRepository().findById((ID) id)
+    default String form(@PathVariable(name = "id") Long id, Model model) {        
+        T entity =  getRepository().findById(id)
                 .orElse(getRepository().newInstance());
 
         model.addAttribute("entity", entity);
@@ -61,7 +63,7 @@ public interface PfCrudController<T extends PfEntity<?, ?>, ID> extends PfContro
     }
 
     @RequestMapping("/delete/{id}")
-    default String delete(@PathVariable(name = "id") ID id) {
+    default String delete(@PathVariable(name = "id") Long id) {
         // TODO: переделать на Async XHR
         getRepository().deleteById(id);
         return "redirect:/" + getUrl();

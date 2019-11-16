@@ -3,8 +3,8 @@ package ru.pf.entity;
 /**
  * @author a.kakushin
  */
-public interface PfEntity<T, ID> {
+public interface PfEntity<T> {
 
-    ID getId();
+    Long getId();
 
 }

@@ -9,19 +9,25 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- * Сущность "Служба сервера"
+ * "Конфигураторы"
+ * 
  * @author a.kakushin
  */
 @Entity
-@Table(name = "SERVICES")
+@Table(name = "DESIGNERS")
 @Data
-public class Service implements PfEntity<Service> {
+public class Designer implements PfEntity<Designer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
+
+    private String host;
+    private String version;
+    private String path;
+
     private String comment;
-      
+
 }

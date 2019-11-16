@@ -6,7 +6,7 @@ import ru.pf.entity.Git;
  * Репозиторий "GIT"
  * @author a.kakushin
  */
-public interface GitRepository extends PfRepository<Git, Long> {
+public interface GitRepository extends PfRepository<Git> {
 
     @Override
     default Git newInstance() {

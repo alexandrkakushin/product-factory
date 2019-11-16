@@ -14,7 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "INFOBASES")
 @Data
-public class InfoBase implements PfEntity<InfoBase, Long> {
+public class InfoBase implements PfEntity<InfoBase> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

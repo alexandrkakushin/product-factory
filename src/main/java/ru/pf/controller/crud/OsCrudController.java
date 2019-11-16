@@ -1,9 +1,8 @@
-package ru.pf.controller.infrastructure;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Os;
 import ru.pf.repository.OsRepository;
 import ru.pf.repository.PfRepository;
@@ -13,7 +12,7 @@ import ru.pf.repository.PfRepository;
  */
 @Controller
 @RequestMapping(OsCrudController.url)
-public class OsCrudController implements PfCrudController<Os, Long> {
+public class OsCrudController implements PfCrudController<Os> {
 
     final static String url = "infrastructure/os";
 
@@ -36,7 +35,7 @@ public class OsCrudController implements PfCrudController<Os, Long> {
     }
 
     @Override
-    public PfRepository<Os, Long> getRepository() {
+    public PfRepository<Os> getRepository() {
         return this.osRepository;
     }
 }

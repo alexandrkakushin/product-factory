@@ -17,7 +17,7 @@ import lombok.Data;
 @Entity
 @Table(name = "SERVERS")
 @Data
-public class Server implements PfEntity<Server, Long>{
+public class Server implements PfEntity<Server> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
