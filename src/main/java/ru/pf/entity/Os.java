@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "OS")
 @Data
-public class Os implements PfEntity<Os, Long> {
+public class Os implements PfEntity<Os> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

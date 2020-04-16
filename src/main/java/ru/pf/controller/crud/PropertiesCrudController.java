@@ -1,10 +1,9 @@
-package ru.pf.controller.tools;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Property;
 import ru.pf.repository.PfRepository;
 import ru.pf.repository.PropertiesRepository;
@@ -15,7 +14,7 @@ import ru.pf.utility.Properties;
  */
 @Controller
 @RequestMapping(PropertiesCrudController.url)
-public class PropertiesCrudController implements PfCrudController<Property, Long> {
+public class PropertiesCrudController implements PfCrudController<Property> {
 
     final static String url = "tools/properties";
 
@@ -43,7 +42,7 @@ public class PropertiesCrudController implements PfCrudController<Property, Long
     }
 
     @Override
-    public PfRepository<Property, Long> getRepository() {
+    public PfRepository<Property> getRepository() {
         return this.propertiesRepository;
     }
 

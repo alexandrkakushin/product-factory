@@ -14,7 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "GIT")
 @Data
-public class Git implements PfEntity<Git, Long> {
+public class Git implements PfEntity<Git> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

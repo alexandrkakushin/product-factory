@@ -1,9 +1,8 @@
-package ru.pf.controller.vcs;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Git;
 import ru.pf.repository.GitRepository;
 import ru.pf.repository.PfRepository;
@@ -13,7 +12,7 @@ import ru.pf.repository.PfRepository;
  */
 @Controller
 @RequestMapping(GitCrudController.url)
-public class GitCrudController implements PfCrudController<Git, Long> {
+public class GitCrudController implements PfCrudController<Git> {
 
     final static String url = "vcs/git";
 
@@ -36,7 +35,7 @@ public class GitCrudController implements PfCrudController<Git, Long> {
     }
 
     @Override
-    public PfRepository<Git, Long> getRepository() {
+    public PfRepository<Git> getRepository() {
         return this.gitRepository;
     }
 }

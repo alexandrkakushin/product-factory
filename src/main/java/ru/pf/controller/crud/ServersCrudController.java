@@ -1,11 +1,10 @@
-package ru.pf.controller.infrastructure;
+package ru.pf.controller.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.pf.controller.PfCrudController;
 import ru.pf.entity.Server;
 import ru.pf.repository.OsRepository;
 import ru.pf.repository.PfRepository;
@@ -16,7 +15,7 @@ import ru.pf.repository.ServersRepository;
  */
 @Controller
 @RequestMapping(ServersCrudController.url)
-public class ServersCrudController implements PfCrudController<Server, Long> {
+public class ServersCrudController implements PfCrudController<Server> {
 
     final static String url = "infrastructure/servers";
 
@@ -42,7 +41,7 @@ public class ServersCrudController implements PfCrudController<Server, Long> {
     }
 
     @Override
-    public PfRepository<Server, Long> getRepository() {
+    public PfRepository<Server> getRepository() {
         return this.serversRepository;
     }
 

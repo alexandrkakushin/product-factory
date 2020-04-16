@@ -8,7 +8,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @author a.kakushin
  */
 @NoRepositoryBean
-public interface PfRepository<T, ID> extends CrudRepository<T, ID> {
+public interface PfRepository<T> extends CrudRepository<T, Long> {
 
     Iterable<T> findAll(Sort sort);
 

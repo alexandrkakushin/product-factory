@@ -5,7 +5,7 @@ import ru.pf.entity.InfoBase;
 /**
  * @author a.kakushin
  */
-public interface InfoBasesRepository extends PfRepository<InfoBase, Long> {
+public interface InfoBasesRepository extends PfRepository<InfoBase> {
 
     @Override
     default InfoBase newInstance() {
