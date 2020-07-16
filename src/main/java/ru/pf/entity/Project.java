@@ -52,6 +52,11 @@ public class Project implements PfEntity<Project> {
     @Enumerated(EnumType.STRING)
     private SourceType sourceType;
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
     public enum SourceType {
         FILE_ZIP, FILE_CF, DIRECTORY, CR, GIT
 

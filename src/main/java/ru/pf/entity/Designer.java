@@ -30,4 +30,8 @@ public class Designer implements PfEntity<Designer> {
 
     private String comment;
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

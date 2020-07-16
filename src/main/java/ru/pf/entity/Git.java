@@ -25,5 +25,9 @@ public class Git implements PfEntity<Git> {
 
     private String fetchUrl;
     private String defaultBranch;
-    
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

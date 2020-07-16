@@ -23,5 +23,9 @@ public class Service implements PfEntity<Service> {
 
     private String name;
     private String comment;
-      
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

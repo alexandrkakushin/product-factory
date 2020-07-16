@@ -29,4 +29,8 @@ public class Property implements PfEntity<Property> {
 
     private String comment;
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

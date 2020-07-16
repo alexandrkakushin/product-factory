@@ -23,5 +23,9 @@ public class Os implements PfEntity<Os> {
 
     private String name;
     private String comment;
-   
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

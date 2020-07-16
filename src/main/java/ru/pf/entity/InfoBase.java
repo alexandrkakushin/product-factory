@@ -23,4 +23,8 @@ public class InfoBase implements PfEntity<InfoBase> {
     private String name;
     private String comment;
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

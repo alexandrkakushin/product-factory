@@ -34,4 +34,9 @@ public class Cr implements PfEntity<Cr> {
     @ManyToOne
     @JoinColumn(name="designer_id")
     private Designer designer;
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }

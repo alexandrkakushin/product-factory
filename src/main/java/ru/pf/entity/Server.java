@@ -34,4 +34,8 @@ public class Server implements PfEntity<Server> {
     private Integer ram;
     private String ip4;
 
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 }
