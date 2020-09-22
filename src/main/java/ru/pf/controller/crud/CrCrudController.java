@@ -14,10 +14,10 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(CrCrudController.url)
+@RequestMapping(CrCrudController.URL)
 public class CrCrudController implements PfCrudController<Cr> {
 
-    final static String url = "vcs/cr";
+    static final String URL = "vcs/cr";
 
     @Autowired
     private CrRepository crRepository;
@@ -27,7 +27,7 @@ public class CrCrudController implements PfCrudController<Cr> {
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

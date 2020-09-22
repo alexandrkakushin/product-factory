@@ -11,17 +11,17 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(GitCrudController.url)
+@RequestMapping(GitCrudController.URL)
 public class GitCrudController implements PfCrudController<Git> {
 
-    final static String url = "vcs/git";
+    static final String URL = "vcs/git";
 
     @Autowired
     private GitRepository gitRepository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

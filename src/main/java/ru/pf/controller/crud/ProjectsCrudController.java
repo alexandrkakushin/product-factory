@@ -15,10 +15,10 @@ import ru.pf.repository.ProjectsRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(ProjectsCrudController.url)
+@RequestMapping(ProjectsCrudController.URL)
 public class ProjectsCrudController implements PfCrudController<Project> {
 
-    final static String url = "development/projects";
+    static final String URL = "development/projects";
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -31,7 +31,7 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override
@@ -73,6 +73,6 @@ public class ProjectsCrudController implements PfCrudController<Project> {
         }
 
         Project saved = projectsRepository.save(entity);
-        return "redirect:/" + url + "/" + saved.getId();
+        return "redirect:/" + getUrl() + "/" + saved.getId();
     }
 }

@@ -11,17 +11,17 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(InfoBasesCrudController.url)
+@RequestMapping(InfoBasesCrudController.URL)
 public class InfoBasesCrudController implements PfCrudController<InfoBase> {
 
-    final static String url = "development/infobases";
+    static final String URL = "development/infobases";
 
     @Autowired
     private InfoBasesRepository infoBasesRepository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

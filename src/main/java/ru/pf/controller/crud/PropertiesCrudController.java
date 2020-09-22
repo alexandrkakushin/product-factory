@@ -13,17 +13,17 @@ import ru.pf.utility.Properties;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(PropertiesCrudController.url)
+@RequestMapping(PropertiesCrudController.URL)
 public class PropertiesCrudController implements PfCrudController<Property> {
 
-    final static String url = "tools/properties";
+    static final String URL = "tools/properties";
 
     @Autowired
     private PropertiesRepository propertiesRepository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

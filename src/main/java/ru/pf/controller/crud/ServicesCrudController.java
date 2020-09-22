@@ -11,17 +11,17 @@ import ru.pf.repository.ServicesRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(ServicesCrudController.url)
+@RequestMapping(ServicesCrudController.URL)
 public class ServicesCrudController implements PfCrudController<Service> {
 
-    final static String url = "infrastructure/services";
+    static final String URL = "infrastructure/services";
 
     @Autowired
     private ServicesRepository servicesRepository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

@@ -14,10 +14,10 @@ import ru.pf.repository.ServersRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(ServersCrudController.url)
+@RequestMapping(ServersCrudController.URL)
 public class ServersCrudController implements PfCrudController<Server> {
 
-    final static String url = "infrastructure/servers";
+    static final String URL = "infrastructure/servers";
 
     @Autowired
     private ServersRepository serversRepository;
@@ -27,7 +27,7 @@ public class ServersCrudController implements PfCrudController<Server> {
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ServersCrudController implements PfCrudController<Server> {
             }
         }
         Server saved = this.getRepository().save(entity);
-        return "redirect:/" + url + "/" + saved.getId();
+        return "redirect:/" + getUrl() + "/" + saved.getId();
     }
 
 }

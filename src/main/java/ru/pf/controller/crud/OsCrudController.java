@@ -11,17 +11,17 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(OsCrudController.url)
+@RequestMapping(OsCrudController.URL)
 public class OsCrudController implements PfCrudController<Os> {
 
-    final static String url = "infrastructure/os";
+    static final String URL = "infrastructure/os";
 
     @Autowired
     private OsRepository osRepository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

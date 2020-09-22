@@ -12,17 +12,17 @@ import ru.pf.repository.PfRepository;
  * @author a.kakushin
  */
 @Controller
-@RequestMapping(DesignerCrudController.url)
+@RequestMapping(DesignerCrudController.URL)
 public class DesignerCrudController implements PfCrudController<Designer> {
 
-    final static String url = "tools/designers";
+    static final String URL = "tools/designers";
 
     @Autowired
     private DesignerRepository repository;
 
     @Override
     public String getUrl() {
-        return url;
+        return URL;
     }
 
     @Override

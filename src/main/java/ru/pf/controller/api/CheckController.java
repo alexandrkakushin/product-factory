@@ -118,7 +118,7 @@ public class CheckController {
 
         public ResponseService(List<Object> objects) {
             if (objects != null) {
-                this.result = (objects.size() == 0);
+                this.result = objects.isEmpty();
             }
             this.objects = objects;
         }
