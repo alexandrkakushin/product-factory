@@ -42,20 +42,17 @@ public class ConfController {
     ProjectsRepository projectsRepository;
 
     @PostMapping("/{id}/update")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id) {
-        ConfController.ResponseUpdate body = new ConfController.ResponseUpdate();
+    public ResponseEntity<ResponseUpdate> update(@PathVariable(name = "id") Long id) {
+        ResponseUpdate body = new ConfController.ResponseUpdate();
         body.setSuccess(false);
 
-        projectsRepository.findById(id).ifPresent(
-                (Project project) -> {
-                    try {
-                        body.setSuccess(
-                                projectsService.update(project));
-                    } catch (IOException  ex) {
-                        body.setDescription(ex.getLocalizedMessage());
-                    }
-                }
-        );
+        projectsRepository.findById(id).ifPresent((Project project) -> {
+            try {
+                body.setSuccess(projectsService.update(project));
+            } catch (IOException ex) {
+                body.setDescription(ex.getLocalizedMessage());
+            }
+        });
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
@@ -73,7 +70,8 @@ public class ConfController {
     }
 
     @GetMapping("/{id}/conf/download")
-    public ResponseEntity<InputStreamResource> downloadZip(@PathVariable(name = "id") Long id) throws IOException {
+    public ResponseEntity<InputStreamResource> downloadZip(@PathVariable(name = "id") Long id)
+            throws IOException {
 
         Optional<Project> projectOptional = projectsRepository.findById(id);
         if (projectOptional.isPresent()) {
@@ -86,7 +84,7 @@ public class ConfController {
                 String fileName = "project_" + projectOptional.get().getId() + "_conf.zip";
 
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .contentLength(baos.size())
                         .body(resource);
@@ -96,11 +94,9 @@ public class ConfController {
         return null;
     }
 
-    static class ResponseUpdate{
+    static class ResponseUpdate {
         private boolean success;
         private String description;
-
-        public ResponseUpdate() {}
 
         public void setSuccess(boolean success) {
             this.success = success;
