@@ -5,9 +5,15 @@ function addMethod(nameModule, name, isFunction, isEmpty, isExport) {
             .append($('<td>')
                 .append($('<a>').attr("href", "").text(name)))
 
-            .append($('<td>').addClass("text-center").text(isFunction))
-            .append($('<td>').addClass("text-center").text(isEmpty))
-            .append($('<td>').addClass("text-center").text(isExport))
+            .append($('<td>').addClass("text-center")
+                .append(addCheckbox("checkbox_isFunction", isFunction)))                        
+
+            .append($('<td>').addClass("text-center")
+                .append(addCheckbox("checkbox_isEmpty", isEmpty)))                        
+
+            .append($('<td>').addClass("text-center")
+                .append(addCheckbox("checkbox_isExport", isExport)))                        
+            
             .append($('<td>').addClass("text-center")
                 .append($('<button>').addClass("btn btn-link")
                     .attr("module", nameModule)
@@ -23,7 +29,7 @@ function addModules() {
     let modules = ['managerModule', 'objectModule', 'recordSetModule', 'plainModule', 'valueManagerModule', 'commandModule'];
     for (let m = 0; m < modules.length; m++) {
         if (fields[modules[m]]) {
-            nameModule = fields[modules[m]];                        
+            let nameModule = fields[modules[m]];                        
             if (object[nameModule] == null) {
                 continue;
             }
@@ -35,6 +41,18 @@ function addModules() {
             $('#pills-' + modules[m] + '-tab').hide();
         }
     }
+}
+
+function addCheckbox(id, value) {
+
+    return $('<div>').addClass("form-check")
+        .append($('<input>')
+            .addClass("form-check-input")
+            .attr("type", "checkbox")
+            .attr("id", id)
+            .attr("checked", value)
+            .on('click', function() {return false})
+    )
 }
 
 function btnMethodOnClick(event) {
