@@ -17,23 +17,27 @@ public class PropertiesService {
     @Autowired
     PropertiesRepository propertiesRepository;
 
-    public String get(String name) {
+    public String get(final String name) {
         return propertiesRepository.getByName(name)
             .map(item -> item.getValue())
                 .orElse(null);
     }
 
     public Path getStorage() {
-        return Paths.get(this.get(Properties.STORAGE));
+        String path = this.get(Properties.STORAGE);
+        if (path == null || path.isEmpty()) {
+            path = System.getProperty("java.io.tmpdir");
+        }
+        return Paths.get(path);
     }
 
     public int getCheckNameLength() {
-        String saved = this.get(Properties.CHECK_NAME_LENGTH);
+        final String saved = this.get(Properties.CHECK_NAME_LENGTH);
         return saved != null ? Integer.valueOf(saved) : 0;
     }
 
     public int getCheckLineSize() {
-        String saved = this.get(Properties.CHECK_LINE_SIZE);
+        final String saved = this.get(Properties.CHECK_LINE_SIZE);
         return saved != null ? Integer.valueOf(saved) : 0;
     }
 
