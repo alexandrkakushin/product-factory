@@ -3,6 +3,7 @@ package ru.pf.metadata.object;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.annotation.ManagerModule;
 import ru.pf.metadata.annotation.ObjectModule;
+import ru.pf.metadata.annotation.Owners;
 import ru.pf.metadata.reader.ObjectReader;
 
 /**
@@ -27,7 +29,9 @@ public class Catalog extends AbstractMetadataObject {
     private boolean foldersOnTop;
     private boolean useStandardCommands;
 
-    // todo: <Owners/>,
+    @Owners
+    private Set<MetadataObject> owners;
+
     private SubordinationUse subordinationUse;
     private int codeLength;
     private int descriptionLength;
@@ -84,6 +88,8 @@ public class Catalog extends AbstractMetadataObject {
         this.foldersOnTop = objReader.readBool(nodeProperties + "FoldersOnTop");
         this.useStandardCommands = objReader.readBool(nodeProperties + "UseStandardCommands");
 
+        // owners
+
         this.subordinationUse = SubordinationUse.valueByName(
                 objReader.read(nodeProperties + "SubordinationUse"));
 
@@ -98,7 +104,7 @@ public class Catalog extends AbstractMetadataObject {
         this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
         this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
         this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
-        
+
         return objReader;
     }
 

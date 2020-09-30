@@ -13,12 +13,14 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 
 /**
  * @author a.kakushin
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Conf extends AbstractMetadataObject {
 
     private Module ordinaryApplicationModule;
@@ -68,6 +70,8 @@ public class Conf extends AbstractMetadataObject {
     private Set<MetadataObject> tasks;
     private Set<MetadataObject> externalDataSources;
 
+    private Map<String, UUID> refs;
+
     public Conf(Path path) {
         super(path);
 
@@ -112,6 +116,8 @@ public class Conf extends AbstractMetadataObject {
         this.businessProcesses = new LinkedHashSet<>();
         this.tasks = new LinkedHashSet<>();
         this.externalDataSources = new LinkedHashSet<>();
+
+        this.refs = new HashMap<>();
     }
 
     public Set<MetadataObject> getSubsystems() {
@@ -323,5 +329,33 @@ public class Conf extends AbstractMetadataObject {
             }
         }
         return null;
+    }
+
+    public Map<String, UUID> getRefs() {
+        return this.refs;
+    }
+
+    public void putRef(String ref, UUID uuid) {
+        this.refs.put(ref, uuid);
+    }
+
+    public void putRef(String refType, AbstractMetadataObject metadataObject) {
+        putRef(
+                refType + "." + metadataObject.getName(),
+                metadataObject.getUuid()
+        );
+    }
+
+    public UUID getUuidByRef(String ref) {
+        return this.refs.get(ref);
+    }
+
+    public MetadataObject getObjectByRef(String ref) {
+        MetadataObject result = null;
+        UUID uuid = getUuidByRef(ref);
+        if (uuid != null) {
+            result = getObject(uuid);
+        }
+        return result;
     }
 }

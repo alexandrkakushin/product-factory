@@ -18,14 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.pf.entity.Project;
-import ru.pf.metadata.annotation.CommandModule;
-import ru.pf.metadata.annotation.Forms;
-import ru.pf.metadata.annotation.ManagerModule;
-import ru.pf.metadata.annotation.ObjectModule;
-import ru.pf.metadata.annotation.PlainModule;
-import ru.pf.metadata.annotation.RecordSetModule;
-import ru.pf.metadata.annotation.ValueManagerModule;
+import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.repository.ProjectsRepository;
@@ -75,9 +70,10 @@ public class ConfItemController {
             model.addAttribute("projectId", id);
         }
 
-        MetadataObject object = projectsService.getConf(projectOptional.get())
+        AbstractMetadataObject object = (AbstractMetadataObject) projectsService.getConf(projectOptional.get())
                 .getObject(UUID.fromString(uuid));
         if (object != null) {
+            object.parse();
             model.addAttribute("object", ((AbstractMetadataObject) object));
         }
 
@@ -89,6 +85,9 @@ public class ConfItemController {
             // @Forms
             if (field.isAnnotationPresent(Forms.class)) {
                 fields.put("forms", field.getName());
+
+            } else if (field.isAnnotationPresent(Owners.class)) {
+                fields.put("owners", field.getName());
 
             // @ObjectModule
             } else if (field.isAnnotationPresent(ObjectModule.class)) {
@@ -119,7 +118,9 @@ public class ConfItemController {
 
         // TODO: получать по имени класса
         String pathModel = "/development/conf/metadata-item/common";
-        if (object instanceof Enum) {
+        if (object instanceof Catalog) {
+            pathModel = "/development/conf/metadata-item/catalog";
+        } else if (object instanceof Enum) {
             pathModel = "/development/conf/metadata-item/enum";
         }
 

@@ -1,5 +1,10 @@
 package ru.pf.metadata.reader;
 
+import org.springframework.stereotype.Service;
+import ru.pf.metadata.object.Enum;
+import ru.pf.metadata.object.*;
+import ru.pf.metadata.object.common.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -9,16 +14,6 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
-
-import ru.pf.metadata.object.*;
-import ru.pf.metadata.object.Enum;
-import ru.pf.metadata.object.common.*;
 
 /**
  * @author a.kakushin
@@ -37,40 +32,38 @@ public class ConfReader {
             throw new FileNotFoundException("File \"Configuration.xml\" not found'");
         }
 
-        ObjectReader objReader = new ObjectReader(fileConfiguration);
+        XmlReader xmlReader = new XmlReader(fileConfiguration);
 
         String nodeChildObjects = "/MetaDataObject/Configuration/ChildObjects/";
 
         for (Relation relation : getRelations(conf)) {      
-            // При разборе XML-файла конфигурации имена узлов не соответсвуют
-            // именам Java-классов 
-            String nodeName = null;
-            if (relation.getObjClass().equals(XdtoPackage.class)) {
-                nodeName = "XDTOPackage";
-            } else if (relation.getObjClass().equals(HttpService.class)) {
-                nodeName = "HTTPService";
-            } else {
-                nodeName = relation.getObjClass().getSimpleName();
-            }
+            String refType = Utils.getRefType(relation.getObjClass());
             
-            List<String> objectsName = objReader.readChild(nodeChildObjects + nodeName);
-            for (String name : objectsName)
+            List<String> objectsName = xmlReader.readChild(nodeChildObjects + refType);
+            for (String name : objectsName) {
                 try {
                     Path fileXml = workPath
-                            .resolve(relation.getFile())
+                            .resolve(relation.getFolder())
                             .resolve(name + ".xml");
 
                     Class<?> objClass = relation.getObjClass();
 
                     Constructor<?> cons = objClass.getConstructor(Path.class);
-                    MetadataObject object = (MetadataObject) cons.newInstance(fileXml);
-                    object.parse();
+                    AbstractMetadataObject metadataObject = (AbstractMetadataObject) cons.newInstance(fileXml);
 
-                    relation.getConf().add(object);
+                    // TODO: вынести с отдельный конструктор
+                    metadataObject.setConf(conf);
 
-                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | ParserConfigurationException | InvocationTargetException | SAXException | XPathExpressionException e) {
+                    ObjectReader objReader = new ObjectReader(metadataObject);
+                    objReader.fillCommonField();
+
+                    conf.putRef(refType, metadataObject);
+                    relation.getContainer().add(metadataObject);
+
+                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
+            }
         }
 
         return conf;
@@ -205,22 +198,22 @@ public class ConfReader {
 
     public static class Relation {
 
-        private Set<MetadataObject> conf;
+        private Set<MetadataObject> container;
         private Class<?> objClass;
-        private String file;
+        private String folder;
 
-        public Relation(Set<MetadataObject> conf, Class<?> objClass, String file) {
-            this.conf = conf;
+        public Relation(Set<MetadataObject> conf, Class<?> objClass, String folder) {
+            this.container = conf;
             this.objClass = objClass;
-            this.file = file;
+            this.folder = folder;
         }
 
-        public Set<MetadataObject> getConf() {
-            return this.conf;
+        public Set<MetadataObject> getContainer() {
+            return this.container;
         }
 
-        public String getFile() {
-            return this.file;
+        public String getFolder() {
+            return this.folder;
         }
 
         public Class<?> getObjClass() {

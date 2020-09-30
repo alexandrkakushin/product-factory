@@ -8,12 +8,10 @@ function addForm(form) {
         );                
 }
 
-function addForms() {                
+function addForms() {
     if (fields.forms) {
         for (let f = 0; f < object[fields.forms].length; f++) {
-            addForm(object.forms[f]);    
-        }            
-    } else {
-        $('#pills-forms-tab').css("visibility","hidden");
+            addForm(object.forms[f]);
+        }
     }
 }
