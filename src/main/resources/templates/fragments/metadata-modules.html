@@ -8,11 +8,11 @@
     <table id='objectModule_methods' class="table table-hover" aria-describedby="Методы модуля">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="name" class="w-75">Имя</th>
+                <th id="isFunction" class="text-center">Функция</th>
+                <th id="isEmpty" class="text-center">Пустой</th>
+                <th id="isExport" class="text-center">Экспортный</th>
+                <th id="text" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
@@ -23,16 +23,17 @@
 <li xmlns:th="http://www.thymeleaf.org" th:fragment="li-nav-manager" class="nav-item">
     <a class="nav-link" id="pills-managerModule-tab" data-toggle="pill" href="#pills-managerModule" role="tab" aria-controls="pills-managerModule" aria-selected="false">Модуль менеджера</a>
 </li>
-    
+
+<!-- TODO: дублирование, все модули одинаковы по структуре -->
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="div-manager" class="tab-pane fade" id="pills-managerModule" role="tabpanel" aria-labelledby="pills-managerModule-tab">
     <table id='managerModule_methods' class="table table-hover">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="nameMM" class="w-75">Имя</th>
+                <th id="isFunctionMM" class="text-center">Функция</th>
+                <th id="isEmptyMM" class="text-center">Пустой</th>
+                <th id="isExportMM" class="text-center">Экспортный</th>
+                <th id="textMM" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
@@ -49,11 +50,11 @@
     <table id='recordSetModule_methods' class="table table-hover">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="nameRSM" class="w-75">Имя</th>
+                <th id="isFunctionRSM" class="text-center">Функция</th>
+                <th id="isEmptyRSM" class="text-center">Пустой</th>
+                <th id="isExportRSM" class="text-center">Экспортный</th>
+                <th id="textRSM" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
@@ -70,11 +71,11 @@
     <table id='plainModule_methods' class="table table-hover">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="namePM" class="w-75">Имя</th>
+                <th id="isFunctionPM" class="text-center">Функция</th>
+                <th id="isEmptyPM" class="text-center">Пустой</th>
+                <th id="isExportPM" class="text-center">Экспортный</th>
+                <th id="textPM" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
@@ -90,11 +91,11 @@
     <table id='valueManagerModule_methods' class="table table-hover">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="nameVMM" class="w-75">Имя</th>
+                <th id="isFunctionVMM" class="text-center">Функция</th>
+                <th id="isEmptyVMM" class="text-center">Пустой</th>
+                <th id="isExportVMM" class="text-center">Экспортный</th>
+                <th id="textVMM" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
@@ -110,11 +111,11 @@
     <table id='commandModule_methods' class="table table-hover">
         <thead>
             <tr>
-                <th class="w-75">Имя</th>
-                <th class="text-center">Функция</th>
-                <th class="text-center">Пустой</th>
-                <th class="text-center">Экспортный</th>
-                <th class="text-center">Текст</th>
+                <th id="nameCM" class="w-75">Имя</th>
+                <th id="isFunctionCM" class="text-center">Функция</th>
+                <th id="isEmptyCM" class="text-center">Пустой</th>
+                <th id="isExportCM" class="text-center">Экспортный</th>
+                <th id="textCM" class="text-center">Текст</th>
             </tr>
         </thead>                
         <tbody></tbody>
