@@ -43,18 +43,6 @@ function addModules() {
     }
 }
 
-function addCheckbox(id, value) {
-
-    return $('<div>').addClass("form-check")
-        .append($('<input>')
-            .addClass("form-check-input")
-            .attr("type", "checkbox")
-            .attr("id", id)
-            .attr("checked", value)
-            .on('click', function() {return false})
-    )
-}
-
 function btnMethodOnClick(event) {
     let attrMethod = event.target.attributes.getNamedItem('method').value;
     let attrModule = event.target.attributes.getNamedItem('module').value;

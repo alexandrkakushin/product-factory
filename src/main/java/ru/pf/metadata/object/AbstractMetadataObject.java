@@ -8,6 +8,7 @@ import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.PredefinedReader;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -42,10 +43,10 @@ public abstract class AbstractMetadataObject implements MetadataObject {
     private String synonym;
     private String comment;
 
-    public AbstractMetadataObject() {
+    AbstractMetadataObject() {
     }
 
-    public AbstractMetadataObject(Path file) {
+    protected AbstractMetadataObject(Path file) {
         this();
         this.file = file;
     }
@@ -126,31 +127,34 @@ public abstract class AbstractMetadataObject implements MetadataObject {
                     value =  objReader.readOwners();
 
                 } else if (Files.exists(pathExt)) {
-                        // Modules
-                        if (field.isAnnotationPresent(CommandModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("CommandModule.bsl"),
-                                Module.Type.COMMAND_MODULE);
+                    // Modules
+                    if (field.isAnnotationPresent(CommandModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("CommandModule.bsl"),
+                            Module.Type.COMMAND_MODULE);
 
-                        } else if (field.isAnnotationPresent(ObjectModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("ObjectModule.bsl"),
-                                Module.Type.OBJECT_MODULE);
+                    } else if (field.isAnnotationPresent(ObjectModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("ObjectModule.bsl"),
+                            Module.Type.OBJECT_MODULE);
 
-                        } else if (field.isAnnotationPresent(ManagerModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("ManagerModule.bsl"),
-                                Module.Type.MANAGER_MODULE);
+                    } else if (field.isAnnotationPresent(ManagerModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("ManagerModule.bsl"),
+                            Module.Type.MANAGER_MODULE);
 
-                        } else if (field.isAnnotationPresent(PlainModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("Module.bsl"),
-                                Module.Type.PLAIN_MODULE);
+                    } else if (field.isAnnotationPresent(PlainModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("Module.bsl"),
+                            Module.Type.PLAIN_MODULE);
 
-                        } else if (field.isAnnotationPresent(RecordSetModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("RecordSetModule.bsl"),
-                                Module.Type.RECORD_SET_MODULE);
+                    } else if (field.isAnnotationPresent(RecordSetModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("RecordSetModule.bsl"),
+                            Module.Type.RECORD_SET_MODULE);
 
-                        } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
-                            value = ModuleReader.read(pathExt.resolve("ValueManagerModule.bsl"),
-                                Module.Type.VALUE_MANAGER_MODULE);
-                        }
+                    } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
+                        value = ModuleReader.read(pathExt.resolve("ValueManagerModule.bsl"),
+                            Module.Type.VALUE_MANAGER_MODULE);
+
+                    } else if (field.isAnnotationPresent(Predefined.class)) {
+                        value = PredefinedReader.read(pathExt.resolve("Predefined.xml"));
+                    }
                 }
 
                 if (value != null) {

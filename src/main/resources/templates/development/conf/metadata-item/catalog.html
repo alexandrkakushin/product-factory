@@ -10,10 +10,12 @@
             let projectId = [[${projectId}]];
         </script>
 
+        <script type="text/javascript" th:src="@{/js/metadata/common.js}"></script>
         <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>                        
         <script type="text/javascript" th:src="@{/js/metadata/modules.js}"></script>                
         <script type="text/javascript" th:src="@{/js/metadata/forms.js}"></script>
         <script type="text/javascript" th:src="@{/js/metadata/owners.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/predefined.js}"></script>
 
         <highlight th:replace="fragments/highlight :: init"/>
         
@@ -28,6 +30,7 @@
                 <li th:replace="fragments/metadata-modules :: li-nav-manager"></li>
                 <li th:replace="fragments/metadata-forms :: li-nav-item"></li>
                 <li th:replace="fragments/metadata-owners :: li-nav-owners"></li>
+                <li th:replace="fragments/metadata-predefined :: li-nav-predefined"></li>
             </ul>    
             
             <div class="tab-content" id="pills-tabContent">
@@ -36,6 +39,7 @@
                 <div th:replace="fragments/metadata-modules :: div-manager"></div>
                 <div th:replace="fragments/metadata-forms :: div-items"></div>
                 <div th:replace="fragments/metadata-owners :: div-owners"></div>
+                <div th:replace="fragments/metadata-predefined :: div-predefined"></div>
             </div>            
         </div>
 
@@ -46,6 +50,7 @@
             addForms();
             addModules();
             addOwners();
+            addPredefined();
         </script>
 
         <footer th:replace="fragments/footer :: bootstrap"></footer>

@@ -112,8 +112,12 @@ public class ConfItemController {
             // @CommandModule
             } else if (field.isAnnotationPresent(CommandModule.class)) {
                 fields.put("commandModule", field.getName());
+
+            // @Predefined
+            } else if (field.isAnnotationPresent(Predefined.class)) {
+                fields.put("predefined", field.getName());
             }
-        }        
+        }
         model.addAttribute("fields", fields);
 
         // TODO: получать по имени класса

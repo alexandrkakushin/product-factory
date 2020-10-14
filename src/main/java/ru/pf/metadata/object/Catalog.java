@@ -1,18 +1,14 @@
 package ru.pf.metadata.object;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.UUID;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
-import ru.pf.metadata.annotation.Forms;
-import ru.pf.metadata.annotation.ManagerModule;
-import ru.pf.metadata.annotation.ObjectModule;
-import ru.pf.metadata.annotation.Owners;
+import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.reader.ObjectReader;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * @author a.kakushin
@@ -62,6 +58,9 @@ public class Catalog extends AbstractMetadataObject {
 
     @ManagerModule
     private Module managerModule;
+
+    @Predefined
+    private Set<ru.pf.metadata.type.Predefined> predefined;
 
     public Catalog(Path path) {
         super(path);

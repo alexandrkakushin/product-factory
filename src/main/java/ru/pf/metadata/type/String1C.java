@@ -6,7 +6,7 @@ import lombok.Data;
  * @author a.kakushin
  */
 @Data
-public class String implements IType {
+public class String1C implements IType {
 
     private int length;
     private AllowedLength allowedLength;
