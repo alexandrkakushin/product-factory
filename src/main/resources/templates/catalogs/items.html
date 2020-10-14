@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
     <head th:replace="fragments/header :: common"/>
     <body>
         <nav th:replace="fragments/navbar :: navbar"></nav>
@@ -15,7 +15,11 @@
 
             <div class="row">
                 <div class="col-sm-8" style="text-align: left" >
-                    <h5><b th:text="${name}"></b></h5>
+                    <h5>
+                        <strong>
+                            <p th:text="${name}"></p>
+                        </strong>
+                    </h5>
                 </div>
                 <div class="col-sm-4" style="text-align: right" >
                     <a th:href="@{${url}+'/new'}" role="button" aria-pressed="true">
@@ -23,12 +27,12 @@
                     </a>
                 </div>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped" aria-describedby="Элементы справочника">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Наименование</th>
-                    <th scope="col">Комментарий</th>
+                    <th>#</th>
+                    <th>Наименование</th>
+                    <th>Комментарий</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,7 +40,7 @@
                     <td colspan="3"> Нет данных для отображения </td>
                 </tr>
                 <tr th:each="item : ${items}">
-                    <td scope="row">
+                    <td>
                         <span th:text="${item.id}"> # </span>
                     </td>
                     <td>

@@ -1,8 +1,10 @@
 <item-title th:fragment="title" xmlns:th="http://www.thymeleaf.org">
     <div class="col-sm-8" style="text-align: left" >
-        <h5><b>
-            <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}+' ('+${name}+')'"></span>
-        </b></h5>
+        <h5>
+            <strong>
+                <span th:text="${entity.id == null} ? 'Новый ' : ${entity.name}+' ('+${name}+')'"></span>
+            </strong>
+        </h5>
     </div>
 </item-title>
 
