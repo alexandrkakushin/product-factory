@@ -7,35 +7,32 @@
         <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
 
         <!--todo: исправить навигационную цепочку-->
-        <nav th:replace="fragments/navbar :: navbar"></nav>
+        <nav th:replace="fragments/navbar :: navbar" aria-label="Навигационная панель"></nav>
         <div class="container-fluid pt-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
                     <li class="breadcrumb-item "><a href="/development/projects">Проекты</a></li>
                     <li class="breadcrumb-item ">
-                        <!--/*@thymesVar id="projectId" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                         <a th:href="@{'/development/projects/'+${projectId}}">
                             <span th:text="${projectId}"></span>
                         </a>
                     </li>
                     <li class="breadcrumb-item ">
-                        <!--/*@thymesVar id="projectId" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                         <a th:href="@{'/development/conf/item/'+${projectId}}">Конфигурация</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Проверка</li>
                 </ol>
             </nav>
 
-            <table class="table table-hover">
+            <table class="table table-hover" aria-describedby="Результат проверки конфигурации">
                 <thead>
                 <tr>
-                    <th id="rule" width="70%">Правило</th>
-                    <th id="result" width="30%">Результат</th>
+                    <th id="rule" class="w-75">Правило</th>
+                    <th id="result" class="w-25">Результат</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!--/*@thymesVar id="instance" type="ru.pf.controller.development.conf.ConfCheckController"*/-->
                 <tr th:id="'row_'+${instance.key}" th:each="instance : ${services}">
                     <td th:text="${instance.value.getAlias()}">num</td>
                     <td th:id="'result_'+${instance.key}"></td>
