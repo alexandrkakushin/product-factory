@@ -32,6 +32,11 @@
 		<font.awesome.version>4.7.0</font.awesome.version>
 		<popperjs.version>1.14.1</popperjs.version>
 		<highlightjs.version>9.15.8</highlightjs.version>
+
+		<!-- SonarCloud -->
+		<sonar.projectKey>alexandrkakushin_product-factory</sonar.projectKey>
+		<sonar.organization>alexandrkakushin</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>
