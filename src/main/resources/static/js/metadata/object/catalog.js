@@ -1,6 +1,6 @@
 function addProperties_Catalog (object) {
 
-    // Свойства иерархии
+    // Иерархия
     addBooleanLine('Иерархический', 'hierarchical', object.hierarchical);
     if (object.hierarchical) {
         let hierarchyType = null;
@@ -16,4 +16,17 @@ function addProperties_Catalog (object) {
             addLine('Количество уровней иерархии', object.levelCount);
         }
     }
+
+    // Нумерация
+    addBooleanLine('Контроль уникальности', 'checkUnique', object.checkUnique);
+    addBooleanLine('Автонумерация', 'autoNumbering', object.autoNumbering);
+    let codeSeries = null;
+    if (object.codeSeries === 'WITHIN_OWNER_SUBORDINATION') {
+        codeSeries = 'В пределах подчинения владельцу';
+    } else if (object.codeSeries === 'WITHIN_SUBORDINATION') {
+        codeSeries = 'В пределах подчинения';
+    } else if (object.codeSeries === 'WHOLE_CATALOG') {
+        codeSeries = 'Во всем справочнике';
+    }
+    addLine('Серии кодов', codeSeries);
 }

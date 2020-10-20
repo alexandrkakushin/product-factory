@@ -17,13 +17,37 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Catalog extends AbstractMetadataObject {
 
+    // Иерархия
+
+    /**
+     * Иерархический
+     */
     private boolean hierarchical;
 
+    /**
+     * Вид иерархиии
+     */
     private HierarchyType hierarchyType;
+
+    /**
+     * Ограничение количества уровней иерархии
+     */
     private boolean limitLevelCount;
+
+    /**
+     * Количество уровней иерархии
+     */
     private int levelCount;
+
+    /**
+     * Размещать группы сверху
+     */
     private boolean foldersOnTop;
+
+
     private boolean useStandardCommands;
+
+    // Владельцы
 
     @Owners
     private Set<MetadataObject> owners;
@@ -34,10 +58,25 @@ public class Catalog extends AbstractMetadataObject {
     private CodeType codeType;
 
     // todo: <CodeAllowedLength>,
+
+
+    // Нумерация
+
+    /**
+     * Контроль уникальности
+     */
+    private boolean checkUnique;
+
+    /**
+     * Автонумерация
+     */
+    private boolean autoNumbering;
+
+    /**
+     * Серии кодов
+     */
     private CodeSeries codeSeries;
-//
-	private boolean checkUnique;
-	private boolean autonumbering;
+
 //    // todo: <DefaultPresentation>AsDescription</DefaultPresentation>
 //
 //	// todo: <Characteristics/>
@@ -101,7 +140,7 @@ public class Catalog extends AbstractMetadataObject {
         this.codeSeries = CodeSeries.valueByName(
                 objReader.read(nodeProperties + "CodeSeries"));
         this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
-        this.autonumbering = objReader.readBool(nodeProperties +  "Autonumbering");
+        this.autoNumbering = objReader.readBool(nodeProperties +  "Autonumbering");
         this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
 
         return objReader;
