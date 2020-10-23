@@ -32,6 +32,26 @@ function addProperties_Catalog (object) {
         }
     }
 
+    // Данные
+    addLine('Длина кода', object.codeLength);
+    addLine('Длина наименования', object.descriptionLength);
+
+    let codeType = null;
+    if (object.codeType === 'STRING') {
+        codeType = 'Строка';
+    } else if (object.codeType === 'NUMBER') {
+        codeType = 'Число';
+    }
+    addLine('Тип кода', codeType);
+
+    let defaultPresentation = null;
+    if (object.defaultPresentation === 'AS_DESCRIPTION') {
+        defaultPresentation = 'В виде наименования';
+    } else if (object.defaultPresentation = 'AS_CODE') {
+        defaultPresentation = 'В виде кода';
+    }
+    addLine('Основное представление', defaultPresentation);
+
     // Нумерация
     addBooleanLine('Контроль уникальности', 'checkUnique', object.checkUnique);
     addBooleanLine('Автонумерация', 'autoNumbering', object.autoNumbering);
