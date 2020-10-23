@@ -17,6 +17,21 @@ function addProperties_Catalog (object) {
         }
     }
 
+    // Владельцы
+    if (fields.owners) {
+        if (object[fields.owners].length > 0) {
+            let subordinationUse = null;
+            if (object.subordinationUse === 'TO_ITEMS') {
+                subordinationUse = 'Элементам';
+            } else if (object.subordinationUse === 'TO_FOLDERS') {
+                subordinationUse = 'Группам';
+            } else if (object.subordinationUse === 'TO_FOLDERS_AND_ITEMS'){
+                subordinationUse = 'Группам и элементам';
+            }
+            addLine('Использование подчинения', subordinationUse);
+        }
+    }
+
     // Нумерация
     addBooleanLine('Контроль уникальности', 'checkUnique', object.checkUnique);
     addBooleanLine('Автонумерация', 'autoNumbering', object.autoNumbering);
