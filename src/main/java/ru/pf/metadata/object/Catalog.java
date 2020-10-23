@@ -44,9 +44,6 @@ public class Catalog extends AbstractMetadataObject {
      */
     private boolean foldersOnTop;
 
-
-    private boolean useStandardCommands;
-
     // Владельцы
 
     /**
@@ -107,15 +104,38 @@ public class Catalog extends AbstractMetadataObject {
 //	// todo: <Characteristics/>
 //    // todo: <PredefinedDataUpdate>Auto</PredefinedDataUpdate>
 //    // todo: <EditType>InDialog</EditType>
-    private boolean quickChoice;
-
-    // todo: <ChoiceMode>BothWays</ChoiceMode>
 
     private Set<Attribute> standardAttributes;
     private Set<Attribute> attributes;
 
+    // Формы
+
+    /**
+     * Список форм справочника
+     */
     @Forms
     private Set<Form> forms;
+
+    // Поле ввода
+
+    /**
+     * Быстрый выбор
+     */
+    private boolean quickChoice;
+
+    /**
+     * Способ выбора
+     * Задает приоритетный способ выбора для поля ввода.
+     */
+    private ChoiceMode choiceMode;
+
+    // Команды
+
+    /**
+     * Использовать стандартные команды
+     */
+    private boolean useStandardCommands;
+
 
     @ObjectModule
     private Module objectModule;
@@ -170,7 +190,11 @@ public class Catalog extends AbstractMetadataObject {
                 objReader.read(nodeProperties + "CodeSeries"));
         this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
         this.autoNumbering = objReader.readBool(nodeProperties +  "Autonumbering");
+
+        // Поле ввода
         this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
+        this.choiceMode = ChoiceMode.valueByName(
+            objReader.read(nodeProperties + "ChoiceMode"));
 
         return objReader;
     }
@@ -249,6 +273,26 @@ public class Catalog extends AbstractMetadataObject {
                 return AS_CODE;
             } else if (value.equalsIgnoreCase("AsDescription")) {
                 return AS_DESCRIPTION;
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Приоритетный способ выбора для поля ввода
+     */
+    public enum ChoiceMode {
+        BOTH_WAYS,
+        FROM_FORM,
+        QUICK_CHOICE;
+
+        public static ChoiceMode valueByName(String value) {
+            if (value.equalsIgnoreCase("BothWays")) {
+                return BOTH_WAYS;
+            } else if (value.equalsIgnoreCase("FromForm")) {
+                return FROM_FORM;
+            } else if (value.equalsIgnoreCase("QuickChoice")) {
+                return QUICK_CHOICE;
             }
             return null;
         }

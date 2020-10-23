@@ -64,4 +64,16 @@ function addProperties_Catalog (object) {
         codeSeries = 'Во всем справочнике';
     }
     addLine('Серии кодов', codeSeries);
+
+    // Поле ввода
+    addBooleanLine('Быстрый выбор', object.quickChoice);
+    let choiceMode = null;
+    if (object.choiceMode === 'BOTH_WAYS') {
+        choiceMode = 'Обоими способами';
+    } else if (object.choiceMode === 'FROM_FORM') {
+        choiceMode = 'Из формы';
+    } else if (object.choiceMode === 'QUICK_CHOICE') {
+        choiceMode = 'Быстрый выбор';
+    }
+    addLine('Способ выбора', choiceMode);
 }
