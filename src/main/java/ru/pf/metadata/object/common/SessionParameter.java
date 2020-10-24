@@ -1,20 +1,21 @@
 package ru.pf.metadata.object.common;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.ReaderException;
+import ru.pf.metadata.reader.XmlReader;
 import ru.pf.metadata.type.Type;
+
+import java.nio.file.Path;
 
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SessionParameter extends AbstractMetadataObject {
+public class SessionParameter extends MetadataObject {
 
     private Type type;
 
@@ -28,11 +29,12 @@ public class SessionParameter extends AbstractMetadataObject {
     }    
 
     @Override
-    public ObjectReader parse() throws IOException {
+    public ObjectReader parse() throws ReaderException {
         ObjectReader objReader = super.parse();
+        XmlReader xmlReader = objReader.getXmlReader();
 
         String nodeObject = "/MetaDataObject/" + getXmlName();
-        this.type = new Type(objReader.read(nodeObject + "/Properties/Type/Type"));
+        this.type = new Type(xmlReader.read(nodeObject + "/Properties/Type/Type"));
 
         return objReader;
     }

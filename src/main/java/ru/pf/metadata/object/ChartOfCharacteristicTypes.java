@@ -15,7 +15,7 @@ import ru.pf.metadata.Module;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ChartOfCharacteristicTypes extends AbstractMetadataObject {
+public class ChartOfCharacteristicTypes extends MetadataObject {
 
     @Forms
     private Set<Form> forms;

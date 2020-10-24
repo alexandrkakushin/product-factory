@@ -7,7 +7,7 @@ import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.Method;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.IMetadataObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class EmptyMethodCheck implements ServiceCheck<EmptyMethodCheck.Response>
     public List<EmptyMethodCheck.Response> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
         List<EmptyMethodCheck.Response> result = new ArrayList<>();
 
-        Map<Module, MetadataObject> modules = conf.getAllModules();
+        Map<Module, IMetadataObject> modules = conf.getAllModules();
         modules.keySet().stream()
                 .forEach(module -> module.getMethods().forEach(method -> {
                     if (method.isEmpty()) {
@@ -45,11 +45,11 @@ public class EmptyMethodCheck implements ServiceCheck<EmptyMethodCheck.Response>
     @JsonView(MetadataJsonView.List.class)
     public class Response {
 
-        private MetadataObject object;
+        private IMetadataObject object;
         private Module module;
         private Method method;
 
-        public Response(MetadataObject object, Module module, Method method) {
+        public Response(IMetadataObject object, Module module, Method method) {
             this.object = object;
             this.module = module;
             this.method = method;

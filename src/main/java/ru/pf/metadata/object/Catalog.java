@@ -5,8 +5,10 @@ import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.ReaderException;
+import ru.pf.metadata.reader.XmlReader;
+import ru.pf.metadata.type.Attribute;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -15,7 +17,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Catalog extends AbstractMetadataObject {
+public class Catalog extends MetadataObject {
 
     // Иерархия
 
@@ -50,7 +52,7 @@ public class Catalog extends AbstractMetadataObject {
      * Список владельцев справочника
      */
     @Owners
-    private Set<MetadataObject> owners;
+    private Set<IMetadataObject> owners;
 
     /**
      * Использование подчинения
@@ -136,6 +138,12 @@ public class Catalog extends AbstractMetadataObject {
      */
     private boolean useStandardCommands;
 
+    /**
+     * Команды объекта метаданных
+     */
+    @Commands
+    private Set<ObjectCommand> commands;
+
 
     @ObjectModule
     private Module objectModule;
@@ -156,45 +164,45 @@ public class Catalog extends AbstractMetadataObject {
     }
 
     @Override
-    public ObjectReader parse() throws IOException {
+    public ObjectReader parse() throws ReaderException {
         ObjectReader objReader = super.parse();
-
         String nodeRoot = "/MetaDataObject/" + getXmlName();
+        XmlReader xmlReader = objReader.getXmlReader();
         
         String nodeProperties = nodeRoot + "/Properties/";
-        this.hierarchical  = objReader.readBool(nodeProperties + "Hierarchical");
+        this.hierarchical  = xmlReader.readBool(nodeProperties + "Hierarchical");
         this.hierarchyType = HierarchyType.valueByName(
-                objReader.read(nodeProperties + "HierarchyType"));
+                xmlReader.read(nodeProperties + "HierarchyType"));
 
-        this.limitLevelCount = objReader.readBool(nodeProperties + "LimitLevelCount");
-        this.levelCount = objReader.readInt(nodeProperties + "LevelCount");
-        this.foldersOnTop = objReader.readBool(nodeProperties + "FoldersOnTop");
-        this.useStandardCommands = objReader.readBool(nodeProperties + "UseStandardCommands");
+        this.limitLevelCount = xmlReader.readBool(nodeProperties + "LimitLevelCount");
+        this.levelCount = xmlReader.readInt(nodeProperties + "LevelCount");
+        this.foldersOnTop = xmlReader.readBool(nodeProperties + "FoldersOnTop");
+        this.useStandardCommands = xmlReader.readBool(nodeProperties + "UseStandardCommands");
 
         // owners
 
         this.subordinationUse = SubordinationUse.valueByName(
-                objReader.read(nodeProperties + "SubordinationUse"));
+                xmlReader.read(nodeProperties + "SubordinationUse"));
 
-        this.codeLength = objReader.readInt(nodeProperties + "CodeLength");
-        this.descriptionLength = objReader.readInt(nodeProperties + "DescriptionLength");
+        this.codeLength = xmlReader.readInt(nodeProperties + "CodeLength");
+        this.descriptionLength = xmlReader.readInt(nodeProperties + "DescriptionLength");
 
         // Данные
         this.codeType = CodeType.valueByName(
-                objReader.read(nodeProperties + "CodeType"));
+                xmlReader.read(nodeProperties + "CodeType"));
 
         this.defaultPresentation = DefaultPresentation.valueByName(
-            objReader.read(nodeProperties + "DefaultPresentation"));
+                xmlReader.read(nodeProperties + "DefaultPresentation"));
 
         this.codeSeries = CodeSeries.valueByName(
-                objReader.read(nodeProperties + "CodeSeries"));
-        this.checkUnique = objReader.readBool(nodeProperties + "CheckUnique");
-        this.autoNumbering = objReader.readBool(nodeProperties +  "Autonumbering");
+                xmlReader.read(nodeProperties + "CodeSeries"));
+        this.checkUnique = xmlReader.readBool(nodeProperties + "CheckUnique");
+        this.autoNumbering = xmlReader.readBool(nodeProperties +  "Autonumbering");
 
         // Поле ввода
-        this.quickChoice = objReader.readBool(nodeProperties + "QuickChoice");
+        this.quickChoice = xmlReader.readBool(nodeProperties + "QuickChoice");
         this.choiceMode = ChoiceMode.valueByName(
-            objReader.read(nodeProperties + "ChoiceMode"));
+                xmlReader.read(nodeProperties + "ChoiceMode"));
 
         return objReader;
     }

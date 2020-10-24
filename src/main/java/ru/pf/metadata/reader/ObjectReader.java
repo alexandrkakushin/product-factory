@@ -1,68 +1,102 @@
 package ru.pf.metadata.reader;
 
-import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.Form;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.object.MetadataObject;
 
-import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author a.kakushin
  */
-public class ObjectReader extends XmlReader {
+public class ObjectReader {
 
-    private final AbstractMetadataObject metadataObject;
+    private final MetadataObject metadataObject;
+    private final XmlReader xmlReader;
 
-    public ObjectReader(AbstractMetadataObject metadataObject) {
-        super(metadataObject.getFile());
+    public ObjectReader(MetadataObject metadataObject) {
         this.metadataObject = metadataObject;
+        this.xmlReader = new XmlReader(metadataObject.getFile());
     }
 
-    private String nodeRoot() {
-        return "/MetaDataObject/" + this.metadataObject.getXmlName();
+    public MetadataObject getMetadataObject() {
+        return this.metadataObject;
     }
 
-    public Set<Form> readForms() throws IOException {
-        List<String> formNames = readChild(nodeRoot() + "/ChildObjects/Form");
-        Path pathForms = metadataObject.getFile()
+    public XmlReader getXmlReader() {
+        return this.xmlReader;
+    }
+
+    public void read(boolean onlyHeaders) throws ReaderException {
+        Path pathExt = this.metadataObject.getFile()
                 .getParent()
-                .resolve(metadataObject.getShortName(metadataObject.getFile()))
-                .resolve("Forms");
+                .resolve(this.metadataObject.getShortName(this.metadataObject.getFile()))
+                .resolve("Ext");
 
-        Set<Form> forms = new HashSet<>();
-        for (String formName : formNames) {
-            Form form = new Form(pathForms.resolve(formName + ".xml"));
-            form.parse();
-            forms.add(form);
+        fillHeaders();
+        if (onlyHeaders) {
+            return;
         }
 
-        return forms;
-    }
+        try {
+            for (Field field : this.metadataObject.getClass().getDeclaredFields()) {
+                Object value = null;
 
-    public Set<MetadataObject> readOwners() throws IOException {
-        Set<MetadataObject> owners = new HashSet<>();
+                Annotation[] annotations = field.getDeclaredAnnotations();
+                for (Annotation annotation : annotations) {
+                    Class<?> clazz = annotation.annotationType();
+                    if (clazz == Forms.class) {
+                        value = FormsReader.read(this.xmlReader, this.metadataObject);
 
-        List<String> refOwners = readChild(nodeRoot() + "/Properties/Owners/Item");
-        Conf conf = this.metadataObject.getConf();
-        for (String refOwner : refOwners) {
-            MetadataObject object = conf.getObjectByRef(refOwner);
-            if (object == null) {
-                throw new IOException("Object not found");
+                    } else if (clazz == Owners.class) {
+                        value = OwnersReader.read(this.xmlReader, this.metadataObject);
+
+                    } else if (clazz == Commands.class) {
+                        value = CommandsReader.read(this.xmlReader, this.metadataObject);
+
+                    } else if (Files.exists(pathExt)) {
+                        // Modules
+                        if (clazz == CommandModule.class
+                                || clazz == ObjectModule.class
+                                || clazz == ManagerModule.class
+                                || clazz == PlainModule.class
+                                || clazz == RecordSetModule.class
+                                || clazz == ValueManagerModule.class) {
+                            value = ModuleReader.read(pathExt, clazz);
+
+                        } else if (clazz == Predefined.class) {
+                            value = PredefinedReader.read(pathExt.resolve("Predefined.xml"));
+                        }
+                    }
+                }
+
+                if (value != null) {
+                    Optional<Method> setterMethod = Stream.of(metadataObject.getClass().getMethods())
+                            .filter(method1 -> method1.getName().equalsIgnoreCase("set" + field.getName()))
+                            .findFirst();
+
+                    setterMethod
+                            .orElseThrow(() -> new RuntimeException("No setter found for field: " + field.getName()))
+                            .invoke(this.metadataObject, value);
+                }
             }
-            owners.add(object);
-        }
 
-        return owners;
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            throw new ReaderException(e.getMessage());
+        }
     }
 
-    public void fillCommonField() {
-        String nodeObject = nodeRoot();
-        metadataObject.setUuid(readUUID(nodeObject + "/@uuid"));
-        metadataObject.setName(read(nodeObject+ "/Properties/Name"));
-        metadataObject.setSynonym(read(nodeObject + "/Properties/Synonym/item/content"));
-        metadataObject.setComment(read(nodeObject+ "/Properties/Comment"));
+    private void fillHeaders() {
+        String nodeObject = Utils.nodeRoot(this.metadataObject);
+        metadataObject.setUuid(xmlReader.readUUID(nodeObject + "/@uuid"));
+        metadataObject.setName(xmlReader.read(nodeObject+ "/Properties/Name"));
+        metadataObject.setSynonym(xmlReader.read(nodeObject + "/Properties/Synonym/item/content"));
+        metadataObject.setComment(xmlReader.read(nodeObject+ "/Properties/Comment"));
     }
 }

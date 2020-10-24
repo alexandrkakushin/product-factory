@@ -1,21 +1,22 @@
 package ru.pf.metadata.object.common;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.PlainModule;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.ReaderException;
+import ru.pf.metadata.reader.XmlReader;
+
+import java.nio.file.Path;
 
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommonModule extends AbstractMetadataObject {
+public class CommonModule extends MetadataObject {
 
     private boolean global;
     private boolean clientManagedApplication;
@@ -55,19 +56,19 @@ public class CommonModule extends AbstractMetadataObject {
     }
 
     @Override
-    public ObjectReader parse() throws IOException {
-
+    public ObjectReader parse() throws ReaderException {
         ObjectReader objReader = super.parse();
-
         String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
-        this.global = objReader.readBool(nodeProperties + "Global");
-        this.clientManagedApplication = objReader.readBool(nodeProperties + "ClientManagedApplication");
-        this.server = objReader.readBool(nodeProperties + "Server");
-        this.externalConnection = objReader.readBool(nodeProperties + "ExternalConnection");
-        this.clientOrdinaryApplication = objReader.readBool(nodeProperties + "ClientOrdinaryApplication");
-        this.serverCall = objReader.readBool(nodeProperties + "ServerCall");
-        this.privileged = objReader.readBool(nodeProperties + "Privileged");
-        this.returnValuesReuse = ReturnValuesReuse.valueByName(objReader.read(nodeProperties + "ReturnValuesReuse"));
+        XmlReader xmlReader = objReader.getXmlReader();
+
+        this.global = xmlReader.readBool(nodeProperties + "Global");
+        this.clientManagedApplication = xmlReader.readBool(nodeProperties + "ClientManagedApplication");
+        this.server = xmlReader.readBool(nodeProperties + "Server");
+        this.externalConnection = xmlReader.readBool(nodeProperties + "ExternalConnection");
+        this.clientOrdinaryApplication = xmlReader.readBool(nodeProperties + "ClientOrdinaryApplication");
+        this.serverCall = xmlReader.readBool(nodeProperties + "ServerCall");
+        this.privileged = xmlReader.readBool(nodeProperties + "Privileged");
+        this.returnValuesReuse = ReturnValuesReuse.valueByName(xmlReader.read(nodeProperties + "ReturnValuesReuse"));
 
         return objReader;
     }

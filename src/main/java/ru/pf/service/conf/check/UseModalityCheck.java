@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.IMetadataObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class UseModalityCheck implements ServiceCheck<UseModalityCheck.Response>
 
     @Override
     public List<UseModalityCheck.Response> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
-        Map<Module, MetadataObject> modules = conf.getAllModules();
+        Map<Module, IMetadataObject> modules = conf.getAllModules();
 
         List<String> modalWords = getModalWords();
 
@@ -81,11 +81,11 @@ public class UseModalityCheck implements ServiceCheck<UseModalityCheck.Response>
     @JsonView(MetadataJsonView.List.class)
     public class Response {
 
-        private MetadataObject object;
+        private IMetadataObject object;
         private Module module;
         private List<String> found;
 
-        public Response(MetadataObject object, Module module, List<String> found) {
+        public Response(IMetadataObject object, Module module, List<String> found) {
             this.object = object;
             this.module = module;
             this.found = found;

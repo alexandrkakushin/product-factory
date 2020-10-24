@@ -1,9 +1,9 @@
 package ru.pf.service.conf.check;
 
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractMetadataObject;
-import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.common.Subsystem;
 
 import java.util.ArrayList;
@@ -16,22 +16,22 @@ import java.util.Set;
  * @author a.kakushin
  */
 @Service
-public class SubsystemCheck implements ServiceCheck<MetadataObject> {
+public class SubsystemCheck implements ServiceCheck<IMetadataObject> {
 
     @Override
-    public List<MetadataObject> check(Conf conf) {
-        List<MetadataObject> result = new ArrayList<>();
+    public List<IMetadataObject> check(Conf conf) {
+        List<IMetadataObject> result = new ArrayList<>();
         Set<String> included = new HashSet<>();
 
-        for (MetadataObject subsystem : conf.getSubsystems()) {
+        for (IMetadataObject subsystem : conf.getSubsystems()) {
             included.addAll(((Subsystem) subsystem).getAllItems());
         }
 
-        Set<MetadataObject> objects = conf.getAllObjects();
-        for (MetadataObject object : objects) {
+        Set<IMetadataObject> objects = conf.getAllObjects();
+        for (IMetadataObject object : objects) {
             Class<?> objectClass = object.getClass();
             if (!objectClass.equals(Subsystem.class)) {
-                String mdRef = object.getXmlName() + "." + ((AbstractMetadataObject) object).getName();
+                String mdRef = object.getXmlName() + "." + ((MetadataObject) object).getName();
                 if (!included.contains(mdRef)) {
                     result.add(object);
                 }

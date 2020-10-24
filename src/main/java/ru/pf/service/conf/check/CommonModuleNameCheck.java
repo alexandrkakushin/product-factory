@@ -2,7 +2,7 @@ package ru.pf.service.conf.check;
 
 import org.springframework.stereotype.Service;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.common.CommonModule;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,14 +15,14 @@ import java.util.Set;
  * @author a.kakushin
  */
 @Service
-public class CommonModuleNameCheck implements ServiceCheck<MetadataObject> {
+public class CommonModuleNameCheck implements ServiceCheck<IMetadataObject> {
 
     @Override
-    public List<MetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
-        List<MetadataObject> result = new ArrayList<>();
+    public List<IMetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
+        List<IMetadataObject> result = new ArrayList<>();
 
-        Set<MetadataObject> metadataObjects = conf.getCommonModules();
-        for (MetadataObject metadataObject : metadataObjects) {
+        Set<IMetadataObject> metadataObjects = conf.getCommonModules();
+        for (IMetadataObject metadataObject : metadataObjects) {
             CommonModule module = (CommonModule) metadataObject;
 
             boolean resultCheck = true;

@@ -2,9 +2,9 @@ package ru.pf.service.conf.check;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractMetadataObject;
-import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.service.PropertiesService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author a.kakushin
  */
 @Service
-public class NameLengthCheck implements ServiceCheck<MetadataObject> {
+public class NameLengthCheck implements ServiceCheck<IMetadataObject> {
 
     private static int defaultLength = 80;
 
@@ -24,16 +24,16 @@ public class NameLengthCheck implements ServiceCheck<MetadataObject> {
     PropertiesService propertiesService;
 
     @Override
-    public List<MetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
-        List<MetadataObject> result = new ArrayList<>();
+    public List<IMetadataObject> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
+        List<IMetadataObject> result = new ArrayList<>();
 
         int length = propertiesService.getCheckNameLength();
         if (length == 0) {
             length = defaultLength;
         }
 
-        for (MetadataObject object : conf.getAllObjects()) {
-            if (((AbstractMetadataObject) object).getName().length() >= length) {
+        for (IMetadataObject object : conf.getAllObjects()) {
+            if (((MetadataObject) object).getName().length() >= length) {
                 result.add(object);
             }
         }

@@ -1,9 +1,9 @@
 package ru.pf.service.conf.check;
 
 import org.springframework.stereotype.Service;
-import ru.pf.metadata.object.AbstractMetadataObject;
-import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.object.IMetadataObject;
 
 import java.util.*;
 
@@ -12,20 +12,20 @@ import java.util.*;
  * @author a.kakushin
  */
 @Service
-public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
+public class DuplicateViewCheck implements ServiceCheck<IMetadataObject> {
 
     @Override
-    public List<MetadataObject> check(Conf conf) {
-        List<MetadataObject> result = new ArrayList<>();
+    public List<IMetadataObject> check(Conf conf) {
+        List<IMetadataObject> result = new ArrayList<>();
 
-        Map<Class, List<MetadataObject>> typeObjects = new HashMap<>();
+        Map<Class, List<IMetadataObject>> typeObjects = new HashMap<>();
 
         // Уникальность имени проверяется в пределах типа объекта метаданных
-        Set<MetadataObject> allObjects = conf.getAllObjects();
-        for (MetadataObject object : allObjects) {
+        Set<IMetadataObject> allObjects = conf.getAllObjects();
+        for (IMetadataObject object : allObjects) {
             Class objectClass = object.getClass();
 
-            List<MetadataObject> current = typeObjects.get(objectClass);
+            List<IMetadataObject> current = typeObjects.get(objectClass);
             if (current == null) {
                 current = new ArrayList<>();
                 typeObjects.put(objectClass, current);
@@ -33,25 +33,25 @@ public class DuplicateViewCheck implements ServiceCheck<MetadataObject> {
             current.add(object);
         }
 
-        ArrayList<MetadataObject> duplicate = new ArrayList<>();
+        ArrayList<IMetadataObject> duplicate = new ArrayList<>();
         for (Class type : typeObjects.keySet()) {
-            List<MetadataObject> objects = typeObjects.get(type);
+            List<IMetadataObject> objects = typeObjects.get(type);
 
             duplicate.clear();
-            for (MetadataObject object : objects) {
-                String viewObject = ((AbstractMetadataObject) object).getSynonym();
+            for (IMetadataObject object : objects) {
+                String viewObject = ((MetadataObject) object).getSynonym();
                 if (viewObject.isEmpty()) {
-                    viewObject = ((AbstractMetadataObject) object).getName();
+                    viewObject = ((MetadataObject) object).getName();
                 }
 
-                for (MetadataObject potentialDuplicate : objects) {
+                for (IMetadataObject potentialDuplicate : objects) {
                     if (object.equals(potentialDuplicate)) {
                         continue;
                     }
 
-                    String viewPotential = ((AbstractMetadataObject) potentialDuplicate).getSynonym();
+                    String viewPotential = ((MetadataObject) potentialDuplicate).getSynonym();
                     if (viewPotential.isEmpty()) {
-                        viewPotential = ((AbstractMetadataObject) potentialDuplicate).getName();
+                        viewPotential = ((MetadataObject) potentialDuplicate).getName();
                     }
 
                     if (viewObject.equalsIgnoreCase(viewPotential)) {

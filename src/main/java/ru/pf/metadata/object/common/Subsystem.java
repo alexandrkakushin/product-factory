@@ -1,25 +1,25 @@
 package ru.pf.metadata.object.common;
 
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.ReaderException;
+import ru.pf.metadata.reader.XmlReader;
+
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import ru.pf.metadata.object.AbstractMetadataObject;
-import ru.pf.metadata.reader.ObjectReader;
-
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Subsystem extends AbstractMetadataObject {
+public class Subsystem extends MetadataObject {
 
     private Set<String> items;
     private Set<Subsystem> child;
@@ -54,11 +54,12 @@ public class Subsystem extends AbstractMetadataObject {
     }    
 
     @Override
-    public ObjectReader parse() throws IOException {
+    public ObjectReader parse() throws ReaderException {
         ObjectReader objReader = super.parse();
+        XmlReader xmlReader = objReader.getXmlReader();
 
         // Чтение подчиненых подсистем
-        List<String> childXml = objReader.readChild("/MetaDataObject/Subsystem/ChildObjects/Subsystem");
+        List<String> childXml = xmlReader.readChild("/MetaDataObject/Subsystem/ChildObjects/Subsystem");
         for (String item : childXml) {
             Path childPath = super.getFile().getParent()
                     .resolve(this.getShortName(super.getFile()))
@@ -72,7 +73,7 @@ public class Subsystem extends AbstractMetadataObject {
         }
 
         // Чтение объектов, включенных в подсистему
-        List<String> itemsXml = objReader.readChild("/MetaDataObject/Subsystem/Properties/Content/Item");
+        List<String> itemsXml = xmlReader.readChild("/MetaDataObject/Subsystem/Properties/Content/Item");
         for (String item : itemsXml) {
             this.items.add(item);
         }

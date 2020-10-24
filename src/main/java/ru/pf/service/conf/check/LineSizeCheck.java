@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.service.PropertiesService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +38,7 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
         }
 
         // todo: stream
-        Map<Module, MetadataObject> modules = conf.getAllModules();
+        Map<Module, IMetadataObject> modules = conf.getAllModules();
         for (Module module : modules.keySet()) {
             if (module.getText() == null) {
                 continue;
@@ -69,11 +69,11 @@ public class LineSizeCheck implements ServiceCheck<LineSizeCheck.Response> {
     @JsonView(MetadataJsonView.List.class)
     public static class Response {
 
-        private MetadataObject object;
+        private IMetadataObject object;
         private Module module;
         private List<Found> found;
 
-        Response(MetadataObject object, Module module, List<Found> found) {
+        Response(IMetadataObject object, Module module, List<Found> found) {
             this.object = object;
             this.module = module;
             this.found = found;

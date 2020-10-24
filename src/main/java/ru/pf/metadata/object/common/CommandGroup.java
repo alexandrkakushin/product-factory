@@ -1,20 +1,21 @@
 package ru.pf.metadata.object.common;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.ReaderException;
+import ru.pf.metadata.reader.XmlReader;
 import ru.pf.metadata.type.Picture;
+
+import java.nio.file.Path;
 
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommandGroup extends AbstractMetadataObject {
+public class CommandGroup extends MetadataObject {
 
     private Category category;
     private Representation representation;
@@ -26,16 +27,17 @@ public class CommandGroup extends AbstractMetadataObject {
     }
 
     @Override
-    public ObjectReader parse() throws IOException {
+    public ObjectReader parse() throws ReaderException {
         ObjectReader objReader = super.parse();
-
         String nodeProperties = "/MetaDataObject/" + getXmlName() + "/Properties/";
+        XmlReader xmlReader = objReader.getXmlReader();
+
         this.category = Category.valueByName(
-                objReader.read(nodeProperties + "Category"));
+            xmlReader.read(nodeProperties + "Category"));
 
         this.representation = Representation.valueByName(
-                objReader.read(nodeProperties + "Representation"));
-        this.toolTip = objReader.read(nodeProperties + "ToolTip");
+            xmlReader.read(nodeProperties + "Representation"));
+        this.toolTip = xmlReader.read(nodeProperties + "ToolTip");
         this.picture = new Picture(objReader, nodeProperties + "Picture");
 
         return objReader;

@@ -12,7 +12,7 @@ import ru.pf.metadata.annotation.PlainModule;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Form extends AbstractMetadataObject {
+public class Form extends MetadataObject {
 
     @PlainModule
 	private Module module;

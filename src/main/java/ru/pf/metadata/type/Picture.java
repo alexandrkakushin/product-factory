@@ -2,6 +2,7 @@ package ru.pf.metadata.type;
 
 import lombok.Data;
 import ru.pf.metadata.reader.ObjectReader;
+import ru.pf.metadata.reader.XmlReader;
 
 /**
  * Тип данных "Картинка"
@@ -33,10 +34,12 @@ public class Picture {
     }
 
     public Picture(ObjectReader objReader, java.lang.String expression) {
-        java.lang.String value = objReader.read(expression);
+        XmlReader xmlReader = objReader.getXmlReader();
+
+        java.lang.String value = xmlReader.read(expression);
         if (!value.isEmpty()) {
-            this.ref = objReader.read(expression + "/Ref");
-            this.loadTransparent = objReader.readBool(expression + "/LoadTransparent");
+            this.ref = xmlReader.read(expression + "/Ref");
+            this.loadTransparent = xmlReader.readBool(expression + "/LoadTransparent");
 
             setStd(this.ref);
         }

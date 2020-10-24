@@ -5,8 +5,6 @@ import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.*;
 import ru.pf.metadata.object.common.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -21,7 +19,7 @@ import java.util.Set;
 @Service
 public class ConfReader {
 
-    public Conf read(Path workPath) throws IOException {
+    public Conf read(Path workPath) throws ReaderException {
 
         Conf conf;
 
@@ -29,7 +27,7 @@ public class ConfReader {
         if (Files.exists(fileConfiguration)) {
             conf = new Conf(fileConfiguration);
         } else {
-            throw new FileNotFoundException("File \"Configuration.xml\" not found'");
+            throw new ReaderException("File \"Configuration.xml\" not found'");
         }
 
         XmlReader xmlReader = new XmlReader(fileConfiguration);
@@ -49,19 +47,17 @@ public class ConfReader {
                     Class<?> objClass = relation.getObjClass();
 
                     Constructor<?> cons = objClass.getConstructor(Path.class);
-                    AbstractMetadataObject metadataObject = (AbstractMetadataObject) cons.newInstance(fileXml);
-
-                    // TODO: вынести с отдельный конструктор
+                    MetadataObject metadataObject = (MetadataObject) cons.newInstance(fileXml);
                     metadataObject.setConf(conf);
 
                     ObjectReader objReader = new ObjectReader(metadataObject);
-                    objReader.fillCommonField();
+                    objReader.read(true);
 
                     conf.putRef(refType, metadataObject);
                     relation.getContainer().add(metadataObject);
 
                 } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                    e.printStackTrace();
+                    throw new ReaderException(e.getMessage());
                 }
             }
         }
@@ -198,17 +194,17 @@ public class ConfReader {
 
     public static class Relation {
 
-        private Set<MetadataObject> container;
-        private Class<?> objClass;
-        private String folder;
+        private final Set<IMetadataObject> container;
+        private final Class<?> objClass;
+        private final String folder;
 
-        public Relation(Set<MetadataObject> conf, Class<?> objClass, String folder) {
+        public Relation(Set<IMetadataObject> conf, Class<?> objClass, String folder) {
             this.container = conf;
             this.objClass = objClass;
             this.folder = folder;
         }
 
-        public Set<MetadataObject> getContainer() {
+        public Set<IMetadataObject> getContainer() {
             return this.container;
         }
 

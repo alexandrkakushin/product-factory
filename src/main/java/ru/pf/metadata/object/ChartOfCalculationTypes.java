@@ -15,7 +15,7 @@ import ru.pf.metadata.Module;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ChartOfCalculationTypes extends AbstractMetadataObject {
+public class ChartOfCalculationTypes extends MetadataObject {
 
     @Forms
     private Set<Form> forms;

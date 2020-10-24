@@ -16,6 +16,7 @@
         <script type="text/javascript" th:src="@{/js/metadata/forms.js}"></script>
         <script type="text/javascript" th:src="@{/js/metadata/owners.js}"></script>
         <script type="text/javascript" th:src="@{/js/metadata/predefined.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/commands.js}"></script>
 
         <script type="text/javascript" th:src="@{/js/metadata/object/catalog.js}"></script>
 
@@ -33,6 +34,7 @@
                 <li th:replace="fragments/metadata-forms :: li-nav-item"></li>
                 <li th:replace="fragments/metadata-owners :: li-nav-owners"></li>
                 <li th:replace="fragments/metadata-predefined :: li-nav-predefined"></li>
+                <li th:replace="fragments/metadata-commands :: li-nav-commands"></li>
             </ul>    
             
             <div class="tab-content" id="pills-tabContent">
@@ -42,6 +44,7 @@
                 <div th:replace="fragments/metadata-forms :: div-items"></div>
                 <div th:replace="fragments/metadata-owners :: div-owners"></div>
                 <div th:replace="fragments/metadata-predefined :: div-predefined"></div>
+                <div th:replace="fragments/metadata-commands :: div-commands"></div>
             </div>            
         </div>
 
@@ -53,6 +56,7 @@
             addModules();
             addOwners();
             addPredefined();
+            addCommands();
         </script>
 
         <footer th:replace="fragments/footer :: bootstrap"></footer>

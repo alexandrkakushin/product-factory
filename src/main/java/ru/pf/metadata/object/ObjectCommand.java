@@ -1,25 +1,24 @@
-package ru.pf.metadata.object.common;
+package ru.pf.metadata.object;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.CommandModule;
-import ru.pf.metadata.object.MetadataObject;
 
-import java.nio.file.Path;
+import java.util.UUID;
 
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommonCommand extends MetadataObject {
+public class ObjectCommand extends MetadataObject {
 
     @CommandModule
     private Module commandModule;
 
-    public CommonCommand(Path path) {
-        super(path);
+    public ObjectCommand(Conf conf, UUID uuid, String name, String synonym) {
+        super(conf, uuid, name, synonym);
     }
 
     @Override

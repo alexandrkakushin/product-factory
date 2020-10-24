@@ -76,4 +76,7 @@ function addProperties_Catalog (object) {
         choiceMode = 'Быстрый выбор';
     }
     addLine('Способ выбора', choiceMode);
+
+    // Команды
+    addBooleanLine('Использовать стандартные команды', 'useStandardCommands', object.useStandardCommands);
 }

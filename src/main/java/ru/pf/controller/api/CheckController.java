@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.object.Conf;
+import ru.pf.metadata.reader.ReaderException;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 import ru.pf.service.conf.check.*;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -98,14 +98,10 @@ public class CheckController {
         return services;
     }
 
-    private Conf getConf(Long projectId) {
+    private Conf getConf(Long projectId) throws ReaderException {
         Optional<Project> project = projectsRepository.findById(projectId);
         if (project.isPresent()) {
-            try {
-                return projectsService.getConf(project.get());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return projectsService.getConf(project.get());
         }
         return null;
     }

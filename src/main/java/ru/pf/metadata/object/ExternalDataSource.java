@@ -12,7 +12,7 @@ import ru.pf.metadata.annotation.Forms;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ExternalDataSource extends AbstractMetadataObject {
+public class ExternalDataSource extends MetadataObject {
 
     @Forms
     private Set<Form> forms;

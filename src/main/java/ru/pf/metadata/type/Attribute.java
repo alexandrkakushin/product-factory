@@ -1,4 +1,4 @@
-package ru.pf.metadata.object;
+package ru.pf.metadata.type;
 
 import lombok.Data;
 

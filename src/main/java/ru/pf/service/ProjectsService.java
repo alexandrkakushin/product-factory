@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ConfReader;
+import ru.pf.metadata.reader.ReaderException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -104,7 +105,7 @@ public class ProjectsService {
         }
     }
 
-    public Conf getConf(Project project) throws IOException {
+    public Conf getConf(Project project) throws ReaderException {
         Path directory = getTemporaryLocation(project);
         if (Files.exists(directory.resolve("Configuration.xml"))) {
             return confReader.read(directory);

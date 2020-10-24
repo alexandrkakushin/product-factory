@@ -4,14 +4,14 @@ import java.nio.file.Path;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.MetadataObject;
 
 /**
  * @author a.kakushin
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommonAttribute extends AbstractMetadataObject {
+public class CommonAttribute extends MetadataObject {
 
     public CommonAttribute(Path path) {
         super(path);

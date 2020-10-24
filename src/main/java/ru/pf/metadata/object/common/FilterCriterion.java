@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.annotation.ManagerModule;
-import ru.pf.metadata.object.AbstractMetadataObject;
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.object.Form;
 import ru.pf.metadata.Module;
 
@@ -16,7 +16,7 @@ import ru.pf.metadata.Module;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FilterCriterion extends AbstractMetadataObject {
+public class FilterCriterion extends MetadataObject {
 
     @Forms
     private Set<Form> forms;

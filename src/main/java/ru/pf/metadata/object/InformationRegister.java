@@ -15,7 +15,7 @@ import ru.pf.metadata.Module;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InformationRegister extends AbstractMetadataObject {
+public class InformationRegister extends MetadataObject {
 
     @Forms
     private Set<Form> forms;

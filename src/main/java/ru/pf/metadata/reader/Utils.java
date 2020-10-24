@@ -1,5 +1,6 @@
 package ru.pf.metadata.reader;
 
+import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.object.common.HttpService;
 import ru.pf.metadata.object.common.XdtoPackage;
 
@@ -32,5 +33,14 @@ public class Utils {
         }
 
         return nodeName;
+    }
+
+    /**
+     * Получение пути корневого XML-узла
+     * @param object Объект метаданных
+     * @return Строка
+     */
+    public static String nodeRoot(MetadataObject object) {
+        return "/MetaDataObject/" + object.getXmlName();
     }
 }

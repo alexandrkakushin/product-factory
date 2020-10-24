@@ -12,7 +12,7 @@ import ru.pf.metadata.annotation.ValueManagerModule;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Constant extends AbstractMetadataObject {
+public class Constant extends MetadataObject {
 
     @ValueManagerModule
     private Module valueManagerModule;

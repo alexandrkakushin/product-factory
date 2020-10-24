@@ -7,7 +7,7 @@ import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.Method;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.object.Conf;
-import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.object.IMetadataObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class NoReturnCheck implements ServiceCheck<NoReturnCheck.Response> {
     public List<Response> check(Conf conf) throws InvocationTargetException, IllegalAccessException {
         List<Response> result = new ArrayList<>();
 
-        Map<Module, MetadataObject> modules = conf.getAllModules();
+        Map<Module, IMetadataObject> modules = conf.getAllModules();
         for (Module module : modules.keySet()) {
             Response response = null;
 
@@ -53,11 +53,11 @@ public class NoReturnCheck implements ServiceCheck<NoReturnCheck.Response> {
     @JsonView(MetadataJsonView.List.class)
     public static class Response {
 
-        private MetadataObject object;
+        private IMetadataObject object;
         private Module module;
         private List<Method> found;
 
-        public Response(MetadataObject object, Module module, List<Method> found) {
+        public Response(IMetadataObject object, Module module, List<Method> found) {
             this.object = object;
             this.module = module;
             this.found = found;

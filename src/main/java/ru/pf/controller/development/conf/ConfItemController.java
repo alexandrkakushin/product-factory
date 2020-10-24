@@ -1,30 +1,24 @@
 package ru.pf.controller.development.conf;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import ru.pf.entity.Project;
 import ru.pf.metadata.annotation.*;
-import ru.pf.metadata.object.AbstractMetadataObject;
 import ru.pf.metadata.object.Catalog;
 import ru.pf.metadata.object.Enum;
+import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.reader.ReaderException;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
+
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author a.kakushin
@@ -40,7 +34,7 @@ public class ConfItemController {
     ProjectsRepository projectsRepository;
 
     @GetMapping("/{id}")
-    public String conf(@PathVariable(name = "id") Long id, Model model) throws IOException {
+    public String conf(@PathVariable(name = "id") Long id, Model model) throws ReaderException {
         Optional<Project> projectOptional = projectsRepository.findById(id);
         if (projectOptional.isPresent()) {
             model.addAttribute("projectId", id);
@@ -64,17 +58,21 @@ public class ConfItemController {
     }
 
     @GetMapping("/{id}/object/{uuid}")
-    public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) throws IOException {
+    public String metadata(@PathVariable(name = "id") Long id, @PathVariable(name = "uuid") String uuid, Model model) throws ReaderException {
         Optional<Project> projectOptional = projectsRepository.findById(id);
         if (projectOptional.isPresent()) {
             model.addAttribute("projectId", id);
         }
 
-        AbstractMetadataObject object = (AbstractMetadataObject) projectsService.getConf(projectOptional.get())
+        MetadataObject object = null;
+
+        object = (MetadataObject) projectsService
+                .getConf(projectOptional.get())
                 .getObject(UUID.fromString(uuid));
+
         if (object != null) {
             object.parse();
-            model.addAttribute("object", ((AbstractMetadataObject) object));
+            model.addAttribute("object", ((MetadataObject) object));
         }
 
         Map<String, String> fields = new HashMap<>();
@@ -104,7 +102,7 @@ public class ConfItemController {
             // @PlainModule
             } else if (field.isAnnotationPresent(PlainModule.class)) {
                 fields.put("plainModule", field.getName());
-            
+
             // @ValueManagerModule
             } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
                 fields.put("valueManagerModule", field.getName());
@@ -116,6 +114,10 @@ public class ConfItemController {
             // @Predefined
             } else if (field.isAnnotationPresent(Predefined.class)) {
                 fields.put("predefined", field.getName());
+
+            // @Commands
+            } else if (field.isAnnotationPresent(Commands.class)) {
+                fields.put("commands", field.getName());
             }
         }
         model.addAttribute("fields", fields);
@@ -177,10 +179,10 @@ public class ConfItemController {
 
         public ConfObject() {}
 
-        public ConfObject(MetadataObject metadataObject) {
+        public ConfObject(IMetadataObject metadataObject) {
             this();            
-            this.uuid = ((AbstractMetadataObject) metadataObject).getUuid();
-            this.name = ((AbstractMetadataObject) metadataObject).getName();
+            this.uuid = ((MetadataObject) metadataObject).getUuid();
+            this.name = ((MetadataObject) metadataObject).getName();
             this.metadataName = metadataObject.getXmlName();
             this.listPresentation = metadataObject.getListPresentation();
         }
