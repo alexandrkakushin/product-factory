@@ -60,6 +60,9 @@ public class ObjectReader {
                     } else if (clazz == Commands.class) {
                         value = CommandsReader.read(this.xmlReader, this.metadataObject);
 
+                    } else if (clazz == Attributes.class) {
+                        value = AttributesReader.read(this.xmlReader, this.metadataObject);
+
                     } else if (Files.exists(pathExt)) {
                         // Modules
                         if (clazz == CommandModule.class

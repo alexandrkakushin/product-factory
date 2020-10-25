@@ -118,6 +118,10 @@ public class ConfItemController {
             // @Commands
             } else if (field.isAnnotationPresent(Commands.class)) {
                 fields.put("commands", field.getName());
+
+            // @Attributes
+            } else if (field.isAnnotationPresent(Attributes.class)) {
+                fields.put("attributes", field.getName());
             }
         }
         model.addAttribute("fields", fields);

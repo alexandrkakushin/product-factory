@@ -7,7 +7,6 @@ import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.reader.ReaderException;
 import ru.pf.metadata.reader.XmlReader;
-import ru.pf.metadata.type.Attribute;
 
 import java.nio.file.Path;
 import java.util.Set;
@@ -81,6 +80,11 @@ public class Catalog extends MetadataObject {
      */
     private DefaultPresentation defaultPresentation;
 
+    /**
+     * Реквизиты
+     */
+    @Attributes
+    private Set<Attribute> attributes;
 
     // todo: <CodeAllowedLength>,
 
@@ -108,8 +112,7 @@ public class Catalog extends MetadataObject {
 //    // todo: <EditType>InDialog</EditType>
 
     private Set<Attribute> standardAttributes;
-    private Set<Attribute> attributes;
-
+    
     // Формы
 
     /**

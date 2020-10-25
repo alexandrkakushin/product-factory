@@ -41,7 +41,7 @@ public abstract class MetadataObject implements IMetadataObject {
         this.file = file;
     }
 
-    public MetadataObject(Conf conf, UUID uuid, String name, String synonym) {
+    protected MetadataObject(Conf conf, UUID uuid, String name, String synonym) {
         this.conf = conf;
         this.uuid = uuid;
         this.name = name;
@@ -52,7 +52,6 @@ public abstract class MetadataObject implements IMetadataObject {
         return this.conf;
     }
 
-    // TODO: вынести в конструктор
     public void setConf(Conf conf) {
         this.conf = conf;
     }
@@ -95,13 +94,15 @@ public abstract class MetadataObject implements IMetadataObject {
 
     @Override
     public boolean equals(Object o) {
-        MetadataObject object = (MetadataObject) o;
-        return Objects.equals(uuid, object.uuid);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MetadataObject that = (MetadataObject) o;
+        return uuid.equals(that.uuid);
     }
 
     @Override
     public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
+        return Objects.hash(uuid);
     }
 
     public ObjectReader parse() throws ReaderException {
