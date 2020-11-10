@@ -7,6 +7,8 @@ import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.reader.ReaderException;
 import ru.pf.metadata.reader.XmlReader;
+import ru.pf.metadata.type.Attribute;
+import ru.pf.metadata.type.TabularSection;
 
 import java.nio.file.Path;
 import java.util.Set;
@@ -85,6 +87,13 @@ public class Catalog extends MetadataObject {
      */
     @Attributes
     private Set<Attribute> attributes;
+
+    /**
+     * Табличные части
+     */
+    @TabularSections
+    private Set<TabularSection> tabularSections;
+
 
     // todo: <CodeAllowedLength>,
 

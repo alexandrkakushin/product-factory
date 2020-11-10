@@ -1,8 +1,8 @@
-package ru.pf.metadata.object;
+package ru.pf.metadata.type;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.pf.metadata.type.Type;
+import ru.pf.metadata.object.MetadataObject;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class Attribute extends MetadataObject {
 
     private Type type;
 
-    public Attribute(Conf conf, UUID uuid, String name, String synonym) {
-        super(conf, uuid, name, synonym);
+    public Attribute(MetadataObject parent, UUID uuid) {
+        super(parent, uuid);
     }
 }

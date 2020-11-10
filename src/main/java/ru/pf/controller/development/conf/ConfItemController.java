@@ -122,6 +122,10 @@ public class ConfItemController {
             // @Attributes
             } else if (field.isAnnotationPresent(Attributes.class)) {
                 fields.put("attributes", field.getName());
+
+            // @TabularSections
+            } else if (field.isAnnotationPresent(TabularSections.class)) {
+                fields.put("tabularSections", field.getName());
             }
         }
         model.addAttribute("fields", fields);

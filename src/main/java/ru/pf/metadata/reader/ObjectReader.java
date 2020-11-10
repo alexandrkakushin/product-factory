@@ -2,6 +2,8 @@ package ru.pf.metadata.reader;
 
 import ru.pf.metadata.annotation.*;
 import ru.pf.metadata.object.MetadataObject;
+import ru.pf.metadata.type.Attribute;
+import ru.pf.metadata.type.TabularSection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,7 +24,22 @@ public class ObjectReader {
 
     public ObjectReader(MetadataObject metadataObject) {
         this.metadataObject = metadataObject;
-        this.xmlReader = new XmlReader(metadataObject.getFile());
+
+        // TODO: переработать!!!
+        if (metadataObject instanceof TabularSection) {
+            this.xmlReader = new XmlReader(metadataObject.getParent().getFile());
+
+        } else if (metadataObject instanceof Attribute) {
+            if (metadataObject.getParent() instanceof TabularSection) {
+                this.xmlReader = new XmlReader(metadataObject.getParent().getParent().getFile());
+
+            } else {
+                this.xmlReader = new XmlReader(metadataObject.getParent().getFile());
+            }
+
+        } else {
+            this.xmlReader = new XmlReader(metadataObject.getFile());
+        }
     }
 
     public MetadataObject getMetadataObject() {
@@ -34,10 +51,14 @@ public class ObjectReader {
     }
 
     public void read(boolean onlyHeaders) throws ReaderException {
-        Path pathExt = this.metadataObject.getFile()
+
+        Path pathExt = null;
+        if (this.metadataObject.getFile() != null) {
+            pathExt = this.metadataObject.getFile()
                 .getParent()
                 .resolve(this.metadataObject.getShortName(this.metadataObject.getFile()))
                 .resolve("Ext");
+        }
 
         fillHeaders();
         if (onlyHeaders) {
@@ -63,7 +84,10 @@ public class ObjectReader {
                     } else if (clazz == Attributes.class) {
                         value = AttributesReader.read(this.xmlReader, this.metadataObject);
 
-                    } else if (Files.exists(pathExt)) {
+                    } else if (clazz == TabularSections.class) {
+                        value = TabularSectionsReader.read(this.xmlReader, this.metadataObject);
+
+                    } else if (pathExt != null && Files.exists(pathExt)) {
                         // Modules
                         if (clazz == CommandModule.class
                                 || clazz == ObjectModule.class

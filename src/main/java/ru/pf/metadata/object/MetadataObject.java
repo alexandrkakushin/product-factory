@@ -21,6 +21,9 @@ public abstract class MetadataObject implements IMetadataObject {
     private Conf conf;
 
     @JsonIgnore
+    private MetadataObject parent;
+
+    @JsonIgnore
     private Path file;
 
     @JsonView(MetadataJsonView.List.class)
@@ -44,6 +47,18 @@ public abstract class MetadataObject implements IMetadataObject {
     protected MetadataObject(Conf conf, UUID uuid, String name, String synonym) {
         this.conf = conf;
         this.uuid = uuid;
+        this.name = name;
+        this.synonym = synonym;
+    }
+
+    protected MetadataObject(MetadataObject parent, UUID uuid) {
+        this.conf = parent.getConf();
+        this.parent = parent;
+        this.uuid = uuid;
+    }
+
+    protected MetadataObject(MetadataObject parent, UUID uuid, String name, String synonym) {
+        this(parent, uuid);
         this.name = name;
         this.synonym = synonym;
     }

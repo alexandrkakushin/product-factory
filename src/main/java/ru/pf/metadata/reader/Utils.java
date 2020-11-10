@@ -3,6 +3,8 @@ package ru.pf.metadata.reader;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.object.common.HttpService;
 import ru.pf.metadata.object.common.XdtoPackage;
+import ru.pf.metadata.type.Attribute;
+import ru.pf.metadata.type.TabularSection;
 
 /**
  * Вспомогательгый класс для парсинга конфигурации
@@ -41,6 +43,14 @@ public class Utils {
      * @return Строка
      */
     public static String nodeRoot(MetadataObject object) {
-        return "/MetaDataObject/" + object.getXmlName();
+        if (object instanceof TabularSection) {
+            return "/MetaDataObject/" + object.getParent().getXmlName() + "/ChildObjects/TabularSection[@uuid='" + object.getUuid() + "']";
+
+        } else if (object instanceof Attribute) {
+            return nodeRoot(object.getParent()) + "/ChildObjects/Attribute[@uuid='" + object.getUuid() + "']";
+
+        } else {
+            return "/MetaDataObject/" + object.getXmlName();
+        }
     }
 }
