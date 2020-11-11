@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Project;
 import ru.pf.metadata.annotation.*;
-import ru.pf.metadata.object.Catalog;
-import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ReaderException;
@@ -130,15 +128,7 @@ public class ConfItemController {
         }
         model.addAttribute("fields", fields);
 
-        // TODO: получать по имени класса
-        String pathModel = "/development/conf/metadata-item/common";
-        if (object instanceof Catalog) {
-            pathModel = "/development/conf/metadata-item/catalog";
-        } else if (object instanceof Enum) {
-            pathModel = "/development/conf/metadata-item/enum";
-        }
-
-        return pathModel;
+        return "/development/conf/metadata-item/" + object.getClass().getSimpleName().toLowerCase();
     }
 
     public static class Metadata {

@@ -1,11 +1,11 @@
 function addProperties_CommonModule (object) {
-    addLine('Глобальный', object.global);
-    addLine('Клиент (управляемое приложение)', object.clientManagedApplication);
-    addLine('Клиент (обычное приложение)', object.clientOrdinaryApplication);
-    addLine('Сервер', object.server);
-    addLine('Внешнее соединение', object.externalConnection);
-    addLine('Вызов сервера', object.serverCall);
-    addLine('Привелегированный', object.privileged);
+    addBooleanLine('Глобальный', 'global', object.global);
+    addBooleanLine('Клиент (управляемое приложение)', 'clientManagedApplication', object.clientManagedApplication);
+    addBooleanLine('Клиент (обычное приложение)', 'clientOrdinaryApplication', object.clientOrdinaryApplication);
+    addBooleanLine('Сервер', 'server', object.server);
+    addBooleanLine('Внешнее соединение', 'externalConnection', object.externalConnection);
+    addBooleanLine('Вызов сервера', 'serverCall', object.serverCall);
+    addBooleanLine('Привелегированный', 'privileged', object.privileged);
 
     let returnValuesReuse = null;
     if (object.returnValuesReuse === 'DONT_USE') {
