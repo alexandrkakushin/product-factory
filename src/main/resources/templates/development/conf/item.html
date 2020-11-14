@@ -61,33 +61,69 @@
                 </div>
 
                 <div class="col-sm-8">
-                    <table id="table-info-objects" class="table table-hover">
-                        <tr>
-                            <td class="w-75">Общее количество объектов</td>
-                            <td id="totalObjects"></td>                                                       
-                        </tr>
-                    </table>
+                    <div class="card">
+                        <div class="card-header" id="totalObjects"></div>
+                        <div class="card-body">
+                            <input class="form-control" id="filterConfObjects" type="text" placeholder="Поиск...">
+                            <br>
+                            <table class="table table-bordered table-striped" id="table_confObjects">
+                                <thead>
+                                    <tr>
+                                        <th class="w-25">Тип</th>
+                                        <th class="w-75">Имя</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="confObjects"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <script>
+                $(document).ready(function() {
+                    $("#filterConfObjects").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#confObjects tr").filter(function() {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
+
             <script th:inline="javascript">
                 let objects = [[${objects}]];
+                let typesMetadata = [[${typesMetadata}]];
                 let totalObjects = 0;
 
                 for (let iObject = 0; iObject < objects.length; iObject ++) {
                     let instance = objects[iObject];
                     let $content = $('#content_' + instance.metadataName);
+
+                    let linkObject = `/development/conf/item/[[${projectId}]]/object/${instance.uuid}`;
+
                     $content
-                        .append($('<a>').attr("href", `/development/conf/item/[[${projectId}]]/object/${instance.uuid}`).text(instance.name))
+                        .append($('<a>').attr("href", linkObject).text(instance.name))
                         .append($('<br>'));
 
                     let $badge = $('#badge_' + instance.metadataName);
                     $badge.html(parseInt($badge.text()) + 1);
 
+                    let typeMetadata = typesMetadata
+                        .filter(word => word.name === instance.metadataName)
+                        .pop();
+
+                    $('#table_confObjects> tbody:last-child')
+                        .append($('<tr>')
+                            .append($('<td>').text(typeMetadata == undefined ? "Не найден" : typeMetadata.presentation))
+                            .append($('<td>')
+                                .append($('<a>').attr("href", linkObject).text(instance.name)))
+                        );
+
                     totalObjects++;
                 }
 
-                $('#totalObjects').html(totalObjects);
+                $('#totalObjects').html('Общее количество объектов: ' + totalObjects);
 
                 if (totalObjects === 0) {
                     $('#btn_check').hide();
