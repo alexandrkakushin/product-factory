@@ -6,10 +6,12 @@
         
         <script th:inline="javascript">
             let fields = [[${fields}]];
-            let object = [[${object}]];    
+            let object = [[${object}]];
+            let projectId = [[${projectId}]];
         </script>
 
-        <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/common.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>                        
 
         <highlight th:replace="fragments/highlight :: init"/>
         
@@ -20,11 +22,11 @@
            
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li th:replace="fragments/metadata-properties :: li-nav-item"></li>
-            </ul>    
+            </ul>
             
             <div class="tab-content" id="pills-tabContent">
                 <div th:replace="fragments/metadata-properties :: div-items"></div>
-            </div>            
+            </div>
         </div>
 
         <div th:replace="fragments/metadata-modules :: method-text"></div> 
