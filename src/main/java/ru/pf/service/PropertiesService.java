@@ -42,6 +42,7 @@ public class PropertiesService {
     }
 
     public Path getDirVersions1C() {
-        return Paths.get(this.get(Properties.DIR_VERSIONS_1C));
+        String saved = this.get(Properties.DIR_VERSIONS_1C);
+        return saved != null ? Paths.get(saved) : null;
     }
 }

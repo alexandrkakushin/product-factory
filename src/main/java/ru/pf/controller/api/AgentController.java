@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.pf.service.ThickClientService;
 
 /**
+ * Реализация "агента" для
  * @author a.kakushin
  */
 @RestController
@@ -21,8 +22,8 @@ class AgentController {
     @Autowired
     private ThickClientService thickClientService;
 
-    @GetMapping("/thickclient/versions")
-    public List<String> versions() throws IOException {
+    @GetMapping("/thickclient/available")
+    public List<String> thickClientAvailable() throws IOException {
         return thickClientService.versions().stream()
             .map(item -> item.toString())
             .collect(Collectors.toList());        

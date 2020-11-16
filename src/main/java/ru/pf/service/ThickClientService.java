@@ -24,7 +24,7 @@ public class ThickClientService {
         List<Path> directories = existingDirectories();
 
         if (isWindows()) {            
-            for (final Path dir : existingDirectories()) {              
+            for (final Path dir : directories) {
                 Files.list(dir)
                     .filter(path -> Files.isDirectory(path))
                     .filter(path -> path.getFileName().toString().startsWith("8."))
@@ -41,9 +41,11 @@ public class ThickClientService {
         final List<Path> directories = new ArrayList<>();
         final List<Path> existsing = new ArrayList<>();
 
-        if (!propertiesService.getDirVersions1C().toString().isEmpty()) {
-            directories.add(propertiesService.getDirVersions1C());
-        }        
+        if (propertiesService.getDirVersions1C() != null) {
+            if (!propertiesService.getDirVersions1C().toString().isEmpty()) {
+                directories.add(propertiesService.getDirVersions1C());
+            }
+        }
 
         if (isWindows()) {
             directories.add(Paths.get("C:\\Program Files\\1cv8"));
