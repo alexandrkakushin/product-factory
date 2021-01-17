@@ -183,12 +183,11 @@
     </div>
 </item-field>
 
-<!--todo: отображение пароля-->
 <item-field th:fragment="password" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="field-password">Пароль</label>
         <div class="col-sm-5">
-            <input th:field="*{password}" th:value="${entity.password}" type="text" class="form-control" id="field-password" placeholder="Пароль">
+            <input th:field="*{password}" th:value="${entity.password}" type="password" class="form-control" id="field-password" placeholder="Пароль">
         </div>
     </div>
 </item-field>
