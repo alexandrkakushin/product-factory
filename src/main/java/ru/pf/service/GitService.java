@@ -27,9 +27,9 @@ public class GitService {
         }
 
         if (Files.exists(target.resolve(".git"))) {
-            Git repository = Git.open(target.toFile());
-            repository.pull().call();
-            
+            try (Git repository = Git.open(target.toFile())) {
+                repository.pull().call();
+            }
         } else {
             Git.cloneRepository()
                     .setURI(project.getGit().getFetchUrl())
