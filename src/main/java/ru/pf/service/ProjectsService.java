@@ -15,24 +15,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 /**
+ * Сервис для работы с проектами
  * @author a.kakushin
  */
 @Service
 public class ProjectsService {
 
-    // todo: перенести получение временных директорий с PropertiesService, чтобы исключить зависимость
-
+    /**
+     * Сервис для чтения параметров приложения
+     */
     @Autowired
     private PropertiesService propertiesService;
 
+    /**
+     * Сервис для работы с GIT-репозиториями
+     */
     @Autowired
     private GitService gitService;
 
+    /**
+     * Утилитный класс-читатеть конфигурации
+     */
     @Autowired
     private ConfReader confReader;
 
+    /**
+     * Сервис для работы с хранилищами конфигураций
+     */
     @Autowired
     private CrService crService;
 
@@ -44,14 +56,15 @@ public class ProjectsService {
         }
 
         // todo: исправить, исключение не ловится
-        Files.walk(src)
-                .forEach(source -> {
-                    try {
-                        Files.copy(source, temp.resolve(src.relativize(source)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+        try (Stream<Path> pathStream = Files.walk(src)) {
+            pathStream.forEach(source -> {
+                try {
+                    Files.copy(source, temp.resolve(src.relativize(source)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
 
         return true;
     }
@@ -76,13 +89,14 @@ public class ProjectsService {
     }
 
     public boolean update(Project project) throws IOException {
-
         Path temp = getTemporaryLocation(project);
         if (project.getSourceType() == Project.SourceType.DIRECTORY && Files.exists(temp)) {
-            Files.walk(temp)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            try (Stream<Path> pathStream = Files.walk(temp)) {
+                pathStream
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
         }
         Files.createDirectories(temp);
 
