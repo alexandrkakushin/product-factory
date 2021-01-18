@@ -1,14 +1,15 @@
 package ru.pf.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.stream.Stream;
 
 /**
  * @author a.kakushin
@@ -25,11 +26,13 @@ public class ThickClientService {
 
         if (isWindows()) {            
             for (final Path dir : directories) {
-                Files.list(dir)
-                    .filter(path -> Files.isDirectory(path))
-                    .filter(path -> path.getFileName().toString().startsWith("8."))
-                    .forEach(versions::add);
-            }        
+                try (Stream<Path> pathStream = Files.list(dir)) {
+                    pathStream
+                        .filter(Files::isDirectory)
+                        .filter(path -> path.getFileName().toString().startsWith("8."))
+                        .forEach(versions::add);
+                }
+            }
         } else {
             versions = directories;
         }
@@ -39,12 +42,11 @@ public class ThickClientService {
 
     private List<Path> existingDirectories() {
         final List<Path> directories = new ArrayList<>();
-        final List<Path> existsing = new ArrayList<>();
+        final List<Path> existing = new ArrayList<>();
 
-        if (propertiesService.getDirVersions1C() != null) {
-            if (!propertiesService.getDirVersions1C().toString().isEmpty()) {
-                directories.add(propertiesService.getDirVersions1C());
-            }
+        Path dirVersions1C = propertiesService.getDirVersions1C();
+        if (dirVersions1C != null && !dirVersions1C.toString().isEmpty()) {
+            directories.add(dirVersions1C);
         }
 
         if (isWindows()) {
@@ -57,11 +59,11 @@ public class ThickClientService {
 
         for (final Path dir : directories) {
             if (Files.exists(dir)) {
-                existsing.add(dir);
+                existing.add(dir);
             }
         }
 
-        return existsing;
+        return existing;
     }
 
     private boolean isWindows() {
