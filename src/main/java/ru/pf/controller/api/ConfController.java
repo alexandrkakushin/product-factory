@@ -73,7 +73,7 @@ public class ConfController {
         if (projectOptional.isPresent()) {
             Path location = projectsService.getTemporaryLocation(projectOptional.get());
             if (Files.exists(location)) {
-                ByteArrayOutputStream baos = zipService.createWithSubdir(location);
+                ByteArrayOutputStream baos = zipService.createWithSubDir(location);
                 InputStreamResource resource = new InputStreamResource(
                         new ByteArrayInputStream(baos.toByteArray()));
 
