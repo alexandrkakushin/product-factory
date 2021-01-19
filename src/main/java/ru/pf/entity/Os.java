@@ -1,12 +1,8 @@
 package ru.pf.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * Сущность "Операционная система"
@@ -17,12 +13,37 @@ import lombok.Data;
 @Data
 public class Os implements PfEntity<Os> {
 
+    /**
+     * Идентификатор записи
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * Название операционной системы
+     */
     private String name;
+
+    /**
+     * Комментарий
+     */
     private String comment;
+
+    /**
+     * Конструктор по умолчанию
+     */
+    public Os() {
+    }
+
+    /**
+     * Конструктор с указанием названия ОС
+     * @param name Название ОС
+     */
+    public Os(String name) {
+        this();
+        this.name = name;
+    }
 
     @Override
     public Long getId() {
