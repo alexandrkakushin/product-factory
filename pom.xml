@@ -27,7 +27,7 @@
 		<lombok.version>1.18.8</lombok.version>
 		<!-- webjars -->
 		<webjars.locator.version>0.34</webjars.locator.version>
-		<bootstrap.version>4.3.1</bootstrap.version>
+		<bootstrap.version>4.6.0-1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
 		<font.awesome.version>4.7.0</font.awesome.version>
 		<popperjs.version>1.14.1</popperjs.version>
