@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
-		<postgresql.version>42.2.1</postgresql.version>
+		<postgresql.version>42.2.23.jre7</postgresql.version>
 		<jgit.version>5.0.2.201807311906-r</jgit.version>
 		<lombok.version>1.18.8</lombok.version>
 		<!-- webjars -->
