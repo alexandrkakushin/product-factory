@@ -22,13 +22,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
-		<postgresql.version>42.2.1</postgresql.version>
-		<jgit.version>5.0.2.201807311906-r</jgit.version>
+		<postgresql.version>42.2.23.jre7</postgresql.version>
+		<jgit.version>5.12.0.202106070339-r</jgit.version>
 		<lombok.version>1.18.8</lombok.version>
 		<!-- webjars -->
 		<webjars.locator.version>0.34</webjars.locator.version>
 		<bootstrap.version>4.6.0-1</bootstrap.version>
-		<jquery.version>3.2.1</jquery.version>
+		<jquery.version>3.6.0</jquery.version>
 		<font.awesome.version>4.7.0</font.awesome.version>
 		<popperjs.version>1.14.1</popperjs.version>
 		<highlightjs.version>9.15.8</highlightjs.version>
@@ -111,7 +111,7 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>font-awesome</artifactId>
-			<version>5.0.13-1</version>
+			<version>5.15.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
