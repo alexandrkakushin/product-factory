@@ -26,7 +26,7 @@
 		<jgit.version>5.12.0.202106070339-r</jgit.version>
 		<lombok.version>1.18.8</lombok.version>
 		<!-- webjars -->
-		<webjars.locator.version>0.34</webjars.locator.version>
+		<webjars.locator.version>0.42</webjars.locator.version>
 		<bootstrap.version>4.6.0-1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
 		<font.awesome.version>4.7.0</font.awesome.version>
