@@ -39,7 +39,7 @@ public class ConfItemController {
 
             List<ConfObject> objects = projectsService.getConf(projectOptional.get()).getAllObjects()
                     .stream()
-                    .map(item -> new ConfObject(item))
+                    .map(ConfObject::new)
                     .collect(Collectors.toList());
 
             // todo: реализовать данный функционал в самой конфигурации
@@ -64,13 +64,12 @@ public class ConfItemController {
 
         MetadataObject object = null;
 
-        object = (MetadataObject) projectsService
-                .getConf(projectOptional.get())
-                .getObject(UUID.fromString(uuid));
-
-        if (object != null) {
-            object.parse();
-            model.addAttribute("object", ((MetadataObject) object));
+        if (projectOptional.isPresent()) {
+            object = (MetadataObject) projectsService.getConf(projectOptional.get()).getObject(UUID.fromString(uuid));
+            if (object != null) {
+                object.parse();
+                model.addAttribute("object", ((MetadataObject) object));
+            }
         }
 
         Map<String, String> fields = new HashMap<>();

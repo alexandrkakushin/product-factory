@@ -19,6 +19,9 @@
 	</parent>
 
 	<properties>
+		<!--Решение проблемы совместимости версий Spring и Thymeleaf-->
+		<thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
@@ -27,11 +30,11 @@
 		<lombok.version>1.18.8</lombok.version>
 		<!-- webjars -->
 		<webjars.locator.version>0.34</webjars.locator.version>
-		<bootstrap.version>4.6.0-1</bootstrap.version>
+		<bootstrap.version>4.6.1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
 		<font.awesome.version>4.7.0</font.awesome.version>
 		<popperjs.version>1.16.1-lts</popperjs.version>
-		<highlightjs.version>9.15.8</highlightjs.version>
+		<highlightjs.version>9.15.10</highlightjs.version>
 
 		<!-- SonarCloud -->
 		<sonar.projectKey>alexandrkakushin_product-factory</sonar.projectKey>
@@ -40,6 +43,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,7 +119,7 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>font-awesome</artifactId>
-			<version>5.15.3</version>
+			<version>5.15.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>

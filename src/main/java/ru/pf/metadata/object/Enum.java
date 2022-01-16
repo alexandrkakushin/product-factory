@@ -5,12 +5,10 @@ import lombok.EqualsAndHashCode;
 import ru.pf.metadata.Module;
 import ru.pf.metadata.annotation.Forms;
 import ru.pf.metadata.annotation.ManagerModule;
-import ru.pf.metadata.reader.ModuleReader;
 import ru.pf.metadata.reader.ObjectReader;
 import ru.pf.metadata.reader.ReaderException;
 import ru.pf.metadata.reader.XmlReader;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
@@ -74,18 +72,6 @@ public class Enum extends MetadataObject {
                 );
             }
         );
-
-        Path pathExt = super.getFile()
-                .getParent()
-                .resolve(this.getShortName(super.getFile()))
-                .resolve("Ext");
-
-        if (Files.exists(pathExt)) {
-            Path fileManagerModule = pathExt.resolve("ManagerModule.bsl");
-            if (Files.exists(fileManagerModule)) {
-                this.managerModule = ModuleReader.read(fileManagerModule, Module.Type.MANAGER_MODULE);
-            }
-        }
 
         return objReader;
     }

@@ -1,22 +1,18 @@
 package ru.pf.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
+import javax.persistence.*;
 
 /**
  * Сущность "Сервер"
  * @author a.kakushin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "SERVERS")
-@Data
 public class Server implements PfEntity<Server> {
 
     @Id

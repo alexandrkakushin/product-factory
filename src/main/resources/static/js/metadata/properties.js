@@ -25,7 +25,13 @@ function addProperties() {
     } else if (object.xmlName === 'CommonModule') {
         addProperties_CommonModule(object);
 
+    } else if (object.xmlName === 'Role') {
+        addProperties_Role(object);
+
     } else if (object.xmlName === 'Catalog') {
         addProperties_Catalog(object);
+
+    } else if (object.xmlName == 'Enum') {
+        addProperties_Enum(object);
     }
 }

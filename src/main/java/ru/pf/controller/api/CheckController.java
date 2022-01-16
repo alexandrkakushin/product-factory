@@ -58,6 +58,9 @@ public class CheckController {
     @Autowired
     LineSizeCheck lineSizeCheck;
 
+    @Autowired
+    RightsCheck rightsCheck;
+
     @GetMapping("/{service}")
     @JsonView(MetadataJsonView.List.class)
     public ResponseService check(
@@ -94,6 +97,7 @@ public class CheckController {
         services.put("usemodality", useModalityCheck);
         services.put("linesize", lineSizeCheck);
         services.put("noreturn", noReturnCheck);
+        services.put("rights", rightsCheck);
 
         return services;
     }
