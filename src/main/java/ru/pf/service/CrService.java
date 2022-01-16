@@ -31,12 +31,8 @@ public class CrService {
             Files.createDirectory(pathIb);
         }
 
-        if (createTempIB(pathIb)) {
-            if (loadCfg(pathIb, project.getCr())) {
-                if (dumpToFiles(pathIb, target)) {
-                    return true;
-                }
-            }
+        if (createTempIB(pathIb) && loadCfg(pathIb, project.getCr()) && dumpToFiles(pathIb, target)) {
+            return true;
         }
         return false;
     }
@@ -103,11 +99,7 @@ public class CrService {
             if (exitCode != 0) {
                 System.err.println("\nExited with error code (THICK CLIENT): " + exitCode);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
 
@@ -131,6 +123,6 @@ public class CrService {
             throw new FileNotFoundException("Платформа 1С:Предприятие не найдена");
         }
 
-        return application.toString();
+        return application == null ? null : application.toString();
     }
 }
