@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Сущность "Операционная система"
+ * Класс "Операционная система"
  * @author a.kakushin
  */
 @Entity
@@ -43,6 +43,18 @@ public class Os implements PfEntity<Os> {
     public Os(String name) {
         this();
         this.name = name;
+    }
+
+    /**
+     * Конструктор с указанием идентификатора, названия и комментария
+     * @param id Идентификатор записи
+     * @param name Название ОС
+     * @param comment Комментарий
+     */
+    public Os(Long id, String name, String comment) {
+        this.id = id;
+        this.name = name;
+        this.comment = comment;
     }
 
     @Override

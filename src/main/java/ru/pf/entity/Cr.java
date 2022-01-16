@@ -1,17 +1,11 @@
 package ru.pf.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import lombok.Data;
 
+import javax.persistence.*;
+
 /**
- * CR - Configuration Repository
+ * Класс CR - Configuration Repository (Хранилище конфигурации)
  * @author a.kakushin
  */
 @Entity
@@ -19,21 +13,50 @@ import lombok.Data;
 @Data
 public class Cr implements PfEntity<Cr> {
 
+    /**
+     * Идентификатор записи
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * Название
+     */
     private String name;
+
+    /**
+     * Комментарий
+     */
     private String comment;
 
+    /**
+     * Адрес для подключения к серверу хранилища конфигураций
+     */
     private String address;
 
+    /**
+     * Логин
+     */
     private String login;
+
+    /**
+     * Пароль
+     */
     private String password;
 
+    /**
+     * Связь с классом "Конфигуратор", который будет использован для операций с хранилищем конфигурации
+     */
     @ManyToOne
     @JoinColumn(name="designer_id")
     private Designer designer;
+
+    /**
+     * Конструктор по умолчанию
+     */
+    public Cr() {
+    }
 
     @Override
     public Long getId() {
