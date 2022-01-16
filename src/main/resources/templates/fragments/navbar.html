@@ -54,7 +54,17 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/tools/designers">Конфигураторы</a>
-                    <a class="dropdown-item" href="/tools/properties">Настройки</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown-item" href="/tools/properties">Настройки</a>
+                </div>
+            </li>
+
+            <!--Администрирование-->
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Администрирование
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/admin/users">Пользователи</a>
                 </div>
             </li>
         </ul>

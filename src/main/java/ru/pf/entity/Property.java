@@ -1,20 +1,17 @@
 package ru.pf.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
+import javax.persistence.*;
 
 /**
  * @author a.kakushin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "PROPERTIES")
-@Data
 public class Property implements PfEntity<Property> {
 
     @Id

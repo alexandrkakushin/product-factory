@@ -6,6 +6,8 @@ import ru.pf.metadata.object.common.XdtoPackage;
 import ru.pf.metadata.type.Attribute;
 import ru.pf.metadata.type.TabularSection;
 
+import java.nio.file.Path;
+
 /**
  * Вспомогательгый класс для парсинга конфигурации
  * @author a.kakushin
@@ -52,5 +54,17 @@ public class Utils {
         } else {
             return "/MetaDataObject/" + object.getXmlName();
         }
+    }
+
+    /**
+     * Каталог "Ext" объекта метаданных
+     * @param metadataObject Объект метаданных
+     * @return Path Каталог
+     */
+    public static Path getExt(MetadataObject metadataObject) {
+        return metadataObject.getFile()
+                .getParent()
+                .resolve(metadataObject.getShortName(metadataObject.getFile()))
+                .resolve("Ext");
     }
 }

@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+credentials:
+  admin:
+    name: admin
+    password: admin
+
+spring:
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:pf
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled=true:
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        ddl-auto: update
+      generate-ddl: true
+
+  resources:
+    cache:
+      cachecontrol:
+        cache-public: true
+      period: 3600

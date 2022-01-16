@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class OsRepositoryTests {
 
     /**
-     * Менеджер для работы с репозито
+     * Менеджер для работы с репозиториями
      */
     @Autowired
     private TestEntityManager entityManager;

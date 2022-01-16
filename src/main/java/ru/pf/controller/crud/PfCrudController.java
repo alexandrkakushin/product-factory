@@ -57,7 +57,7 @@ public interface PfCrudController<T extends PfEntity<?>> extends PfController {
     }
 
     @PostMapping("/submit")
-    default String submit(@ModelAttribute T entity) {
+    default String submit(@ModelAttribute T entity) throws SubmitException {
         T saved = getRepository().save(entity);
         return "redirect:/" + getUrl() + "/" + saved.getId();
     }
