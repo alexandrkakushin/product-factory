@@ -1,6 +1,7 @@
 package ru.pf.entity.auth;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,9 +15,10 @@ import java.util.Set;
  * Пользователь системы
  * @author a.kakushin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "USERS")
-@Data
 public class User implements UserDetails, PfEntity<User> {
 
     /**

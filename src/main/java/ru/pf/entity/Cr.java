@@ -1,6 +1,7 @@
 package ru.pf.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -8,9 +9,10 @@ import javax.persistence.*;
  * Класс CR - Configuration Repository (Хранилище конфигурации)
  * @author a.kakushin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "CR")
-@Data
 public class Cr implements PfEntity<Cr> {
 
     /**
@@ -56,6 +58,7 @@ public class Cr implements PfEntity<Cr> {
      * Конструктор по умолчанию
      */
     public Cr() {
+        // Конструктор по умолчанию
     }
 
     @Override

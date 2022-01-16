@@ -1,6 +1,7 @@
 package ru.pf.entity.auth;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -10,9 +11,10 @@ import java.util.Set;
  * Роль пользователя
  * @author a.kakushin
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "ROLES")
-@Data
 public class Role implements GrantedAuthority {
 
     /**
