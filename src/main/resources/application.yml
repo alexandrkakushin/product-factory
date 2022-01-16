@@ -19,13 +19,13 @@ spring:
       enabled=true:
 
   jpa:
+    open-in-view: false
     properties:
       hibernate:
         temp:
           use_jdbc_metadata_defaults: false
         ddl-auto: update
       generate-ddl: true
-      open-in-view: false
 
   resources:
     cache:
