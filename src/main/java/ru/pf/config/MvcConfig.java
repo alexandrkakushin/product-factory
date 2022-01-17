@@ -37,7 +37,8 @@ public class MvcConfig implements WebMvcConfigurer {
         if (!registry.hasMappingForPattern("/webjars/**")) {
             registry
                     .addResourceHandler("/webjars/**")
-                    .addResourceLocations("classpath:/META-INF/resources/webjars/");
+                    .addResourceLocations("classpath:/META-INF/resources/webjars/")
+                    .resourceChain(false);
         }
 
         registry.

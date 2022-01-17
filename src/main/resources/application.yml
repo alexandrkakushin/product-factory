@@ -25,6 +25,7 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
         ddl-auto: update
+        dialect: org.hibernate.dialect.H2Dialect
       generate-ddl: true
 
   resources:

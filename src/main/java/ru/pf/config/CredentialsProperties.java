@@ -4,7 +4,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Описание полномочий для входа в систему
@@ -26,7 +25,6 @@ public class CredentialsProperties {
         /**
          * Имя администратора
          */
-        @NotNull
         private String name;
 
         /**

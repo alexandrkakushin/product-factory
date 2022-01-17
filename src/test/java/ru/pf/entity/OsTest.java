@@ -1,22 +1,21 @@
 package ru.pf.entity;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author a.kakushin
  */
-public class OsTest {
+class OsTest {
 
     @Test
-    public void constructorTest(){
+    void constructorTest(){
         Os os = new Os(1L, "test", null);
 
-        Assert.assertNotNull(os.getId());
-        Assert.assertEquals(1L, os.getId().longValue());
-        Assert.assertNotNull(os.getName());
+        assertNotNull(os.getId());
+        assertEquals(1L, os.getId().longValue());
+        assertNotNull(os.getName());
         assertNull(os.getComment());
     }
 }
