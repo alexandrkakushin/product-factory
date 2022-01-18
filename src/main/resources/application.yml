@@ -33,3 +33,7 @@ spring:
       cachecontrol:
         cache-public: true
       period: 3600
+
+  output:
+    ansi:
+      enabled: ALWAYS
