@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Чтение XML-файлов конфигурации
  * @author a.kakushin
  */
 public class XmlReader {
@@ -27,28 +28,36 @@ public class XmlReader {
     private Document doc;
     private final Path file;
 
+    /**
+     * Конструктор для связи с обрабатываемым файлом
+     * @param file XML-файл
+     */
     public XmlReader(Path file) {
         this.file = file;
         parse();
     }
 
+    /**
+     * Парсинг XML-файла
+     */
     private void parse() {
         try {
             DocumentBuilderFactory df = DocumentBuilderFactory.newDefaultInstance();
+            df.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             df.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             DocumentBuilder docBuilder = df.newDocumentBuilder();
             this.doc = docBuilder.parse(file.toFile());
 
-            // TODO: добавить свои исключения
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Получение списка по XPath-выражению
+     * @param expression XPath-выражение
+     * @return Список (List) строк
+     */
     public List<String> readChild(String expression) {
         List<String> result = new ArrayList<>();
         try {
@@ -57,51 +66,65 @@ public class XmlReader {
                 result.add(nodes.item(i).getTextContent().trim());
             }
         } catch (XPathExpressionException e) {
-            // todo: добавить свои исключения
             e.printStackTrace();
         }
 
         return result;
     }
 
+    /**
+     * Получение булевого значения по XPath-выражению из строки
+     * @param expression XPath-выражение
+     * @return Булево
+     */
     public boolean readBool(String expression) {
         try {
-            return Boolean.valueOf(path.evaluate(expression, doc));
+            return Boolean.parseBoolean(path.evaluate(expression, doc));
         } catch (XPathExpressionException e) {
-            // todo: добавить свои исключения
             e.printStackTrace();
         }
         return false;
     }
 
+    /**
+     * Получение целочисленного значения по XPath-выражению из строки
+     * @param expression XPath-выражение
+     * @return Целочисленное значение (int)
+     */
     public int readInt(String expression) {
         try {
-            return Integer.valueOf(path.evaluate(expression, doc));
+            return Integer.parseInt(path.evaluate(expression, doc));
         } catch (XPathExpressionException e) {
-            // todo: добавить свои исключения
             e.printStackTrace();
         }
         return 0;
     }
 
+    /**
+     * Получение строкового значения по XPath-выражению из строки
+     * @param expression XPath-выражение
+     * @return Строка
+     */
     public String read(String expression) {
         try {
             return path.evaluate(expression, doc).trim();
         } catch (XPathExpressionException e) {
-            // todo: добавить свои исключения
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * Получение уникального идентификатора по XPath-выражению из строки
+     * @param expression XPath-выражение
+     * @return UUID
+     */
     public UUID readUUID(String expression) {
         try {
             return UUID.fromString(path.evaluate(expression, doc));
         } catch (XPathExpressionException e) {
-            // todo: добавить свои исключения
             e.printStackTrace();
         }
         return null;
     }
-
 }
