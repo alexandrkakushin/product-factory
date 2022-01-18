@@ -7,6 +7,8 @@ credentials:
     password: admin
 
 spring:
+  profiles.active: dev
+
   datasource:
     platform: h2
     url: jdbc:h2:mem:pf
@@ -37,3 +39,25 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+---
+spring:
+  profiles: dev
+logging:
+  file:
+    name: logs/dev-app.log
+  level:
+    org.springframework.web: DEBUG
+    ru.pf.controller : DEBUG
+    org.hibernate: DEBUG
+
+---
+spring:
+  profiles: production
+logging:
+  file:
+    name: logs/production-app.log
+  level:
+    org.springframework.web: WARN
+    ru.pf.controller : WARN
+    org.hibernate: WARN
