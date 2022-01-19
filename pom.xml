@@ -32,8 +32,8 @@
 		<webjars.locator.version>0.48</webjars.locator.version>
 		<bootstrap.version>4.6.1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
+		<popperjs.version>1.16.1-lts</popperjs.version>
 		<font.awesome.version>5.15.4</font.awesome.version>
-		<popperjs.version>1.14.1</popperjs.version>
 		<highlightjs.version>9.15.10</highlightjs.version>
 
 		<springfox.version>3.0.0</springfox.version>
