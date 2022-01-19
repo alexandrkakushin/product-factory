@@ -33,7 +33,7 @@
 		<bootstrap.version>4.6.0-1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
 		<font.awesome.version>5.15.3</font.awesome.version>
-		<popperjs.version>1.14.1</popperjs.version>
+		<popperjs.version>1.16.1-lts</popperjs.version>
 		<highlightjs.version>9.15.8</highlightjs.version>
 
 		<springfox.version>3.0.0</springfox.version>
