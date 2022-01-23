@@ -42,7 +42,6 @@ public class ConfItemController {
                     .map(ConfObject::new)
                     .collect(Collectors.toList());
 
-            // todo: реализовать данный функционал в самой конфигурации
             Set<Metadata> typesMetadata = objects
                     .stream()
                     .map(item -> new Metadata(item.getMetadataName(), item.getListPresentation()))
@@ -63,68 +62,74 @@ public class ConfItemController {
         }
 
         MetadataObject object = null;
+        Map<String, String> fields = new HashMap<>();
 
         if (projectOptional.isPresent()) {
             object = (MetadataObject) projectsService.getConf(projectOptional.get()).getObject(UUID.fromString(uuid));
+
             if (object != null) {
                 object.parse();
-                model.addAttribute("object", ((MetadataObject) object));
+                model.addAttribute("object", object);
+
+                // annotation
+                for (Field field : object.getClass().getDeclaredFields()) {
+                    field.setAccessible(true);
+
+                    // @Forms
+                    if (field.isAnnotationPresent(Forms.class)) {
+                        fields.put("forms", field.getName());
+
+                    } else if (field.isAnnotationPresent(Owners.class)) {
+                        fields.put("owners", field.getName());
+
+                        // @ObjectModule
+                    } else if (field.isAnnotationPresent(ObjectModule.class)) {
+                        fields.put("objectModule", field.getName());
+
+                        // @ManagerModule
+                    } else if (field.isAnnotationPresent(ManagerModule.class)) {
+                        fields.put("managerModule", field.getName());
+
+                        // @RecordSetModule
+                    } else if (field.isAnnotationPresent(RecordSetModule.class)) {
+                        fields.put("recordSetModule", field.getName());
+
+                        // @PlainModule
+                    } else if (field.isAnnotationPresent(PlainModule.class)) {
+                        fields.put("plainModule", field.getName());
+
+                        // @ValueManagerModule
+                    } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
+                        fields.put("valueManagerModule", field.getName());
+
+                        // @CommandModule
+                    } else if (field.isAnnotationPresent(CommandModule.class)) {
+                        fields.put("commandModule", field.getName());
+
+                        // @Predefined
+                    } else if (field.isAnnotationPresent(Predefined.class)) {
+                        fields.put("predefined", field.getName());
+
+                        // @Commands
+                    } else if (field.isAnnotationPresent(Commands.class)) {
+                        fields.put("commands", field.getName());
+
+                        // @Attributes
+                    } else if (field.isAnnotationPresent(Attributes.class)) {
+                        fields.put("attributes", field.getName());
+
+                        // @StandardAttributes
+                    } else if (field.isAnnotationPresent(StandardAttributes.class)) {
+                        fields.put("standardAttributes", field.getName());
+
+                        // @TabularSections
+                    } else if (field.isAnnotationPresent(TabularSections.class)) {
+                        fields.put("tabularSections", field.getName());
+                    }
+                }
             }
         }
 
-        Map<String, String> fields = new HashMap<>();
-        // annotation
-        for (Field field : object.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-
-            // @Forms
-            if (field.isAnnotationPresent(Forms.class)) {
-                fields.put("forms", field.getName());
-
-            } else if (field.isAnnotationPresent(Owners.class)) {
-                fields.put("owners", field.getName());
-
-            // @ObjectModule
-            } else if (field.isAnnotationPresent(ObjectModule.class)) {
-                fields.put("objectModule", field.getName());
-
-            // @ManagerModule
-            } else if (field.isAnnotationPresent(ManagerModule.class)) {
-                fields.put("managerModule", field.getName());
-
-            // @RecordSetModule
-            } else if (field.isAnnotationPresent(RecordSetModule.class)) {
-                fields.put("recordSetModule", field.getName());
-
-            // @PlainModule
-            } else if (field.isAnnotationPresent(PlainModule.class)) {
-                fields.put("plainModule", field.getName());
-
-            // @ValueManagerModule
-            } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
-                fields.put("valueManagerModule", field.getName());
-
-            // @CommandModule
-            } else if (field.isAnnotationPresent(CommandModule.class)) {
-                fields.put("commandModule", field.getName());
-
-            // @Predefined
-            } else if (field.isAnnotationPresent(Predefined.class)) {
-                fields.put("predefined", field.getName());
-
-            // @Commands
-            } else if (field.isAnnotationPresent(Commands.class)) {
-                fields.put("commands", field.getName());
-
-            // @Attributes
-            } else if (field.isAnnotationPresent(Attributes.class)) {
-                fields.put("attributes", field.getName());
-
-            // @TabularSections
-            } else if (field.isAnnotationPresent(TabularSections.class)) {
-                fields.put("tabularSections", field.getName());
-            }
-        }
         model.addAttribute("fields", fields);
 
         return "/development/conf/metadata-item/" + object.getClass().getSimpleName().toLowerCase();

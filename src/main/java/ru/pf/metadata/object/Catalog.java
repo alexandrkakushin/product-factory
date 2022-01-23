@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.Set;
 
 /**
+ * Объект метаданных "Справочник"
  * @author a.kakushin
  */
 @Data
@@ -94,10 +95,6 @@ public class Catalog extends MetadataObject {
     @TabularSections
     private Set<TabularSection> tabularSections;
 
-
-    // todo: <CodeAllowedLength>,
-
-
     // Нумерация
 
     /**
@@ -115,11 +112,10 @@ public class Catalog extends MetadataObject {
      */
     private CodeSeries codeSeries;
 
-//
-//	// todo: <Characteristics/>
-//    // todo: <PredefinedDataUpdate>Auto</PredefinedDataUpdate>
-//    // todo: <EditType>InDialog</EditType>
-
+    /**
+     * Стандартные реквизиты
+     */
+    @StandardAttributes
     private Set<Attribute> standardAttributes;
     
     // Формы
@@ -156,13 +152,21 @@ public class Catalog extends MetadataObject {
     @Commands
     private Set<ObjectCommand> commands;
 
-
+    /**
+     * Модуль объекта
+     */
     @ObjectModule
     private Module objectModule;
 
+    /**
+     * Модуль менеджера
+     */
     @ManagerModule
     private Module managerModule;
 
+    /**
+     * Предопределенные элементы
+     */
     @Predefined
     private Set<ru.pf.metadata.type.Predefined> predefined;
 
@@ -233,6 +237,9 @@ public class Catalog extends MetadataObject {
         }
     }
 
+    /**
+     * Вид иерархии
+     */
     public enum SubordinationUse {
         TO_ITEMS,
         TO_FOLDERS,
@@ -250,6 +257,9 @@ public class Catalog extends MetadataObject {
         }
     }
 
+    /**
+     * Тип кодов в справочнике
+     */
     public enum CodeType {
         STRING,
         NUMBER;

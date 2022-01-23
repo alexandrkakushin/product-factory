@@ -25,7 +25,6 @@ public class ObjectReader {
     public ObjectReader(MetadataObject metadataObject) {
         this.metadataObject = metadataObject;
 
-        // TODO: переработать!!!
         if (metadataObject instanceof TabularSection) {
             this.xmlReader = new XmlReader(metadataObject.getParent().getFile());
 
@@ -83,6 +82,9 @@ public class ObjectReader {
 
                     } else if (clazz == Attributes.class) {
                         value = AttributesReader.read(this.xmlReader, this.metadataObject);
+
+                    } else if (clazz == StandardAttributes.class) {
+                        value = StandardAttributesReader.read(this.xmlReader, this.metadataObject);
 
                     } else if (clazz == TabularSections.class) {
                         value = TabularSectionsReader.read(this.xmlReader, this.metadataObject);
