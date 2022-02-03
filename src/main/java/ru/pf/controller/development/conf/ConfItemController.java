@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Project;
-import ru.pf.metadata.annotation.*;
+import ru.pf.metadata.annotation.MetadataAnnotations;
 import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ReaderException;
 import ru.pf.repository.ProjectsRepository;
 import ru.pf.service.ProjectsService;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,9 @@ public class ConfItemController {
 
     @Autowired
     ProjectsRepository projectsRepository;
+
+    @Autowired
+    MetadataAnnotations metadataAnnotations;
 
     @GetMapping("/{id}")
     public String conf(@PathVariable(name = "id") Long id, Model model) throws ReaderException {
@@ -61,8 +63,7 @@ public class ConfItemController {
             model.addAttribute("projectId", id);
         }
 
-        MetadataObject object = null;
-        Map<String, String> fields = new HashMap<>();
+        MetadataObject object;
 
         if (projectOptional.isPresent()) {
             object = (MetadataObject) projectsService.getConf(projectOptional.get()).getObject(UUID.fromString(uuid));
@@ -71,68 +72,27 @@ public class ConfItemController {
                 object.parse();
                 model.addAttribute("object", object);
 
-                // annotation
-                for (Field field : object.getClass().getDeclaredFields()) {
-                    field.setAccessible(true);
+                Map<String, String> fields = new HashMap<>();
 
-                    // @Forms
-                    if (field.isAnnotationPresent(Forms.class)) {
-                        fields.put("forms", field.getName());
+                Arrays.stream(object.getClass().getDeclaredFields()).forEach(
+                        field -> {
+                            field.setAccessible(true);
+                            metadataAnnotations.getAvailable().forEach(
+                                    annotation -> {
+                                        if (field.isAnnotationPresent(annotation)) {
+                                            fields.put(metadataAnnotations.toCamelCase(annotation.getSimpleName()), field.getName());
+                                        }
+                                    }
+                            );
+                        }
+                );
 
-                    } else if (field.isAnnotationPresent(Owners.class)) {
-                        fields.put("owners", field.getName());
-
-                        // @ObjectModule
-                    } else if (field.isAnnotationPresent(ObjectModule.class)) {
-                        fields.put("objectModule", field.getName());
-
-                        // @ManagerModule
-                    } else if (field.isAnnotationPresent(ManagerModule.class)) {
-                        fields.put("managerModule", field.getName());
-
-                        // @RecordSetModule
-                    } else if (field.isAnnotationPresent(RecordSetModule.class)) {
-                        fields.put("recordSetModule", field.getName());
-
-                        // @PlainModule
-                    } else if (field.isAnnotationPresent(PlainModule.class)) {
-                        fields.put("plainModule", field.getName());
-
-                        // @ValueManagerModule
-                    } else if (field.isAnnotationPresent(ValueManagerModule.class)) {
-                        fields.put("valueManagerModule", field.getName());
-
-                        // @CommandModule
-                    } else if (field.isAnnotationPresent(CommandModule.class)) {
-                        fields.put("commandModule", field.getName());
-
-                        // @Predefined
-                    } else if (field.isAnnotationPresent(Predefined.class)) {
-                        fields.put("predefined", field.getName());
-
-                        // @Commands
-                    } else if (field.isAnnotationPresent(Commands.class)) {
-                        fields.put("commands", field.getName());
-
-                        // @Attributes
-                    } else if (field.isAnnotationPresent(Attributes.class)) {
-                        fields.put("attributes", field.getName());
-
-                        // @StandardAttributes
-                    } else if (field.isAnnotationPresent(StandardAttributes.class)) {
-                        fields.put("standardAttributes", field.getName());
-
-                        // @TabularSections
-                    } else if (field.isAnnotationPresent(TabularSections.class)) {
-                        fields.put("tabularSections", field.getName());
-                    }
-                }
+                model.addAttribute("fields", fields);
+                return "/development/conf/metadata-item/" + object.getClass().getSimpleName().toLowerCase();
             }
         }
 
-        model.addAttribute("fields", fields);
-
-        return "/development/conf/metadata-item/" + object.getClass().getSimpleName().toLowerCase();
+        return "/error/404.html";
     }
 
     public static class Metadata {
@@ -142,6 +102,7 @@ public class ConfItemController {
         public Metadata() {}
 
         public Metadata(String name, String presentation) {
+            this();
             this.name = name;
             this.presentation = presentation;
         }
