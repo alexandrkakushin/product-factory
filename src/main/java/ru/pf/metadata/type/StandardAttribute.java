@@ -56,5 +56,8 @@ public class StandardAttribute {
         titles.put("Code", "Код");
 
         this.russianName = titles.get(this.name);
+        if (this.russianName == null) {
+            this.russianName = name;
+        }
     }
 }

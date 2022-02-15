@@ -11,7 +11,12 @@
         </script>
 
         <script type="text/javascript" th:src="@{/js/metadata/common.js}"></script>
-        <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>                        
+        <script type="text/javascript" th:src="@{/js/metadata/properties.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/standardattributes.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/modules.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/attributes.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/tabularsections.js}"></script>
+        <script type="text/javascript" th:src="@{/js/metadata/forms.js}"></script>
 
         <highlight th:replace="fragments/highlight :: init"/>
         
@@ -22,10 +27,22 @@
            
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li th:replace="fragments/metadata-properties :: li-nav-item"></li>
+                <li th:replace="fragments/metadata-standard-attributes :: li-nav-standard-attributes"></li>
+                <li th:replace="fragments/metadata-modules :: li-nav-object"></li>
+                <li th:replace="fragments/metadata-modules :: li-nav-manager"></li>
+                <li th:replace="fragments/metadata-attributes :: li-nav-attributes"></li>
+                <li th:replace="fragments/metadata-tabular-sections :: li-nav-tabular-sections"></li>
+                <li th:replace="fragments/metadata-forms :: li-nav-forms"></li>
             </ul>
             
             <div class="tab-content" id="pills-tabContent">
                 <div th:replace="fragments/metadata-properties :: div-items"></div>
+                <div th:replace="fragments/metadata-standard-attributes :: div-standard-attributes"></div>
+                <div th:replace="fragments/metadata-modules :: div-object"></div>
+                <div th:replace="fragments/metadata-modules :: div-manager"></div>
+                <div th:replace="fragments/metadata-attributes :: div-attributes"></div>
+                <div th:replace="fragments/metadata-tabular-sections :: div-tabular-sections"></div>
+                <div th:replace="fragments/metadata-forms :: div-forms"></div>
             </div>
         </div>
 
@@ -33,6 +50,11 @@
 
         <script>
             addProperties();
+            addStandardAttributes();
+            addAttributes();
+            addTabularSections();
+            addForms();
+            addModules();
         </script>
 
         <footer th:replace="fragments/footer :: bootstrap"></footer>
