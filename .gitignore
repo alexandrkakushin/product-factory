@@ -1,4 +1,9 @@
 /target/
+/application/target/
+/core/target/
+/web/target/
+/yellow/target/
+
 /logs/
 .mvn/wrapper/maven-wrapper.jar
 
