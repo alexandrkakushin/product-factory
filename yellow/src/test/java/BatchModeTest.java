@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +38,29 @@ class BatchModeTest {
 
     @BeforeAll
     static void init() throws IOException {
-        app = Path.of("/opt/1cv8/x86_64/8.3.18.1616/1cv8");
+        String osName = System.getProperty("os.name");
+        if (osName.equalsIgnoreCase("linux")) {
+            boolean isAmd64 = System.getProperty("os.arch").equalsIgnoreCase("amd64");
+
+            Path setup1c = Paths.get("/opt")
+                    .resolve("1cv8")
+                    .resolve(isAmd64 ? "x86_64" : "i386");
+
+            if (!Files.exists(setup1c)) {
+                System.out.printf("Платформа 1С:Предприятие не установлена");
+                return;
+            }
+
+            Optional<Path> version = Files.list(setup1c)
+                    .filter(Files::isDirectory)
+                    .sorted(Comparator.reverseOrder())
+                    .findFirst();
+
+            if (version.isPresent()) {
+                app = version.get().resolve("1cv8");
+            }
+        }
+
         pathFileBase = Files.createTempDirectory("temp_ib_" + UUID.randomUUID());
         Files.createDirectories(pathFileBase);
     }
@@ -80,7 +104,7 @@ class BatchModeTest {
                         .configurationRepositoryUpdateCfg()
                         .build();
 
-        assertEquals(command.get(), "DESIGNER /ConfigurationRepositoryF \"tcp://localhost/test\" /ConfigurationRepositoryN \"login\" /ConfigurationRepositoryP \"password\" /ConfigurationRepositoryUpdateCfg");
+        assertEquals("DESIGNER /ConfigurationRepositoryF \"tcp://localhost/test\" /ConfigurationRepositoryN \"login\" /ConfigurationRepositoryP \"password\" /ConfigurationRepositoryUpdateCfg", command.get());
     }
 
     @AfterAll
