@@ -43,8 +43,8 @@ class BatchModeTest {
             boolean isAmd64 = System.getProperty("os.arch").equalsIgnoreCase("amd64");
 
             Path setup1c = Paths.get("/opt")
-                    .resolve("1cv8")
-                    .resolve(isAmd64 ? "x86_64" : "i386");
+                    .resolve("1cv81")
+                    .resolve(isAmd64 ? "x86_641" : "i386");
 
             if (!Files.exists(setup1c)) {
                 System.out.printf("Платформа 1С:Предприятие не установлена");
@@ -74,7 +74,7 @@ class BatchModeTest {
     @Test
     @Order(2)
     void createFileInfoBaseTest() throws YellowException {
-        if (Files.exists(app)) {
+        if (app != null && Files.exists(app)) {
             Yellow yellow = new Yellow(app);
             batchMode.createFileInfoBase(yellow, pathFileBase);
             assertTrue(Files.exists(pathFileBase.resolve("1Cv8.1CD")));
@@ -84,7 +84,7 @@ class BatchModeTest {
     @Test
     @Order(3)
     void dumpConfigToFilesTest() throws YellowException, IOException {
-        if (Files.exists(app)) {
+        if (app != null && Files.exists(app)) {
             Yellow yellow = new Yellow(app);
             Path pathXml = Files.createTempDirectory("temp_xml_" + UUID.randomUUID());
             batchMode.dumpConfigToFiles(yellow, new InfoBase(pathFileBase), pathXml);
@@ -113,7 +113,7 @@ class BatchModeTest {
     }
 
     static void deleteDirectory(Path dir) throws IOException {
-        if (Files.exists(dir)) {
+        if (dir != null && Files.exists(dir)) {
             Files.walk(dir)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
