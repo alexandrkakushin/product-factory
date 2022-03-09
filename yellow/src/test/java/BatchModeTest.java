@@ -43,8 +43,8 @@ class BatchModeTest {
             boolean isAmd64 = System.getProperty("os.arch").equalsIgnoreCase("amd64");
 
             Path setup1c = Paths.get("/opt")
-                    .resolve("1cv81")
-                    .resolve(isAmd64 ? "x86_641" : "i386");
+                    .resolve("1cv8")
+                    .resolve(isAmd64 ? "x86_64" : "i386");
 
             if (!Files.exists(setup1c)) {
                 System.out.printf("Платформа 1С:Предприятие не установлена");
