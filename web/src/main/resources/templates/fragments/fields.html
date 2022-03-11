@@ -194,27 +194,27 @@
 
 <item-field th:fragment="version" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="field-name">Версия</label>
+        <label class="col-sm-1 col-form-label" for="field-version">Версия</label>
         <div class="col-sm-5">
-            <input th:field="*{version}" th:value="${entity.version}" type="text" class="form-control" id="field-name" placeholder="Версия">
+            <input th:field="*{version}" th:value="${entity.version}" type="text" class="form-control" id="field-version" placeholder="Версия">
         </div>
     </div>
 </item-field>
 
 <item-field th:fragment="host" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="field-name">Хост</label>
+        <label class="col-sm-1 col-form-label" for="field-host">Хост</label>
         <div class="col-sm-5">
-            <input th:field="*{host}" th:value="${entity.host}" type="text" class="form-control" id="field-name" placeholder="Хост">
+            <input th:field="*{host}" th:value="${entity.host}" type="text" class="form-control" id="field-host" placeholder="Хост">
         </div>
     </div>
 </item-field>
 
 <item-field th:fragment="path" xmlns:th="http://www.thymeleaf.org">
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="field-name">Каталог</label>
+        <label class="col-sm-1 col-form-label" for="field-path">Каталог</label>
         <div class="col-sm-5">
-            <input th:field="*{path}" th:value="${entity.path}" type="text" class="form-control" id="field-name" placeholder="Каталог">
+            <input th:field="*{path}" th:value="${entity.path}" type="text" class="form-control" id="field-path" placeholder="Каталог">
         </div>
     </div>
 </item-field>
@@ -229,6 +229,38 @@
                     <p th:text="${designer.name}"> # </p>
                 </option>
             </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="filename" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-file-name">Имя файла</label>
+        <div class="col-sm-5">
+            <input th:field="*{fileName}"
+                   th:value="${entity.fileName}"
+                   type="text"
+                   class="form-control"
+                   id="field-file-name"
+                   placeholder="Имя файла"
+                   th:readonly="${readOnly=='true'}"
+            />
+        </div>
+    </div>
+</item-field>
+
+<item-field th:fragment="filesize" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-file-size">Размер файла (Кб)</label>
+        <div class="col-sm-5">
+            <input th:field="*{fileSize}"
+                   th:value="${entity.fileSize}"
+                   type="text"
+                   class="form-control"
+                   id="field-file-size"
+                   placeholder="Размер файла (Кб)"
+                   th:readonly="${readOnly=='true'}"
+            />
         </div>
     </div>
 </item-field>

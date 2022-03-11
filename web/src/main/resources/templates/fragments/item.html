@@ -8,14 +8,25 @@
     </div>
 </item-title>
 
-
 <item-operations th:fragment="operations" xmlns:th="http://www.thymeleaf.org">
+    <button th:replace="fragments/item :: operation-save"/>
+    <button th:replace="fragments/item :: operation-delete(url = ${url})"/>
+    <button th:replace="fragments/item :: operation-close(url = ${url})"/>
+    <div style="margin-bottom: 10px"/>
+</item-operations>
+
+<item-operation-save th:fragment="operation-save" xmlns:th="http://www.thymeleaf.org">
     <button class="btn btn-outline-success" type="submit">
         <i class="fas fa-hdd" aria-hidden="true"></i>  Сохранить
     </button>
+</item-operation-save>
+
+<item-operation-save th:fragment="operation-delete" xmlns:th="http://www.thymeleaf.org">
     <a th:href="@{${url}+'/delete/' + ${entity.id}}" class="btn btn-outline-danger" role="button" aria-disabled="true">
         <i class="fas fa-trash" aria-hidden="true"></i> Удалить
     </a>
+</item-operation-save>
+
+<item-operation-save th:fragment="operation-close" xmlns:th="http://www.thymeleaf.org">
     <a th:href="@{${url}}" class="btn bnt-outline-primary" role="button" aria-disabled="true">Закрыть</a>
-    <div style="margin-bottom: 10px"></div>
-</item-operations>
+</item-operation-save>

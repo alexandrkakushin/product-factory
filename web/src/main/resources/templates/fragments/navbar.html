@@ -47,6 +47,17 @@
                 </div>
             </li>
 
+            <!-- СЛК -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    СЛК
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown-item" href="/licence/keys">Ключи</a>
+                    <a class="dropdown-item" href="/licence/generate">Создание защищенной обработки</a>
+                </div>
+            </li>
+
             <!-- Сервис -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -61,6 +61,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/development/**")
                 .addPathPatterns("/infrastructure/**")
                 .addPathPatterns("/vcs/**")
+                .addPathPatterns("/licence/**")
                 .addPathPatterns("/tools/**")
                 .addPathPatterns("/admin/**");
     }

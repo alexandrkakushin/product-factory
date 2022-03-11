@@ -13,4 +13,12 @@ public class SubmitException extends Exception {
     public SubmitException(String message) {
         super(message);
     }
+
+    /**
+     * Конструктор с передачей класса исключения
+     * @param cause Исключение
+     */
+    public SubmitException(Throwable cause) {
+        super(cause);
+    }
 }
