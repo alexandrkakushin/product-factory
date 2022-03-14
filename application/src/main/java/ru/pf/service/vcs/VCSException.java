@@ -13,4 +13,12 @@ public class VCSException extends Exception {
     public VCSException(String message) {
         super(message);
     }
+
+    /**
+     * Конструктор с указанием класса исключения
+     * @param cause
+     */
+    public VCSException(Throwable cause) {
+        super(cause);
+    }
 }

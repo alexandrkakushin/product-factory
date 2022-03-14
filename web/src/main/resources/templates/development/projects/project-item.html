@@ -23,6 +23,8 @@
                 <field th:replace="fragments/fields :: name"></field>
                 <field th:replace="fragments/fields :: comment"></field>
 
+                <field th:replace="fragments/fields :: designer"></field>
+
                 <h5 class="card-title">Источники исходных кодов</h5>
                 <div class="form-check form-check-inline mb-3" th:each="source : ${allSourceTypes}">
                     <input class="form-check-input" type="radio" onchange="sourceOnChange(event)"

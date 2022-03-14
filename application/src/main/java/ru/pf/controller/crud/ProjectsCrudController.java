@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
-import ru.pf.repository.CrRepository;
-import ru.pf.repository.GitRepository;
-import ru.pf.repository.PfRepository;
-import ru.pf.repository.ProjectsRepository;
+import ru.pf.repository.*;
 import ru.pf.service.vcs.SourceCodeRepository;
 
 /**
@@ -23,6 +20,9 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
     @Autowired
     private ProjectsRepository projectsRepository;
+
+    @Autowired
+    private DesignerRepository designerRepository;
 
     @Autowired
     private CrRepository crRepository;
@@ -55,6 +55,8 @@ public class ProjectsCrudController implements PfCrudController<Project> {
         model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
         model.addAttribute("gitList", gitRepository.findAll(Sort.by("id")));
 
+        model.addAttribute("designerList", designerRepository.findAll(Sort.by("id")));
+
         // Источники исходных кодов
         model.addAttribute("allSourceTypes", SourceCodeRepository.Types.values());
     }
@@ -68,6 +70,10 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
         if (entity.getGit() != null && entity.getGit().getId() == null) {
             entity.setGit(null);
+        }
+
+        if (entity.getDesigner() != null && entity.getDesigner().getId() == null) {
+            entity.setDesigner(null);
         }
 
         Project saved = projectsRepository.save(entity);

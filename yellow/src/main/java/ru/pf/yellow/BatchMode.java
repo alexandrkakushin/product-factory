@@ -79,6 +79,7 @@ public class BatchMode {
                         .infoBase(infoBase)
                         .configurationRepository(cr)
                         .configurationRepositoryUpdateCfg()
+                        .disableStartupDialogs()
                         .build();
 
         startProcess(yellow, command);
@@ -302,6 +303,27 @@ public class BatchMode {
              */
             public CommandBuilder extension(Extension extension) {
                 this.command.getArgs().add("-Extension " + extension.getName());
+                return this;
+            }
+
+            /**
+             * Хранилище конфигурации: Если при пакетном обновлении конфигурации из хранилища должны быть получены
+             * новые объекты конфигурации или удалиться существующие, указание этого параметра свидетельствует \
+             * о подтверждении пользователем описанных выше операций.
+             * Если параметр не указан ‑ действия выполнены не будут.
+             * @return Построитель команды
+             */
+            public CommandBuilder force() {
+                this.command.getArgs().add("-force");
+                return this;
+            }
+
+            /**
+             * Подавляет стартовые сообщения
+             * @return Построитель команды
+             */
+            public CommandBuilder disableStartupDialogs() {
+                this.command.getArgs().add("/DisableStartupDialogs");
                 return this;
             }
 

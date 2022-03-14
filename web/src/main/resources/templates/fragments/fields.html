@@ -264,3 +264,12 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:fragment="path-file" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-path-file">Файл</label>
+        <div class="col-sm-5">
+            <input th:field="*{path}" th:value="${entity.path}" type="text" class="form-control" id="field-path-file" placeholder="Файл">
+        </div>
+    </div>
+</item-field>

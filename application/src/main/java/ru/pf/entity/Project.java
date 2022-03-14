@@ -23,6 +23,13 @@ public class Project implements PfEntity<Project> {
     private String comment;
 
     /**
+     * Связь с классом "Конфигуратор", который будет использован для операций с хранилищем конфигурации
+     */
+    @ManyToOne
+    @JoinColumn(name="designer_id")
+    private Designer designer;
+
+    /**
      * Хранилище конфигурации 1С
      */
     @ManyToOne

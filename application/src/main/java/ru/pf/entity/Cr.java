@@ -48,13 +48,6 @@ public class Cr implements PfEntity<Cr> {
     private String password;
 
     /**
-     * Связь с классом "Конфигуратор", который будет использован для операций с хранилищем конфигурации
-     */
-    @ManyToOne
-    @JoinColumn(name="designer_id")
-    private Designer designer;
-
-    /**
      * Конструктор по умолчанию
      */
     public Cr() {

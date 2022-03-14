@@ -1,6 +1,8 @@
 package ru.pf.yellow;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.nio.file.Path;
 
@@ -9,6 +11,8 @@ import java.nio.file.Path;
  * @author a.kakushin
  */
 @Getter
+@Setter
+@NoArgsConstructor
 public class InfoBase {
 
     /**

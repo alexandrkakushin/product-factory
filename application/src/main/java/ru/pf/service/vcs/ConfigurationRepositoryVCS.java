@@ -1,13 +1,11 @@
 package ru.pf.service.vcs;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pf.entity.Cr;
 import ru.pf.entity.Project;
 import ru.pf.service.ProjectsService;
-import ru.pf.service.exception.CrServiceException;
+import ru.pf.yellow.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,142 +21,64 @@ import java.nio.file.Paths;
 @SourceCodeRepository(SourceCodeRepository.Types.CONFIGURATION_REPOSITORY)
 public class ConfigurationRepositoryVCS implements VCS {
 
-    /**
-     * Логгер сервиса по работе с хранилищем конфигурации
-     */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private ProjectsService projectsService;
+
+    @Autowired
+    private BatchMode yellowBatchMode;
 
     /**
      * Обновление из хранилища конфигурации
      *
      * @param project Проект
-     * @return Истина в случае успеха
-     * @throws IOException Ошибки при работе с файловыми операциями
+     * @throws VCSException Ошибки при создании информационной базы, обновлении из хранилища конфигурации
      */
     @Override
     public void pull(Project project) throws VCSException {
-        Path target = projectsService.getTemporaryLocation(project);
-        Path pathIb = target.resolve(".cr");
+
+        validate(project);
+
+        Path pathXml = projectsService.getTemporaryLocation(project);
+        Path pathIb = pathXml.resolve(".cr");
 
         try {
+            Yellow yellow = new Yellow(Paths.get(project.getDesigner().getPath()));
+
             if (!Files.exists(pathIb)) {
                 Files.createDirectory(pathIb);
+                yellowBatchMode.createFileInfoBase(yellow, pathIb);
             }
 
-            createTempIB(pathIb);
-            loadCfg(pathIb, project.getCr());
-            dumpToFiles(pathIb, target);
+            InfoBase infoBase = new InfoBase(pathIb);
 
-        } catch (IOException ex) {
-            throw new VCSException(ex.getMessage());
+            Cr crDb = project.getCr();
+
+            yellowBatchMode.configurationRepositoryUpdateCfg(yellow,
+                    infoBase,
+                    new ConfigurationRepository(crDb.getAddress(), crDb.getLogin(), crDb.getPassword()));
+
+            yellowBatchMode.dumpConfigToFiles(yellow, infoBase, pathXml);
+
+        } catch (YellowException | IOException ex) {
+            throw new VCSException(ex);
         }
     }
 
-    private boolean createTempIB(Path pathIb) {
-        if (Files.exists(pathIb.resolve("1Cv8.1CD"))) {
-            return true;
+    private void validate(Project project) throws VCSException {
+        if (project.getDesigner() == null) {
+            throw new VCSException("Не выбран конфигуратор");
         }
 
-        String sb = "CREATEINFOBASE File=" +
-                "\"" +
-                pathIb +
-                "\"";
-
-        return (startProcess(sb) == 0);
-    }
-
-    private boolean loadCfg(Path pathIb, Cr cr) {
-        if (cr.getAddress() == null) {
-            return false;
-        } else {
-            if (cr.getAddress().isEmpty()) {
-                return false;
-            }
+        if (project.getDesigner().getPath().isBlank()) {
+            throw new VCSException("Не указано расположение конфигуратора");
         }
 
-        String sb = "DESIGNER  /F" +
-                "\"" + pathIb.toString() + "\"" +
-                " /ConfigurationRepositoryF " + cr.getAddress() +
-                " /ConfigurationRepositoryN " + cr.getLogin() +
-                " /ConfigurationRepositoryP " + cr.getPassword() +
-                " /ConfigurationRepositoryUpdateCfg";
-
-        return (startProcess(sb) == 0);
-    }
-
-    private boolean dumpToFiles(Path pathIb, Path pathXml) {
-        String sb = "DESIGNER  /F" +
-                "\"" + pathIb.toString() + "\"" +
-                " /DumpConfigToFiles " + pathXml.toString();
-
-        return (startProcess(sb) == 0);
-    }
-
-    /**
-     * Работа приложения в Windows
-     *
-     * @return Булево
-     */
-    private boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().startsWith("windows");
-    }
-
-    /**
-     * Запуск конфигуратора 1С:Предприятие в пакетном режиме
-     *
-     * @param parameters Строка запуска приложения
-     * @return Код завершения запускаемого приложения
-     */
-    private int startProcess(String parameters) {
-        int exitCode = -1;
-
-        try {
-            String fileNameThickClient = getFileNameThickClient();
-
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command(
-                    isWindows() ? "cmd.exe" : "bash",
-                    isWindows() ? "/c" : "-c",
-                    fileNameThickClient + " " + parameters);
-
-            Process process = processBuilder.start();
-            exitCode = process.waitFor();
-            if (exitCode != 0) {
-                throw new CrServiceException("Exited with error code (THICK CLIENT): " + exitCode);
-            }
-
-        } catch (InterruptedException | IOException | CrServiceException e) {
-            logger.warn(String.format("Parameters: %s%nMessage: %s", parameters, e.getMessage()));
+        if (project.getCr() == null) {
+            throw new VCSException("Не выбрано хранилище конфигурации");
         }
 
-        return exitCode;
-    }
-
-    /**
-     * Расложение конфигуратора 1С:Предприятие
-     *
-     * @return Расположение в файловой системе
-     * @throws CrServiceException Вызывается в случае отсутствия конфигуратора в файловой системе
-     */
-    private String getFileNameThickClient() throws CrServiceException {
-        Path application = null;
-        if (isWindows()) {
-            // 
-        } else {
-            // В настоящее время в Linux возможно установить платформу только одной версии
-            application = Paths.get("/opt/1C/v8.3/i386/1cv8");
-            if (!Files.exists(application)) {
-                application = Paths.get("/opt/1C/v8.3/x86_64/1cv8");
-            }
+        if (project.getCr().getAddress().isBlank()) {
+            throw new VCSException("Не заполнен адрес хранилища конфигурации");
         }
-
-        if (!Files.exists(application)) {
-            throw new CrServiceException("Платформа 1С:Предприятие не найдена");
-        }
-
-        return application == null ? null : application.toString();
     }
 }
