@@ -44,6 +44,10 @@ public class LicenceKey implements PfEntity<LicenceKey> {
     @Basic(fetch = FetchType.LAZY)
     private byte[] attachedFile;
 
+    /**
+     * Размер прикрепленного файла ключа
+     * @return Размер файла в Кб
+     */
     public int getFileSize() {
         if (this.getAttachedFile() != null) {
             return this.getAttachedFile().length / 1024;
