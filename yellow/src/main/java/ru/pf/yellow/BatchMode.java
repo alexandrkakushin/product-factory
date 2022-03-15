@@ -110,7 +110,7 @@ public class BatchMode {
      *
      * @param yellow Экземпляр "толстого" клиента 1С:Предприятие
      * @param command Аргументы запуска
-     * @return Код завершения запускаемого приложения
+     * @throws YellowException Исключение при работе c толстым клиентом 1С:Предприятие
      */
     private void startProcess(Yellow yellow, Command command) throws YellowException {
         startProcess(yellow, command.get());
@@ -121,7 +121,7 @@ public class BatchMode {
      *
      * @param yellow Экземпляр "толстого" клиента 1С:Предприятие
      * @param parameters Аргументы запуска строкой
-     * @return Код завершения запускаемого приложения
+     * @throws YellowException Исключение при работе c толстым клиентом 1С:Предприятие
      */
     private void startProcess(Yellow yellow, String parameters) throws YellowException {
         int exitCode = -1;
