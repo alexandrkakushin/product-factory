@@ -15,6 +15,8 @@ import ru.pf.auth.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String ROLE_ADMIN = "ADMIN";
+
     @Autowired
     UserService userService;
 
@@ -26,12 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf()
+                .ignoringAntMatchers("/api/**")
+            .and()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/fonts/**", "/webjars/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/tools/properties").hasRole("ADMIN")
-                .antMatchers("/licence/keys").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/tools/properties").hasRole(ROLE_ADMIN)
+                .antMatchers("/licence/keys").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated()
+                .and()
+                .httpBasic()
                 .and()
             .formLogin()
                 .loginPage("/login")
