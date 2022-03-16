@@ -28,8 +28,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .headers().frameOptions().disable()
+            .and()
             .csrf()
                 .ignoringAntMatchers("/api/**")
+                .ignoringAntMatchers("/h2-console/**")
+            .and()
+            .authorizeRequests()
+                .antMatchers("/console/**").hasRole(ROLE_ADMIN)
             .and()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/fonts/**", "/webjars/**").permitAll()
