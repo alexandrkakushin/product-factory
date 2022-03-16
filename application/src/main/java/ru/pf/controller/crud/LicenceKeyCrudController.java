@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.pf.entity.LicenceKey;
-import ru.pf.repository.LicenceKeyRepository;
+import ru.pf.entity.licence.LicenceKey;
+import ru.pf.repository.licence.LicenceKeyRepository;
 import ru.pf.repository.PfRepository;
 
 import java.io.IOException;

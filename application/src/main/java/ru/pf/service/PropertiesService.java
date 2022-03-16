@@ -47,4 +47,13 @@ public class PropertiesService {
         String saved = this.get(Properties.DIR_VERSIONS_1C);
         return saved != null ? Paths.get(saved) : null;
     }
+
+    /**
+     * Получение расположения файла утилиты лицензирования СЛК
+     * @return Расположение файла
+     */
+    public Path getLicenceAppFile() {
+        String saved = this.get(Properties.LICENCE_APP_FILE);
+        return saved != null ? Paths.get(saved) : null;
+    }
 }

@@ -1,6 +1,7 @@
-package ru.pf.repository;
+package ru.pf.repository.licence;
 
-import ru.pf.entity.LicenceKey;
+import ru.pf.entity.licence.LicenceKey;
+import ru.pf.repository.PfRepository;
 
 /**
  * Репозиторий "Ключи системы лицензирования конфигураций"

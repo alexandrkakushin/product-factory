@@ -1,7 +1,8 @@
-package ru.pf.entity;
+package ru.pf.entity.licence;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.pf.entity.PfEntity;
 
 import javax.persistence.*;
 
@@ -25,6 +26,7 @@ public class LicenceKey implements PfEntity<LicenceKey> {
     /**
      * Название ключа (серия)
      */
+    @Column(unique = true)
     private String name;
 
     /**

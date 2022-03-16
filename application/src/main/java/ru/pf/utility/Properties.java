@@ -30,6 +30,11 @@ public class Properties {
     public static final String DIR_VERSIONS_1C = "DIR_VERSIONS_1C";
 
     /**
+     * Файл утилиты лицензирования СЛК
+     */
+    public static final String LICENCE_APP_FILE = "LICENCE_APP_FILE";
+
+    /**
      * Скрытый конструктор по умолчанию
      */
     private Properties() {
@@ -46,6 +51,7 @@ public class Properties {
         result.add(CHECK_NAME_LENGTH);
         result.add(CHECK_LINE_SIZE);
         result.add(DIR_VERSIONS_1C);
+        result.add(LICENCE_APP_FILE);
 
         return result;
     }
