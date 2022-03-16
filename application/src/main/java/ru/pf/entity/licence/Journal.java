@@ -8,6 +8,10 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Журнал создания защищенных обработок (модулей) СЛК
+ * Используется в API для хранения истории и дальнейшего скачивания
+ */
 @Getter
 @Setter
 @Entity
