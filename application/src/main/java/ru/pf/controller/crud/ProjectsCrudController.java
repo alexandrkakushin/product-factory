@@ -59,6 +59,9 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
         // Источники исходных кодов
         model.addAttribute("allSourceTypes", SourceCodeRepository.Types.values());
+
+        // Типы проекта
+        model.addAttribute("projectTypes", Project.Type.values());
     }
 
     @PostMapping("/submit")

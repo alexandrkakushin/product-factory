@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <!-- Инициализация базы данных -->
+    <include file="db/changelog/init/db.changelog-001-create-table-cr.xml"/>
+    <include file="db/changelog/init/db.changelog-002-create-designers.xml"/>
+    <include file="db/changelog/init/db.changelog-003-create-table-git.xml"/>
+    <include file="db/changelog/init/db.changelog-004-create-table-infobases.xml"/>
+    <include file="db/changelog/init/db.changelog-005-create-table-os.xml"/>
+    <include file="db/changelog/init/db.changelog-006-create-table-servers.xml"/>
+    <include file="db/changelog/init/db.changelog-007-create-table-services.xml"/>
+    <include file="db/changelog/init/db.changelog-008-create-table-projects.xml"/>
+    <include file="db/changelog/init/db.changelog-009-create-table-licence-key.xml"/>
+    <include file="db/changelog/init/db.changelog-010-create-table-journal-licence-key.xml"/>
+    <include file="db/changelog/init/db.changelog-011-create-table-roles.xml"/>
+    <include file="db/changelog/init/db.changelog-012-create-table-users.xml"/>
+    <include file="db/changelog/init/db.changelog-013-create-table-properties.xml"/>
+</databaseChangeLog>

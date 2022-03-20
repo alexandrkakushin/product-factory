@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="8" author="a.kakushin">
+        <createTable tableName="projects">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+            <column name="comment" type="varchar(255)"/>
+            <column name="designer_id" type="bigint"/>
+            <column name="cr_id" type="bigint"/>
+            <column name="git_id" type="bigint"/>
+            <column name="directory" type="varchar"/>
+            <column name="type_of_source_code_repository" type="varchar(255)"/>
+            <column name="type" type="varchar(255)"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="projects"
+                baseColumnNames="cr_id"
+                constraintName="FK_PROJECTS_ON_CR"
+                referencedTableName="cr"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="projects"
+                baseColumnNames="designer_id"
+                constraintName="FK_PROJECTS_ON_DESIGNER"
+                referencedTableName="designers"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="projects"
+                baseColumnNames="git_id"
+                constraintName="FK_PROJECTS_ON_GIT"
+                referencedTableName="git"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

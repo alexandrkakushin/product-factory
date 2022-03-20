@@ -7,6 +7,7 @@ import ru.pf.service.vcs.SourceCodeRepository;
 import javax.persistence.*;
 
 /**
+ * Описание проекта
  * @author a.kakushin
  */
 @Getter
@@ -15,11 +16,21 @@ import javax.persistence.*;
 @Table(name = "PROJECTS")
 public class Project implements PfEntity<Project> {
 
+    /**
+     * Идентификатор записи
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * Наименование проекта
+     */
     private String name;
+
+    /**
+     * Комментарий
+     */
     private String comment;
 
     /**
@@ -54,8 +65,29 @@ public class Project implements PfEntity<Project> {
     @Enumerated(EnumType.STRING)
     private SourceCodeRepository.Types typeOfSourceCodeRepository;
 
+    /**
+     * Тип проекта
+     */
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     @Override
     public Long getId() {
         return this.id;
+    }
+
+    /**
+     * Тип проекта
+     */
+    public enum Type {
+        /**
+         * Конфигурация
+         */
+        CONF,
+
+        /**
+         * Расширение
+         */
+        EXTENSION
     }
 }

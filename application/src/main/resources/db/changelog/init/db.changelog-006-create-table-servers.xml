@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="6" author="a.kakushin">
+        <createTable tableName="servers">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+            <column name="comment" type="varchar(255)"/>
+            <column name="os_id" type="bigint"/>
+            <column name="cpu" type="int"/>
+            <column name="ram" type="int"/>
+            <column name="ip4" type="varchar(255)"/>
+        </createTable>
+        
+        <addForeignKeyConstraint
+                baseTableName="servers"
+                baseColumnNames="os_id"
+                constraintName="FK_SERVERS_ON_OS"
+                referencedTableName="os"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

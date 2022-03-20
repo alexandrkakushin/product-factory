@@ -1,4 +1,4 @@
-package ru.pf.utility;
+package ru.pf.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

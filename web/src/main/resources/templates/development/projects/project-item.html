@@ -25,6 +25,17 @@
 
                 <field th:replace="fragments/fields :: designer"></field>
 
+                <!-- Тип проекта -->
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="field-project-type">Тип</label>
+                    <div class="col-sm-5">
+                        <select id="field-project-type" class="custom-select" th:field="*{type}">
+                            <option value="">Выберите тип проекта</option>
+                            <option th:each="projectType : ${projectTypes}" th:value="${projectType}" th:text="${projectType}"/>
+                        </select>
+                    </div>
+                </div>
+
                 <h5 class="card-title">Источники исходных кодов</h5>
                 <div class="form-check form-check-inline mb-3" th:each="source : ${allSourceTypes}">
                     <input class="form-check-input" type="radio" onchange="sourceOnChange(event)"
