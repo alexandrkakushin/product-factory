@@ -123,9 +123,9 @@ public class BatchModeLicence {
     }
 
     /**
-     * Запуск конфигуратора 1С:Предприятие в пакетном режиме
+     * Запуск утилиты лицензирования (licenceedit)
      *
-     * @param executable Экземпляр "толстого" клиента 1С:Предприятие
+     * @param executable Файл утилиты лицензирования
      * @param command Аргументы запуска
      * @throws LicenceException Исключение при работе с утилитой лицензирования
      */
@@ -134,7 +134,7 @@ public class BatchModeLicence {
     }
 
     /**
-     * Запуск утилиты лицензирования
+     * Запуск утилиты лицензирования (licenceedit)
      * @param executable Файл утилиты лицензирования
      * @param parameters Параметры запуска
      * @throws LicenceException Исключение при работе с утилитой лицензирования
