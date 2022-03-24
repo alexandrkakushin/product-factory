@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Os;
-import ru.pf.repository.OsRepository;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.OsCrudRepository;
+import ru.pf.repository.PfCrudRepository;
 
 /**
  * @author a.kakushin
@@ -17,7 +17,7 @@ public class OsCrudController implements PfCrudController<Os> {
     static final String URL = "infrastructure/os";
 
     @Autowired
-    private OsRepository osRepository;
+    private OsCrudRepository osRepository;
 
     @Override
     public String getUrl() {
@@ -35,7 +35,7 @@ public class OsCrudController implements PfCrudController<Os> {
     }
 
     @Override
-    public PfRepository<Os> getRepository() {
+    public PfCrudRepository<Os> getRepository() {
         return this.osRepository;
     }
 }

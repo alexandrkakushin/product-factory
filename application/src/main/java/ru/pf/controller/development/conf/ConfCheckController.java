@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.pf.controller.api.CheckController;
 import ru.pf.entity.Project;
-import ru.pf.repository.ProjectsRepository;
+import ru.pf.repository.ProjectsCrudRepository;
 
 /**
  * @author a.kakushin
@@ -22,7 +22,7 @@ import ru.pf.repository.ProjectsRepository;
 public class ConfCheckController {
 
     @Autowired
-    ProjectsRepository projectsRepository;
+    ProjectsCrudRepository projectsRepository;
 
     @Autowired
     CheckController checkController;

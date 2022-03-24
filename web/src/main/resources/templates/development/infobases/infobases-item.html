@@ -10,7 +10,21 @@
             <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Информационная база')"></div>
 
             <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
-                <div th:include="fragments/item :: operations(url = ${url})"></div>
+
+                <div>
+                    <button th:replace="fragments/item :: operation-save"/>
+                    <button th:replace="fragments/item :: operation-delete(url = ${url})"/>
+
+                    <button id="btn_get_extensions" class="btn btn-outline-info" type="button" onclick="getExtensions()">
+                        <i class="fas fa-upload" aria-hidden="true"></i>  Расширения
+                    </button>
+
+                    <button th:replace="fragments/item :: operation-close(url = ${url})"/>
+
+                    <div style="margin-bottom: 10px"/>
+                </div>
+
+<!--                <div th:include="fragments/item :: operations(url = ${url})"></div>-->
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 

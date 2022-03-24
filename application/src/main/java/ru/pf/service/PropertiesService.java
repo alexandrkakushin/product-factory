@@ -3,7 +3,7 @@ package ru.pf.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pf.entity.Property;
-import ru.pf.repository.PropertiesRepository;
+import ru.pf.repository.PropertiesCrudRepository;
 import ru.pf.utility.Properties;
 
 import java.nio.file.Path;
@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class PropertiesService {
 
     @Autowired
-    PropertiesRepository propertiesRepository;
+    PropertiesCrudRepository propertiesRepository;
 
     public String get(final String name) {
         return propertiesRepository.getByName(name)

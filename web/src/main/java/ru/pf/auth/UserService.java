@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.pf.config.CredentialsProperties;
-import ru.pf.repository.auth.RoleRepository;
-import ru.pf.repository.auth.UserRepository;
+import ru.pf.entity.auth.Role;
+import ru.pf.entity.auth.User;
+import ru.pf.repository.auth.RoleCrudRepository;
+import ru.pf.repository.auth.UserCrudRepository;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -24,13 +26,13 @@ public class UserService implements UserDetailsService {
      * Репозиторий для работы с пользователями
      */
     @Autowired
-    UserRepository userRepository;
+    UserCrudRepository userRepository;
 
     /**
      * Репозиторий для работы с ролями
      */
     @Autowired
-    RoleRepository roleRepository;
+    RoleCrudRepository roleRepository;
 
     /**
      * Административный доступ

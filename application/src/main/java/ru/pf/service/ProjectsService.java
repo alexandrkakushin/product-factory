@@ -6,9 +6,9 @@ import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ConfReader;
 import ru.pf.metadata.reader.ReaderException;
-import ru.pf.service.vcs.SourceCodeRepository;
-import ru.pf.service.vcs.VCS;
-import ru.pf.service.vcs.VCSException;
+import ru.pf.service.sourcecode.SourceCodeRepository;
+import ru.pf.service.sourcecode.SourceCode;
+import ru.pf.service.sourcecode.SourceCodeException;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -37,21 +37,21 @@ public class ProjectsService {
      */
     @Autowired
     @SourceCodeRepository(SourceCodeRepository.Types.GIT)
-    private VCS gitVCS;
+    private SourceCode gitSourceCode;
 
     /**
      * Сервис для работы с хранилищами конфигураций
      */
     @Autowired
     @SourceCodeRepository(SourceCodeRepository.Types.CONFIGURATION_REPOSITORY)
-    private VCS configurationRepositoryVCS;
+    private SourceCode configurationRepositorySourceCode;
 
     /**
      * Компонент для копирования исходных кодов из директории
      */
     @Autowired
     @SourceCodeRepository(SourceCodeRepository.Types.DIRECTORY)
-    private VCS directoryVCS;
+    private SourceCode directorySourceCode;
 
     /**
      * Утилитный класс-читатеть конфигурации
@@ -62,23 +62,23 @@ public class ProjectsService {
     /**
      * Связь типов источников кода и бинов-"репозиториев"
      */
-    private EnumMap<SourceCodeRepository.Types, VCS> vcsMap;
+    private EnumMap<SourceCodeRepository.Types, SourceCode> vcsMap;
 
     @PostConstruct
     private void createVcsMap() {
         vcsMap = new EnumMap<>(SourceCodeRepository.Types.class);
-        vcsMap.put(SourceCodeRepository.Types.GIT, gitVCS);
-        vcsMap.put(SourceCodeRepository.Types.CONFIGURATION_REPOSITORY, configurationRepositoryVCS);
-        vcsMap.put(SourceCodeRepository.Types.DIRECTORY, directoryVCS);
+        vcsMap.put(SourceCodeRepository.Types.GIT, gitSourceCode);
+        vcsMap.put(SourceCodeRepository.Types.CONFIGURATION_REPOSITORY, configurationRepositorySourceCode);
+        vcsMap.put(SourceCodeRepository.Types.DIRECTORY, directorySourceCode);
     }
 
     /**
      * Обновление исходных кодов проекта
      * @param project Проект
      * @throws IOException Исключение при работе с файловыми операциями, в частности операций с каталогом хранения исходных кодов
-     * @throws VCSException Исключение при работе с VCS
+     * @throws SourceCodeException Исключение при работе с VCS
      */
-    public void update(Project project) throws IOException, VCSException {
+    public void update(Project project) throws IOException, SourceCodeException {
 
         SourceCodeRepository.Types typeRepository = project.getTypeOfSourceCodeRepository();
 
@@ -94,14 +94,14 @@ public class ProjectsService {
         Files.createDirectories(temp);
 
         if (typeRepository == null) {
-            throw new VCSException("Тип источника исходных кодов не задан");
+            throw new SourceCodeException("Тип источника исходных кодов не задан");
         }
 
-        VCS vcsBean = vcsMap.get(typeRepository);
-        if (vcsBean != null) {
-            vcsBean.pull(project);
+        SourceCode sourceCodeBean = vcsMap.get(typeRepository);
+        if (sourceCodeBean != null) {
+            sourceCodeBean.pull(project);
         } else {
-            throw new VCSException("Неизвестный тип источника исходных кодов");
+            throw new SourceCodeException("Неизвестный тип источника исходных кодов");
         }
     }
 

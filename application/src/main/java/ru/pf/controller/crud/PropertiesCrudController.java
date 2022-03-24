@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Property;
-import ru.pf.repository.PfRepository;
-import ru.pf.repository.PropertiesRepository;
+import ru.pf.repository.PfCrudRepository;
+import ru.pf.repository.PropertiesCrudRepository;
 import ru.pf.utility.Properties;
 
 /**
@@ -19,7 +19,7 @@ public class PropertiesCrudController implements PfCrudController<Property> {
     static final String URL = "tools/properties";
 
     @Autowired
-    private PropertiesRepository propertiesRepository;
+    private PropertiesCrudRepository propertiesRepository;
 
     @Override
     public String getUrl() {
@@ -42,7 +42,7 @@ public class PropertiesCrudController implements PfCrudController<Property> {
     }
 
     @Override
-    public PfRepository<Property> getRepository() {
+    public PfCrudRepository<Property> getRepository() {
         return this.propertiesRepository;
     }
 

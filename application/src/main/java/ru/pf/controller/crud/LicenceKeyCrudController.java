@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.pf.entity.licence.LicenceKey;
-import ru.pf.repository.licence.LicenceKeyRepository;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.licence.LicenceKeyCrudRepository;
+import ru.pf.repository.PfCrudRepository;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class LicenceKeyCrudController implements PfCrudController<LicenceKey> {
     static final String URL = "licence/keys";
 
     @Autowired
-    private LicenceKeyRepository licenceKeyRepository;
+    private LicenceKeyCrudRepository licenceKeyRepository;
 
     @Override
     public String getUrl() {
@@ -44,7 +44,7 @@ public class LicenceKeyCrudController implements PfCrudController<LicenceKey> {
     }
 
     @Override
-    public PfRepository<LicenceKey> getRepository() {
+    public PfCrudRepository<LicenceKey> getRepository() {
         return this.licenceKeyRepository;
     }
 

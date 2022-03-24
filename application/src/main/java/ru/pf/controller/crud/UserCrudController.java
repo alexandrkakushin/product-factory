@@ -3,11 +3,11 @@ package ru.pf.controller.crud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pf.auth.Role;
-import ru.pf.auth.User;
-import ru.pf.repository.PfRepository;
-import ru.pf.repository.auth.RoleRepository;
-import ru.pf.repository.auth.UserRepository;
+import ru.pf.entity.auth.Role;
+import ru.pf.entity.auth.User;
+import ru.pf.repository.PfCrudRepository;
+import ru.pf.repository.auth.RoleCrudRepository;
+import ru.pf.repository.auth.UserCrudRepository;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -27,13 +27,13 @@ public class UserCrudController implements PfCrudController<User> {
      * Репозиторий для управления пользователя в БД
      */
     @Autowired
-    private UserRepository userRepository;
+    private UserCrudRepository userRepository;
 
     /**
      * Репозиторий для управления ролями в БД
      */
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleCrudRepository roleRepository;
 
     @Override
     public String getUrl() {
@@ -51,7 +51,7 @@ public class UserCrudController implements PfCrudController<User> {
     }
 
     @Override
-    public PfRepository<User> getRepository() {
+    public PfCrudRepository<User> getRepository() {
         return this.userRepository;
     }
 

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Git;
-import ru.pf.repository.GitRepository;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.GitCrudRepository;
+import ru.pf.repository.PfCrudRepository;
 
 /**
  * @author a.kakushin
@@ -17,7 +17,7 @@ public class GitCrudController implements PfCrudController<Git> {
     static final String URL = "vcs/git";
 
     @Autowired
-    private GitRepository gitRepository;
+    private GitCrudRepository gitRepository;
 
     @Override
     public String getUrl() {
@@ -35,7 +35,7 @@ public class GitCrudController implements PfCrudController<Git> {
     }
 
     @Override
-    public PfRepository<Git> getRepository() {
+    public PfCrudRepository<Git> getRepository() {
         return this.gitRepository;
     }
 }

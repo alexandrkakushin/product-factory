@@ -8,7 +8,7 @@ import ru.pf.entity.Project;
 import ru.pf.metadata.MetadataJsonView;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ReaderException;
-import ru.pf.repository.ProjectsRepository;
+import ru.pf.repository.ProjectsCrudRepository;
 import ru.pf.service.ProjectsService;
 import ru.pf.service.conf.check.*;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class CheckController {
 
     @Autowired
-    ProjectsRepository projectsRepository;
+    ProjectsCrudRepository projectsRepository;
 
     @Autowired
     DuplicateViewCheck duplicateViewCheck;

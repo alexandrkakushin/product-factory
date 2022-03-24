@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ru.pf.entity.Designer;
-import ru.pf.repository.DesignerRepository;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.DesignerCrudRepository;
+import ru.pf.repository.PfCrudRepository;
 
 /**
  * @author a.kakushin
@@ -18,7 +18,7 @@ public class DesignerCrudController implements PfCrudController<Designer> {
     static final String URL = "tools/designers";
 
     @Autowired
-    private DesignerRepository repository;
+    private DesignerCrudRepository repository;
 
     @Override
     public String getUrl() {
@@ -36,7 +36,7 @@ public class DesignerCrudController implements PfCrudController<Designer> {
     }
 
     @Override
-    public PfRepository<Designer> getRepository() {
+    public PfCrudRepository<Designer> getRepository() {
         return this.repository;
     }
 }

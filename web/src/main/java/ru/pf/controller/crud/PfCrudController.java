@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.controller.PfController;
 import ru.pf.entity.PfEntity;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.PfCrudRepository;
 
 /**
  * Интерфейс контроллеров для реализация CRUD-операций
@@ -21,7 +21,7 @@ public interface PfCrudController<T extends PfEntity<?>> extends PfController {
         return "catalogs/items";
     }
 
-    PfRepository<T> getRepository();
+    PfCrudRepository<T> getRepository();
 
     default void addAttributesItems(Model model) {}
 

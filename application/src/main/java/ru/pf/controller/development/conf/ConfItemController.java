@@ -11,7 +11,7 @@ import ru.pf.metadata.annotation.MetadataAnnotations;
 import ru.pf.metadata.object.IMetadataObject;
 import ru.pf.metadata.object.MetadataObject;
 import ru.pf.metadata.reader.ReaderException;
-import ru.pf.repository.ProjectsRepository;
+import ru.pf.repository.ProjectsCrudRepository;
 import ru.pf.service.ProjectsService;
 
 import java.util.*;
@@ -28,7 +28,7 @@ public class ConfItemController {
     ProjectsService projectsService;
 
     @Autowired
-    ProjectsRepository projectsRepository;
+    ProjectsCrudRepository projectsRepository;
 
     @Autowired
     MetadataAnnotations metadataAnnotations;

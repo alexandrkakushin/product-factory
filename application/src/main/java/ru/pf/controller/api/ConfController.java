@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ReaderException;
-import ru.pf.repository.ProjectsRepository;
+import ru.pf.repository.ProjectsCrudRepository;
 import ru.pf.service.ProjectsService;
 import ru.pf.service.ZipService;
 
@@ -35,7 +35,7 @@ public class ConfController {
     ProjectsService projectsService;
 
     @Autowired
-    ProjectsRepository projectsRepository;
+    ProjectsCrudRepository projectsRepository;
 
     @PostMapping("/{id}/update")
     public ResponseEntity<ResponseUpdate> update(@PathVariable(name = "id") Long id) {

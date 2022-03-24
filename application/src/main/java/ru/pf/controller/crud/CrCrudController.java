@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Cr;
-import ru.pf.repository.CrRepository;
-import ru.pf.repository.DesignerRepository;
-import ru.pf.repository.PfRepository;
+import ru.pf.repository.CrCrudRepository;
+import ru.pf.repository.DesignerCrudRepository;
+import ru.pf.repository.PfCrudRepository;
 
 /**
  * @author a.kakushin
@@ -18,10 +18,10 @@ public class CrCrudController implements PfCrudController<Cr> {
     static final String URL = "vcs/cr";
 
     @Autowired
-    private CrRepository crRepository;
+    private CrCrudRepository crRepository;
 
     @Autowired
-    private DesignerRepository designerRepository;
+    private DesignerCrudRepository designerRepository;
 
     @Override
     public String getUrl() {
@@ -39,7 +39,7 @@ public class CrCrudController implements PfCrudController<Cr> {
     }
 
     @Override
-    public PfRepository<Cr> getRepository() {
+    public PfCrudRepository<Cr> getRepository() {
         return this.crRepository;
     }
 }

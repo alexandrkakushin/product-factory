@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.entity.Service;
-import ru.pf.repository.PfRepository;
-import ru.pf.repository.ServicesRepository;
+import ru.pf.repository.PfCrudRepository;
+import ru.pf.repository.ServicesCrudRepository;
 
 /**
  * @author a.kakushin
@@ -17,7 +17,7 @@ public class ServicesCrudController implements PfCrudController<Service> {
     static final String URL = "infrastructure/services";
 
     @Autowired
-    private ServicesRepository servicesRepository;
+    private ServicesCrudRepository servicesRepository;
 
     @Override
     public String getUrl() {
@@ -35,7 +35,7 @@ public class ServicesCrudController implements PfCrudController<Service> {
     }
 
     @Override
-    public PfRepository<Service> getRepository() {
+    public PfCrudRepository<Service> getRepository() {
         return this.servicesRepository;
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.licence.BatchModeLicence;
-import ru.pf.repository.licence.LicenceKeyRepository;
+import ru.pf.repository.licence.LicenceKeyCrudRepository;
 
 /**
  * Контроллер для создания защащенных обработок
@@ -18,6 +18,6 @@ public class LicenceGenerateController {
     private BatchModeLicence batchModeLicence;
 
     @Autowired
-    private LicenceKeyRepository repository;
+    private LicenceKeyCrudRepository repository;
 
 }

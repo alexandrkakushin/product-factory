@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.repository.*;
-import ru.pf.service.vcs.SourceCodeRepository;
+import ru.pf.service.sourcecode.SourceCodeRepository;
 
 /**
  * @author a.kakushin
@@ -19,16 +19,16 @@ public class ProjectsCrudController implements PfCrudController<Project> {
     static final String URL = "development/projects";
 
     @Autowired
-    private ProjectsRepository projectsRepository;
+    private ProjectsCrudRepository projectsRepository;
 
     @Autowired
-    private DesignerRepository designerRepository;
+    private DesignerCrudRepository designerRepository;
 
     @Autowired
-    private CrRepository crRepository;
+    private CrCrudRepository crRepository;
 
     @Autowired
-    private GitRepository gitRepository;
+    private GitCrudRepository gitRepository;
 
     @Override
     public String getUrl() {
@@ -46,7 +46,7 @@ public class ProjectsCrudController implements PfCrudController<Project> {
     }
 
     @Override
-    public PfRepository<Project> getRepository() {
+    public PfCrudRepository<Project> getRepository() {
         return this.projectsRepository;
     }
 

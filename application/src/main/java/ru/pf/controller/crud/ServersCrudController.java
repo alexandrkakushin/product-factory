@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Server;
-import ru.pf.repository.OsRepository;
-import ru.pf.repository.PfRepository;
-import ru.pf.repository.ServersRepository;
+import ru.pf.repository.OsCrudRepository;
+import ru.pf.repository.PfCrudRepository;
+import ru.pf.repository.ServersCrudRepository;
 
 /**
  * @author a.kakushin
@@ -20,10 +20,10 @@ public class ServersCrudController implements PfCrudController<Server> {
     static final String URL = "infrastructure/servers";
 
     @Autowired
-    private ServersRepository serversRepository;
+    private ServersCrudRepository serversRepository;
 
     @Autowired
-    private OsRepository osRepository;
+    private OsCrudRepository osRepository;
 
     @Override
     public String getUrl() {
@@ -41,7 +41,7 @@ public class ServersCrudController implements PfCrudController<Server> {
     }
 
     @Override
-    public PfRepository<Server> getRepository() {
+    public PfCrudRepository<Server> getRepository() {
         return this.serversRepository;
     }
 

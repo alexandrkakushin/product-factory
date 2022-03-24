@@ -14,8 +14,8 @@ import ru.pf.entity.licence.LicenceKey;
 import ru.pf.entity.licence.Journal;
 import ru.pf.licence.BatchModeLicence;
 import ru.pf.licence.LicenceException;
-import ru.pf.repository.licence.LicenceKeyRepository;
-import ru.pf.repository.licence.JournalRepository;
+import ru.pf.repository.licence.LicenceKeyCrudRepository;
+import ru.pf.repository.licence.JournalCrudRepository;
 import ru.pf.service.PropertiesService;
 
 import java.io.FileInputStream;
@@ -37,10 +37,10 @@ public class LicenceController {
      * Репозиторий для доступа к сохраненным ключам СЛК
      */
     @Autowired
-    private LicenceKeyRepository licenceKeyRepository;
+    private LicenceKeyCrudRepository licenceKeyRepository;
 
     @Autowired
-    private JournalRepository journalRepository;
+    private JournalCrudRepository journalRepository;
 
     @Autowired
     private PropertiesService propertiesService;
