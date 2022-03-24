@@ -32,7 +32,6 @@
 		<java.version>11</java.version>
 
 		<lombok.version>1.18.22</lombok.version>
-		<springfox.version>3.0.0</springfox.version>
 
 		<!-- SonarCloud -->
 		<sonar.projectKey>alexandrkakushin_product-factory</sonar.projectKey>
@@ -64,13 +63,6 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 			<optional>true</optional>
-		</dependency>
-
-		<!-- swagger -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-boot-starter</artifactId>
-			<version>${springfox.version}</version>
 		</dependency>
 	</dependencies>
 </project>
