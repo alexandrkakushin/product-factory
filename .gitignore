@@ -5,6 +5,8 @@
 /core/target/
 /web/target/
 /yellow/target/
+/api/target/
+/db/target/
 
 /logs/
 .mvn/wrapper/maven-wrapper.jar
