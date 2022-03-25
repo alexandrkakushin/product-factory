@@ -11,6 +11,16 @@ import lombok.Setter;
 @Setter
 public class Extension {
 
+    /**
+     * Имя расширения
+     */
     private String name;
 
+    /**
+     * Конструктор с указанием имени расширения
+     * @param name Имя расширения
+     */
+    public Extension(String name) {
+        this.name = name;
+    }
 }

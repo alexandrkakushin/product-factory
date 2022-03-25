@@ -3,11 +3,15 @@ package ru.pf.yellow;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Класс, реализующий команды пакетного режима 1С:Предприятие
@@ -90,10 +94,38 @@ public class BatchModeYellow {
      * @param yellow Экземпляр 1С:Предприятие
      * @param infoBase Информационная база
      * @return Список расширений
+     * @throws YellowException Исключение при выгрузке имен расширений
      */
-    List<Extension> dumpDBCfgList(Yellow yellow, InfoBase infoBase) {
-        // "C:\Program Files\1cv8\8.3.18.1208\bin\1cv8.exe" DESIGNER /F "G:\3d_temp\Temp" /N "Федоров (администратор)" /P "" /DumpDBCfgList -AllExtensions /Out "G:\3d_temp\logs.txt"
-        return null;
+    public List<Extension> dumpDBCfgList(Yellow yellow, InfoBase infoBase) throws YellowException {
+
+        try {
+            Path tmpOut = Files.createTempFile(UUID.randomUUID().toString(), ".out");
+
+            Command command =
+                    new Command().designer()
+                            .infoBase(infoBase)
+                            .dumpCfgList()
+                            .allExtensions()
+                            .out(tmpOut)
+                            .build();
+
+            startProcess(yellow, command);
+
+            if (Files.exists(tmpOut)) {
+                try (Stream<String> stream = Files.lines(tmpOut, StandardCharsets.UTF_8)) {
+                    Files.delete(tmpOut);
+
+                    return stream
+                            .map(item -> new Extension(item.replaceAll("[\uFEFF-\uFFFF]", "").trim()))
+                            .collect(Collectors.toList());
+                }
+            }
+
+            return Collections.emptyList();
+
+        } catch (IOException ex) {
+            throw new YellowException(ex);
+        }
     }
 
     /**
@@ -124,8 +156,6 @@ public class BatchModeYellow {
      * @throws YellowException Исключение при работе c толстым клиентом 1С:Предприятие
      */
     private void startProcess(Yellow yellow, String parameters) throws YellowException {
-        int exitCode = -1;
-
         try {
             Path executable = yellow.getThickClient();
 
@@ -136,7 +166,7 @@ public class BatchModeYellow {
                     executable + " " + parameters);
 
             Process process = processBuilder.start();
-            exitCode = process.waitFor();
+            int exitCode = process.waitFor();
             if (exitCode != 0) {
                 throw new YellowException("Exited with error code (THICK CLIENT): " + exitCode);
             }
@@ -151,7 +181,7 @@ public class BatchModeYellow {
      */
     public static class Command {
 
-        private List<String> args = new ArrayList<>();
+        private final List<String> args = new ArrayList<>();
 
         public CommandBuilder designer() {
             this.getArgs().add("DESIGNER");
@@ -160,8 +190,7 @@ public class BatchModeYellow {
 
         public String get() {
             return
-                    this.getArgs().stream()
-                            .collect(Collectors.joining(" "));
+                    String.join(" ", this.getArgs());
         }
 
         private List<String> getArgs() {
@@ -180,7 +209,7 @@ public class BatchModeYellow {
 
             /**
              * Информация об информационной базе
-             * @param infoBase
+             * @param infoBase Описание информационной базы
              * @return Построитель команды
              */
             public CommandBuilder infoBase(InfoBase infoBase) {
@@ -198,7 +227,7 @@ public class BatchModeYellow {
 
             /**
              * Расположение файловой информационной базы
-             * @param infoBasePath
+             * @param infoBasePath Расположение информационной базы
              * @return Построитель команды
              */
             public CommandBuilder fileInfoBase(Path infoBasePath) {
@@ -237,6 +266,15 @@ public class BatchModeYellow {
              */
             public CommandBuilder dumpConfigToFiles(Path target) {
                 this.command.getArgs().add("/DumpConfigToFiles \"" + target + "\"");
+                return this;
+            }
+
+            /**
+             * Выгрузка имен расширений / конфигурации
+             * @return Построитель команды
+             */
+            public CommandBuilder dumpCfgList() {
+                this.command.getArgs().add("/DumpDBCfgList");
                 return this;
             }
 
@@ -307,6 +345,15 @@ public class BatchModeYellow {
             }
 
             /**
+             * Опция, указывающая на режим работы со всеми расширениями информационной базы
+             * @return Построитель команды
+             */
+            public CommandBuilder allExtensions() {
+                this.command.getArgs().add("-AllExtensions");
+                return this;
+            }
+
+            /**
              * Хранилище конфигурации: Если при пакетном обновлении конфигурации из хранилища должны быть получены
              * новые объекты конфигурации или удалиться существующие, указание этого параметра свидетельствует \
              * о подтверждении пользователем описанных выше операций.
@@ -324,6 +371,16 @@ public class BatchModeYellow {
              */
             public CommandBuilder disableStartupDialogs() {
                 this.command.getArgs().add("/DisableStartupDialogs");
+                return this;
+            }
+
+            /**
+             * Вывод в файл
+             * @param out Расположение файла вывода
+             * @return Построитель команды
+             */
+            public CommandBuilder out(Path out) {
+                this.command.getArgs().add("/Out \"" + out + "\"");
                 return this;
             }
 
