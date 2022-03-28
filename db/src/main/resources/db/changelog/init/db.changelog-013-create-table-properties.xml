@@ -21,5 +21,9 @@
 
             <column name="COMMENT" type="varchar(255)"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="properties"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

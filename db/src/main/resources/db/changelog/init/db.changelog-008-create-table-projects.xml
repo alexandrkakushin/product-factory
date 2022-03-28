@@ -41,5 +41,10 @@
                 constraintName="FK_PROJECTS_ON_GIT"
                 referencedTableName="git"
                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="projects"/>
+            <dropTable tableName="projects"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

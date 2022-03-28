@@ -25,5 +25,10 @@
                 constraintName="FK_SERVERS_ON_OS"
                 referencedTableName="os"
                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="servers" constraintName="FK_SERVERS_ON_OS"/>
+            <dropTable tableName="servers"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

@@ -16,5 +16,8 @@
             <column name="fetch_url" type="varchar(255)"/>
             <column name="default_branch" type="varchar(255)"/>
         </createTable>
+        <rollback>
+            <dropTable tableName="git"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

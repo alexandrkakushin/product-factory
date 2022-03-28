@@ -14,5 +14,8 @@
             <column name="name" type="varchar(255)"/>
             <column name="comment" type="varchar(255)"/>
         </createTable>
+        <rollback>
+            <dropTable tableName="services"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

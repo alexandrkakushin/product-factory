@@ -22,5 +22,9 @@
             <column name="size" type="bigint"/>
 
         </createTable>
+
+        <rollback>
+            <dropTable tableName="journal_licence_key"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

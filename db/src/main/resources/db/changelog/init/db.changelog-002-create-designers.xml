@@ -16,5 +16,8 @@
             <column name="version" type="varchar(255)"/>
             <column name="path" type="varchar(255)"/>
         </createTable>
+        <rollback>
+            <dropTable tableName="designers"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

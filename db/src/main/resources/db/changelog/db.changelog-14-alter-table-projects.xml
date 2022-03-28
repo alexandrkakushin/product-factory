@@ -16,5 +16,12 @@
                 constraintName="FK_PROJECTS_ON_INFOBASES"
                 referencedTableName="infobases"
                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropColumn tableName="projects" columnName="infobase_name_extension"/>
+            <dropColumn tableName="projects" columnName="infobase_id"/>
+
+            <dropForeignKeyConstraint baseTableName="projects" constraintName="FK_PROJECTS_ON_INFOBASES"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

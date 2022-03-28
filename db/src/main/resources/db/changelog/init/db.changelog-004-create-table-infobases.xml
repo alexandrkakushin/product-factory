@@ -17,5 +17,8 @@
             <column name="login" type="varchar(255)"/>
             <column name="password" type="varchar(255)"/>
         </createTable>
+        <rollback>
+            <dropTable tableName="infobases"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

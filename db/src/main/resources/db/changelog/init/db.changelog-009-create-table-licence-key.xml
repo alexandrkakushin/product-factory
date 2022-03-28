@@ -19,5 +19,9 @@
             <column name="file_name" type="varchar(255)"/>
             <column name="attached_file" type="blob"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="licence_key"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

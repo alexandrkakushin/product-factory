@@ -14,5 +14,9 @@
             <column name="password" type="varchar(255)"/>
             <column name="comment" type="varchar(255)"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>
