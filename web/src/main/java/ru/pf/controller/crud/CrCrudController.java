@@ -9,6 +9,7 @@ import ru.pf.repository.DesignerCrudRepository;
 import ru.pf.repository.PfCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Хранилище конфигурации"
  * @author a.kakushin
  */
 @Controller

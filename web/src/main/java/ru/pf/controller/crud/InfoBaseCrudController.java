@@ -8,6 +8,7 @@ import ru.pf.repository.InfoBaseCrudRepository;
 import ru.pf.repository.PfCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Информационная база"
  * @author a.kakushin
  */
 @Controller

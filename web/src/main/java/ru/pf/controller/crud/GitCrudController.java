@@ -8,6 +8,7 @@ import ru.pf.repository.GitCrudRepository;
 import ru.pf.repository.PfCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Git-репозиторий"
  * @author a.kakushin
  */
 @Controller

@@ -10,6 +10,7 @@ import ru.pf.repository.*;
 import ru.pf.service.sourcecode.SourceCodeRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с проектами
  * @author a.kakushin
  */
 @Controller
@@ -64,9 +65,8 @@ public class ProjectsCrudController implements PfCrudController<Project> {
         model.addAttribute("projectTypes", Project.Type.values());
     }
 
-    @PostMapping("/submit")
     @Override
-    public String submit(@ModelAttribute Project entity) {
+    public String submit(@ModelAttribute Project entity) throws SubmitException {
         if (entity.getCr() != null && entity.getCr().getId() == null) {
             entity.setCr(null);
         }
@@ -79,7 +79,6 @@ public class ProjectsCrudController implements PfCrudController<Project> {
             entity.setDesigner(null);
         }
 
-        Project saved = projectsRepository.save(entity);
-        return "redirect:/" + getUrl() + "/" + saved.getId();
+        return PfCrudController.super.submit(entity);
     }
 }

@@ -10,6 +10,7 @@ import ru.pf.repository.PropertiesCrudRepository;
 import ru.pf.utility.Properties;
 
 /**
+ * Контроллер для настройки параметров (свойств) приложения
  * @author a.kakushin
  */
 @Controller

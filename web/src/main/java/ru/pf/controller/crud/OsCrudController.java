@@ -8,6 +8,7 @@ import ru.pf.repository.OsCrudRepository;
 import ru.pf.repository.PfCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Операционная система"
  * @author a.kakushin
  */
 @Controller

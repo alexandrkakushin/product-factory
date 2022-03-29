@@ -1,4 +1,4 @@
-package ru.pf.controller.crud;
+package ru.pf.controller.crud.licence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import ru.pf.controller.crud.PfCrudController;
+import ru.pf.controller.crud.SubmitException;
 import ru.pf.entity.licence.LicenceKey;
 import ru.pf.repository.licence.LicenceKeyCrudRepository;
 import ru.pf.repository.PfCrudRepository;

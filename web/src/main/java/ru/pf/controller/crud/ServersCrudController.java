@@ -11,6 +11,7 @@ import ru.pf.repository.PfCrudRepository;
 import ru.pf.repository.ServersCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Серверы"
  * @author a.kakushin
  */
 @Controller
@@ -50,16 +51,13 @@ public class ServersCrudController implements PfCrudController<Server> {
         model.addAttribute("osList", osRepository.findAll(Sort.by("id")));
     }
 
-
-    @PostMapping("/submit")
-    public String submit(@ModelAttribute Server entity) {
+    @Override
+    public String submit(@ModelAttribute Server entity) throws SubmitException {
         if (entity.getOs() != null) {
             if (entity.getOs().getId() == null) {
                 entity.setOs(null);
             }
         }
-        Server saved = this.getRepository().save(entity);
-        return "redirect:/" + getUrl() + "/" + saved.getId();
+        return PfCrudController.super.submit(entity);
     }
-
 }

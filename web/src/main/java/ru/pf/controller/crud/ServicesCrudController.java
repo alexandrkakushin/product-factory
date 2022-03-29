@@ -8,6 +8,7 @@ import ru.pf.repository.PfCrudRepository;
 import ru.pf.repository.ServicesCrudRepository;
 
 /**
+ * Контроллер для реализации CRUD-операций с сущностью "Сервис"
  * @author a.kakushin
  */
 @Controller

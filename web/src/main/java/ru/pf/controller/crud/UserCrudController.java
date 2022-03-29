@@ -65,7 +65,6 @@ public class UserCrudController implements PfCrudController<User> {
         } else {
             throw new SubmitException("При записи пользователя возникла ошибка. Роль не найдена");
         }
-        User saved = getRepository().save(entity);
-        return "redirect:/" + getUrl() + "/" + saved.getId();
+        return PfCrudController.super.submit(entity);
     }
 }
