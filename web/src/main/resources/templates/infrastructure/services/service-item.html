@@ -2,14 +2,14 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: common"/>
     <body>
-        <nav th:replace="fragments/navbar :: navbar"/>
+        <nav aria-label="Основная панель навигации" th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
-            <nav th:replace="fragments/navbar :: breadcrumb"/>
+            <nav aria-label="'Хлебные крошки'" th:replace="fragments/navbar :: breadcrumb"/>
 
             <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Служба')"></div>
 
-            <form action="#" th:action="@{'${url}+'/submit'}" th:object="${entity}" method="post">
+            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <div th:include="fragments/item :: operations(url = ${url})"></div>
