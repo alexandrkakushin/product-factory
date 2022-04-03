@@ -54,6 +54,13 @@ public class ProjectsService {
     private SourceCode directorySourceCode;
 
     /**
+     * Сервис для обновления исходников из информационной базы
+     */
+    @Autowired
+    @SourceCodeRepository(SourceCodeRepository.Types.INFO_BASE)
+    private SourceCode infoBaseSourceCode;
+
+    /**
      * Утилитный класс-читатеть конфигурации
      */
     @Autowired
@@ -70,6 +77,7 @@ public class ProjectsService {
         vcsMap.put(SourceCodeRepository.Types.GIT, gitSourceCode);
         vcsMap.put(SourceCodeRepository.Types.CONFIGURATION_REPOSITORY, configurationRepositorySourceCode);
         vcsMap.put(SourceCodeRepository.Types.DIRECTORY, directorySourceCode);
+        vcsMap.put(SourceCodeRepository.Types.INFO_BASE, infoBaseSourceCode);
     }
 
     /**

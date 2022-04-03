@@ -31,6 +31,12 @@ public class ProjectsCrudController implements PfCrudController<Project> {
     @Autowired
     private GitCrudRepository gitRepository;
 
+    /**
+     * Репозиторий для получения информационных баз
+     */
+    @Autowired
+    private InfoBaseCrudRepository infoBaseRepository;
+
     @Override
     public String getUrl() {
         return URL;
@@ -53,10 +59,11 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
     @Override
     public void addAttributesItem(Model model) {
-        model.addAttribute("crList", crRepository.findAll(Sort.by("id")));
-        model.addAttribute("gitList", gitRepository.findAll(Sort.by("id")));
+        model.addAttribute("crList", crRepository.findAll(Sort.by("name")));
+        model.addAttribute("gitList", gitRepository.findAll(Sort.by("name")));
+        model.addAttribute("infoBaseList", infoBaseRepository.findAll(Sort.by("name")));
 
-        model.addAttribute("designerList", designerRepository.findAll(Sort.by("id")));
+        model.addAttribute("designerList", designerRepository.findAll(Sort.by("name")));
 
         // Источники исходных кодов
         model.addAttribute("allSourceTypes", SourceCodeRepository.Types.values());
@@ -76,6 +83,10 @@ public class ProjectsCrudController implements PfCrudController<Project> {
         }
 
         if (entity.getDesigner() != null && entity.getDesigner().getId() == null) {
+            entity.setDesigner(null);
+        }
+
+        if (entity.getInfoBase() != null && entity.getInfoBase().getId() == null) {
             entity.setDesigner(null);
         }
 

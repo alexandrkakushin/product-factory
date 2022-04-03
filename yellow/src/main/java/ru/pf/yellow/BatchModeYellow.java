@@ -35,6 +35,40 @@ public class BatchModeYellow {
     }
 
     /**
+     * Выгрузка информационной базы в файл
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param target Расположение DT-файла
+     * @throws YellowException
+     */
+    public void dumpIb(Yellow yellow, InfoBase infoBase, Path target) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .dumpIb(target)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Загрузка информационной базы из файла
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param source Расположение DT-файла
+     * @throws YellowException
+     */
+    public void restoreIb(Yellow yellow, InfoBase infoBase, Path source) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .restoreIb(source)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
      * Выгрузка конфигурации информационной базы в XML-файлы
      * @param yellow "Толстый" клиент 1С:Предприятие
      * @param infoBase Информационная база
@@ -256,6 +290,26 @@ public class BatchModeYellow {
                 if (password != null && !password.isBlank()) {
                     this.command.getArgs().add("/P \"" + password + "\"");
                 }
+                return this;
+            }
+
+            /**
+             * Выгрузка информационной базы в файл
+             * @param target Имя файла
+             * @return Построитель команды
+             */
+            public CommandBuilder dumpIb(Path target) {
+                this.command.getArgs().add("/DumpIB \"" + target + "\"");
+                return this;
+            }
+
+            /**
+             * Загрузка информационной базы из файла
+             * @param source Имя файла
+             * @return Построитель команды
+             */
+            public CommandBuilder restoreIb(Path source) {
+                this.command.getArgs().add("/RestoreIB \"" + source + "\"");
                 return this;
             }
 

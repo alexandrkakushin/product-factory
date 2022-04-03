@@ -273,3 +273,45 @@
         </div>
     </div>
 </item-field>
+
+<item-field th:id = "input-project" th:fragment="project" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-project">Проект</label>
+        <div class="col-sm-5">
+            <select id="field-project" class="custom-select" th:field="*{project.id}">
+                <option value="">Выберите проект</option>
+                <option th:each="project : ${projectList}" th:value="${project.id}">
+                    <p th:text="${project.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:id = "input-licence-key" th:fragment="licenceKey" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-licence-key">Ключ СЛК</label>
+        <div class="col-sm-5">
+            <select id="field-licence-key" class="custom-select" th:field="*{licenceKey.id}">
+                <option value="">Выберите ключ</option>
+                <option th:each="licenceKey : ${licenceKeyList}" th:value="${licenceKey.id}">
+                    <p th:text="${licenceKey.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>
+
+<item-field th:id = "input-info-base" th:fragment="infoBase" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-info-base">Информационная база</label>
+        <div class="col-sm-5">
+            <select id="field-info-base" class="custom-select" th:field="*{infoBase.id}">
+                <option value="">Выберите информационную базу</option>
+                <option th:each="infoBase : ${infoBaseList}" th:value="${infoBase.id}">
+                    <p th:text="${infoBase.name}"> # </p>
+                </option>
+            </select>
+        </div>
+    </div>
+</item-field>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav aria-label="navigation panel" th:replace="fragments/navbar :: navbar"/>
+
+        <div class="container-fluid pt-2">
+            <nav aria-label="bread crumb" th:replace="fragments/navbar :: breadcrumb"/>
+
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Ключ СЛК')"/>
+
+            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <div th:include="fragments/item :: operations(url = ${url})"></div>
+
+                <field th:replace="fragments/fields :: id"/>
+                <field th:replace="fragments/fields :: name"/>
+                <field th:replace="fragments/fields :: comment"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="field-project">Проект</label>
+                    <div class="col-sm-5">
+                        <select id="field-project" class="custom-select" th:field="*{project.id}" onchange="projectOnChange">
+                            <option value="">Выберите проект</option>
+                            <option th:each="project : ${projectList}" th:value="${project.id}">
+                                <p th:text="${project.name}"> # </p>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <field th:replace="fragments/fields :: licenceKey"/>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="field-data-processor">Обработка</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{dataProcessor}"
+                               th:value="${entity.dataProcessor}"
+                               type="text"
+                               class="form-control"
+                               id="field-data-processor"
+                               placeholder="Обработка, на основе которой формируется защищенный модуль"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="field-template">Макет</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{template}"
+                               th:value="${entity.template}"
+                               type="text"
+                               class="form-control"
+                               id="field-template"
+                               placeholder="Имя макета, в который будет записан защищенный модуль"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" for="field-common-module">Общий модуль</label>
+                    <div class="col-sm-5">
+                        <input th:field="*{commonModule}"
+                               th:value="${entity.commonModule}"
+                               type="text"
+                               class="form-control"
+                               id="field-common-module"
+                               placeholder="Общий модуль, содержищий вызов СЛК"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="text-source-text">Исходный текст</label>
+                        <textarea readonly class="form-control" rows="10" id="text-source-text"></textarea>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label for="text-target-text">Конечный текст</label>
+                        <textarea class="form-control" rows="10" id="text-target-text"></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"/>
+
+        <script>
+            function projectOnChange() {
+                console.log("hello");
+            }
+        </script>
+    </body>
+</html>

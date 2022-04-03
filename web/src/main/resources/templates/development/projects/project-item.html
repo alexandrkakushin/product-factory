@@ -29,7 +29,7 @@
                 <div class="form-group row">
                     <label class="col-sm-1 col-form-label" for="field-project-type">Тип</label>
                     <div class="col-sm-5">
-                        <select id="field-project-type" class="custom-select" th:field="*{type}">
+                        <select id="field-project-type" class="custom-select" th:field="*{type}" onchange="typeOnChange(event)">
                             <option value="">Выберите тип проекта</option>
                             <option th:each="projectType : ${projectTypes}" th:value="${projectType}" th:text="${projectType}"/>
                         </select>
@@ -51,6 +51,22 @@
                 <field th:replace="fragments/fields :: directory"></field>
                 <field th:replace="fragments/fields :: cr"></field>
                 <field th:replace="fragments/fields :: git"></field>
+                <field th:replace="fragments/fields :: infoBase"></field>
+
+                <item-field id = "input-name-extension">
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label" for="field-name-extension">Имя расширения</label>
+                        <div class="col-sm-5">
+                            <input type="text"
+                                   th:field="*{nameExtension}"
+                                   th:value="${entity.nameExtension}"
+                                   class="form-control"
+                                   id="field-name-extension"
+ы                                  placeholder="Имя расширения информационной базы">
+                        </div>
+                    </div>
+                </item-field>
+
                 <hr>
             </form>
         </div>
@@ -62,14 +78,32 @@
                 setVisibleSourceTypes(event.currentTarget.defaultValue);
             }
 
+            function typeOnChange(event) {
+                setVisibleNameExtension();
+            }
+
+            function setVisibleNameExtension() {
+                let inputNameExtension = $('#input-name-extension');
+                inputNameExtension.hide();
+
+                if ($('#select_INFO_BASE').is(':checked')) {
+                    if ($('#field-project-type').val() === 'EXTENSION') {
+                        inputNameExtension.show();
+                    }
+                }
+            }
+
             function setVisibleSourceTypes(value) {
                 let inputDirectory = $('#input_DIRECTORY');
                 let inputCr = $('#input_CR');
                 let inputGit = $('#input_GIT');
+                let inputInfoBase = $('#input-info-base');
 
                 inputDirectory.hide();
                 inputCr.hide();
                 inputGit.hide();
+                inputInfoBase.hide();
+
 
                 if (value === 'DIRECTORY') {
                     inputDirectory.show();
@@ -82,6 +116,12 @@
                 if (value === 'GIT') {
                     inputGit.show();
                 }
+
+                if (value === 'INFO_BASE') {
+                    inputInfoBase.show();
+                }
+
+                setVisibleNameExtension();
             }
         </script>
 

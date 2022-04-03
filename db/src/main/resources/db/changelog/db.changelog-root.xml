@@ -23,4 +23,10 @@
     <!-- Добавление в таблицу проектов (Projects) полей для обновления исходников из информационной базы -->
     <include file="db/changelog/db.changelog-14-alter-table-projects.xml"/>
 
+    <!-- Добавление таблицы "Сценарии сборки защищенных модулей" -->
+    <include file="db/changelog/db.changelog-15-create-table-licence-build-script.xml"/>
+
+    <!-- Добавление таблицы users-roles для реализации отношения "многие-ко-многим" -->
+    <include file="db/changelog/db.changelog-16-create-table-users-roles.xml"/>
+
 </databaseChangeLog>

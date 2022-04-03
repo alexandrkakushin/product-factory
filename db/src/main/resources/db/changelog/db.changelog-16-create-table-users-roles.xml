@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+<!--    <preConditions>-->
+<!--        <dbms type="h2"/>-->
+<!--    </preConditions>-->
+
+    <changeSet id="16-1" author="a.kakushin">
+        <sql dbms="h2">CREATE SEQUENCE IF NOT EXISTS hibernate_sequence</sql>
+
+        <rollback>
+            <dropSequence sequenceName="hibernate_sequence"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="16-2" author="a.kakushin">
+        <createTable tableName="users_roles">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="roles_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="users_roles"
+                baseColumnNames="roles_id"
+                constraintName="FK_USERS_ROLES_ROLES"
+                referencedTableName="roles"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="users_roles"
+                baseColumnNames="user_id"
+                constraintName="FK_USERS_ROLES_USERS"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="users_roles"/>
+            <dropTable tableName="users_roles"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

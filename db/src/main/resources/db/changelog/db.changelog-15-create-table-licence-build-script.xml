@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="15" author="a.kakushin">
+        <createTable tableName="licence_build_script">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+            <column name="comment" type="varchar(255)"/>
+
+            <column name="project_id" type="bigint"/>
+            <column name="licence_key_id" type="bigint"/>
+            <column name="common_module" type="varchar(255)"/>
+            <column name="target_text" type="clob"/>
+            <column name="data_processor" type="varchar(255)"/>
+            <column name="template" type="varchar(255)"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="licence_build_script"
+                baseColumnNames="project_id"
+                constraintName="FK_LICENCE_BUILD_SCRIPT_ON_PROJECT"
+                referencedTableName="projects"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="licence_build_script"
+                baseColumnNames="licence_key_id"
+                constraintName="FK_LICENCE_BUILD_SCRIPT_ON_KEY"
+                referencedTableName="licence_key"
+                referencedColumnNames="id"/>
+
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="licence_build_script"/>
+            <dropTable tableName="licence_build_script"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
