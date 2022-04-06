@@ -40,6 +40,18 @@
             <artifactId>db</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ru.productfactory</groupId>
+            <artifactId>conf</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.productfactory</groupId>
+            <artifactId>properties</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

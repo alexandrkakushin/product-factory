@@ -13,7 +13,9 @@
 		<module>core</module>
 		<module>application</module>
         <module>db</module>
-	</modules>
+        <module>conf</module>
+        <module>properties</module>
+    </modules>
     <packaging>pom</packaging>
 
 	<name>productfactory</name>

@@ -129,6 +129,6 @@ public class ProjectsService {
     }
 
     public Path getTemporaryLocation(Project project) {
-        return propertiesService.getStorage().resolve(project.getId().toString());
+        return propertiesService.getStorageProject(project);
     }
 }

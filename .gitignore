@@ -7,6 +7,8 @@
 /yellow/target/
 /api/target/
 /db/target/
+/conf/target/
+/properties/target/
 
 /logs/
 .mvn/wrapper/maven-wrapper.jar
