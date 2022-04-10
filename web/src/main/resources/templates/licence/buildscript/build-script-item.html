@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/header :: common"/>
-    <body>
+    <body onload="load()">
+        <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
         <nav aria-label="navigation panel" th:replace="fragments/navbar :: navbar"/>
 
         <div class="container-fluid pt-2">
@@ -9,7 +11,7 @@
 
             <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Ключ СЛК')"/>
 
-            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post">
+            <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post" onload="load()">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <div th:include="fragments/item :: operations(url = ${url})"></div>
@@ -21,7 +23,7 @@
                 <div class="form-group row">
                     <label class="col-sm-1 col-form-label" for="field-project">Проект</label>
                     <div class="col-sm-5">
-                        <select id="field-project" class="custom-select" th:field="*{project.id}" onchange="projectOnChange">
+                        <select id="field-project" class="custom-select" th:field="*{project.id}" onchange="projectOnChange(event)">
                             <option value="">Выберите проект</option>
                             <option th:each="project : ${projectList}" th:value="${project.id}">
                                 <p th:text="${project.name}"> # </p>
@@ -33,38 +35,23 @@
                 <field th:replace="fragments/fields :: licenceKey"/>
 
                 <div class="form-group row">
-                    <label class="col-sm-1 col-form-label" for="field-data-processor">Обработка</label>
+                    <label class="col-sm-1 col-form-label" for="field-data-processor-select">Обработка</label>
                     <div class="col-sm-5">
-                        <input th:field="*{dataProcessor}"
-                               th:value="${entity.dataProcessor}"
-                               type="text"
-                               class="form-control"
-                               id="field-data-processor"
-                               placeholder="Обработка, на основе которой формируется защищенный модуль"/>
+                        <select id="field-data-processor-select" class="custom-select" th:field="*{dataProcessor}"></select>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-1 col-form-label" for="field-template">Макет</label>
+                    <label class="col-sm-1 col-form-label" for="field-template-select">Макет</label>
                     <div class="col-sm-5">
-                        <input th:field="*{template}"
-                               th:value="${entity.template}"
-                               type="text"
-                               class="form-control"
-                               id="field-template"
-                               placeholder="Имя макета, в который будет записан защищенный модуль"/>
+                        <select id="field-template-select" class="custom-select" th:field="*{template}"></select>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-1 col-form-label" for="field-common-module">Общий модуль</label>
+                    <label class="col-sm-1 col-form-label" for="field-common-module-select">Общий модуль</label>
                     <div class="col-sm-5">
-                        <input th:field="*{commonModule}"
-                               th:value="${entity.commonModule}"
-                               type="text"
-                               class="form-control"
-                               id="field-common-module"
-                               placeholder="Общий модуль, содержищий вызов СЛК"/>
+                        <select id="field-common-module-select" class="custom-select" th:field="*{commonModule}"></select>
                     </div>
                 </div>
 
@@ -84,9 +71,85 @@
         </div>
         <footer th:replace="fragments/footer :: bootstrap"/>
 
-        <script>
-            function projectOnChange() {
-                console.log("hello");
+        <script th:inline="javascript">
+            function load() {
+                updateAllMetadataList();
+            }
+
+            function projectOnChange(event) {
+                updateAllMetadataList();
+            }
+
+            function updateAllMetadataList() {
+                updateDataProcessorList();
+                updateTemplateList();
+                updateCommonModuleList();
+            }
+
+            function updateDataProcessorList() {
+                updateMetadataList(
+                    $('#field-data-processor-select'),
+                    'dataProcessor',
+                    [[${entity.dataProcessor}]],
+                    'Выберите обработку, на основе которой формируется защищенный модуль'
+                );
+            }
+
+            function updateTemplateList() {
+                updateMetadataList(
+                    $('#field-template-select'),
+                    'commonTemplate',
+                    [[${entity.template}]],
+                    'Выберите макет, в который будет записан защищенный модуль'
+                );
+            }
+
+            function updateCommonModuleList() {
+                updateMetadataList(
+                    $('#field-common-module-select'),
+                    'commonModule',
+                    [[${entity.commonModule}]],
+                    'Выберите общий модуль, содержищий вызов СЛК'
+                );
+            }
+
+            function updateMetadataList(componentSelect, className, dbValue, placeholder) {
+                componentSelect
+                    .find('option')
+                    .remove()
+                    .end()
+                    .append(
+                        $("<option></option>")
+                            .attr("value", "00000000-0000-0000-0000-000000000000")
+                            .text(placeholder == undefined ? "Выберите объект метаданых" : placeholder));
+
+                var selectedProject = $('#field-project').find(":selected").val();
+                if (!!selectedProject) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/conf/objects?project=1&objMetadata=' + className,
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.error == false) {
+                                $.each(data.items, function(key, value) {
+                                     componentSelect
+                                         .append($("<option></option>")
+                                                    .attr("value", value.uuid)
+                                                    .text(value.name));
+                                });
+                                componentSelect.val(dbValue).change();
+                            } else {
+                                $.notify(data.description + ' (' + className + ')', {
+                                    offset: {
+                                        x: 10,
+                                        y: 75
+                                    },
+                                    type: 'danger'
+                                });
+                            }
+                        }
+                    });
+                }
             }
         </script>
     </body>

@@ -6,6 +6,7 @@ import ru.pf.entity.PfEntity;
 import ru.pf.entity.Project;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Сценарии сборки защищенных модулей СЛК
@@ -49,10 +50,10 @@ public class LicenceBuildScript implements PfEntity<LicenceBuildScript> {
     private LicenceKey licenceKey;
 
     /**
-     * Имя общего модуля, который должен быть изменен в процессе сборки
+     * Общий модуль, который должен быть изменен в процессе сборки
      * Подразумевается, что в этом ОМ размещены вызовы обработки
      */
-    private String commonModule;
+    private UUID commonModule;
 
     /**
      * Текст, который будет размещен в общем модуле.
@@ -63,15 +64,15 @@ public class LicenceBuildScript implements PfEntity<LicenceBuildScript> {
     private String targetText;
 
     /**
-     * Имя обработки, на основе которой будет создан защищенный модуль
+     * Обработка, на основе которой будет создан защищенный модуль
      * Данная обработка должна быть удалена
      */
-    private String dataProcessor;
+    private UUID dataProcessor;
 
     /**
-     * Имя макета, в который будет записан защищенный общий модуль
+     * Макет, в который будет записан защищенный общий модуль
      */
-    private String template;
+    private UUID template;
 
     @Override
     public Long getId() {

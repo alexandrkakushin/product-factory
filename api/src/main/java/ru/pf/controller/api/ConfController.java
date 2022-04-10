@@ -66,13 +66,13 @@ public class ConfController {
         Optional<Project> optionalProject = projectsCrudRepository.findById(idProject);
         if (optionalProject.isEmpty()) {
             response.setError("Проект не найден в базе данных");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.ok(response);
         }
 
         Path root = propertiesService.getStorageProject(optionalProject.get());
         if (!Files.exists(root.resolve("Configuration.xml"))) {
-            response.setError("Не найдены метаданные проекта. Обновите проект и повторите попытку");
-            return ResponseEntity.badRequest().body(response);
+            response.setError("Не найдены метаданные конфигурации. Обновите проект и повторите попытку");
+            return ResponseEntity.ok(response);
         }
 
         try {

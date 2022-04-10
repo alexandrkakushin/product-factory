@@ -29,4 +29,5 @@
     <!-- Добавление таблицы users-roles для реализации отношения "многие-ко-многим" -->
     <include file="db/changelog/db.changelog-16-create-table-users-roles.xml"/>
 
+    <include file="db/changelog/db.changelog-17-modify-licence-build-script.xml"/>
 </databaseChangeLog>

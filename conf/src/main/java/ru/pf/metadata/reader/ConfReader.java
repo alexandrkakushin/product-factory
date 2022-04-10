@@ -1,5 +1,6 @@
 package ru.pf.metadata.reader;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import ru.pf.metadata.object.Enum;
 import ru.pf.metadata.object.*;
@@ -14,11 +15,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Сервис для чтения объектов метаданных
+ * Парсит XML-файлы для получения минимальной информации: Имя, Синоним и UUID
+ *
  * @author a.kakushin
  */
 @Service
 public class ConfReader {
 
+    /**
+     * Чтение XML-файлов конфигурации
+     * @param workPath Каталог
+     * @return Conf - класс "Конфигурация"
+     * @throws ReaderException В случае ошибки парсинга XML-файлов может быть выброшено исключение
+     */
     public Conf read(Path workPath) throws ReaderException {
 
         Conf conf;
@@ -65,7 +75,12 @@ public class ConfReader {
         return conf;
     }
 
-    public static Set<Relation> getRelations(Conf conf) {
+    /**
+     * Формирование связей для чтения объектов метаданных
+     * @param conf Конфигурация
+     * @return Набор связей для чтения метаданных
+     */
+    public Set<Relation> getRelations(Conf conf) {
         Set<Relation> result = new HashSet<>();
 
         result.add(new Relation(
@@ -192,28 +207,37 @@ public class ConfReader {
         return result;
     }
 
+    /**
+     * Связь класса метаданных и имя каталога, в котором записаны объекты данного типа метаданных
+     */
+    @Getter
     public static class Relation {
 
+        /**
+         * "Контейнер" конфигурации, в который записываюся считанные объекты
+         */
         private final Set<IMetadataObject> container;
+
+        /**
+         * Класс метаданных
+         */
         private final Class<?> objClass;
+
+        /**
+         * Имя каталога, в котором записаны объекты метаданных
+         */
         private final String folder;
 
-        public Relation(Set<IMetadataObject> conf, Class<?> objClass, String folder) {
-            this.container = conf;
+        /**
+         * Конструктор с указанием "контейнера хранения объектов", класса и каталога
+         * @param container "Контейнер" объектов метаданных
+         * @param objClass Класс объекта метаданных
+         * @param folder Каталог объектов метаданных
+         */
+        public Relation(Set<IMetadataObject> container, Class<?> objClass, String folder) {
+            this.container = container;
             this.objClass = objClass;
             this.folder = folder;
-        }
-
-        public Set<IMetadataObject> getContainer() {
-            return this.container;
-        }
-
-        public String getFolder() {
-            return this.folder;
-        }
-
-        public Class<?> getObjClass() {
-            return this.objClass;
         }
     }
 }
