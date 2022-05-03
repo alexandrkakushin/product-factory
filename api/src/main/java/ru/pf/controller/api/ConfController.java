@@ -58,7 +58,7 @@ public class ConfController {
     @GetMapping("/objects")
     @ApiOperation(value = "Получение списка метаданных в виде <UUID, Наименование>")
     public ResponseEntity<GetObjectsResponse> getObjects(
-            @RequestParam(name = "project") Long idProject,
+            @RequestParam(name = "project") long idProject,
             @RequestParam(name = "objMetadata", required = false) String objectMetadata) {
 
         GetObjectsResponse response = new GetObjectsResponse();
@@ -96,11 +96,72 @@ public class ConfController {
     }
 
     /**
+     * Получение объекта метаданных по UUID
+     * @param idProject Идентификатор проекта
+     * @param uuidObject Идентификатор объекта метаданных
+     * @return GetObjectResponse, в случае ошибки будут заполнены соответствующие поля
+     */
+    @GetMapping("/object")
+    @ApiOperation(value = "Получение объекта метаданных")
+    public ResponseEntity<GetObjectResponse> getObject(
+            @RequestParam(name = "project") long idProject,
+            @RequestParam(name = "uuid") UUID uuidObject) {
+
+        GetObjectResponse response = new GetObjectResponse();
+
+        Optional<Project> optionalProject = projectsCrudRepository.findById(idProject);
+        if (optionalProject.isEmpty()) {
+            response.setError("Проект не найден в базе данных");
+            return ResponseEntity.ok(response);
+        }
+
+        Path root = propertiesService.getStorageProject(optionalProject.get());
+        if (!Files.exists(root.resolve("Configuration.xml"))) {
+            response.setError("Не найдены метаданные конфигурации. Обновите проект и повторите попытку");
+            return ResponseEntity.ok(response);
+        }
+
+        try {
+            Conf conf = confReader.read(root);
+
+            response.setObject(
+                confReader.getRelations(conf).stream()
+                    .map(ConfReader.Relation::getContainer)
+                    .flatMap(Collection::stream)
+                    .map(MetadataObject.class::cast)
+                    .filter(metadataObject -> metadataObject.getUuid().equals(uuidObject))
+                    .findFirst()
+                    .orElseThrow(() -> new ReaderException("Объект метаданных не найден")));
+
+            response.getObject().parse();
+
+        } catch (ReaderException ex) {
+            response.setError(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Класс возврат метода GetObject
+     */
+    @Getter
+    @Setter
+    static class GetObjectResponse extends Response {
+
+        /**
+         * Объект метаданных
+         */
+        private MetadataObject object;
+    }
+
+    /**
      * Класс возврат метода GetObjects
      */
     @Getter
     @Setter
-    static class GetObjectsResponse {
+    static class GetObjectsResponse extends Response {
 
         /**
          * Список объектов метаданных
@@ -108,29 +169,10 @@ public class ConfController {
         private List<Item> items;
 
         /**
-         * Описание ошибки
-         */
-        private String description;
-
-        /**
-         * Признак ошибки
-         */
-        private boolean isError;
-
-        /**
          * Конструктор по умолчанию
          */
         public GetObjectsResponse() {
             this.items = new ArrayList<>();
-        }
-
-        /**
-         * Метод для фиксирования ошибки
-         * @param description Описание ошибки
-         */
-        public void setError(String description) {
-            this.isError = true;
-            this.description = description;
         }
 
         /**
@@ -150,6 +192,33 @@ public class ConfController {
              * Имя объекта метаданных
              */
             private String name;
+        }
+    }
+
+    /**
+     * Класс возврат методов
+     */
+    @Getter
+    @Setter
+    abstract static class Response {
+
+        /**
+         * Описание ошибки
+         */
+        private String description;
+
+        /**
+         * Признак ошибки
+         */
+        private boolean isError;
+
+        /**
+         * Метод для фиксирования ошибки
+         * @param description Описание ошибки
+         */
+        public void setError(String description) {
+            this.isError = true;
+            this.description = description;
         }
     }
 }
