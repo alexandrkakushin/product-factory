@@ -51,7 +51,8 @@
                 <div class="form-group row">
                     <label class="col-sm-1 col-form-label" for="field-common-module-select">Общий модуль</label>
                     <div class="col-sm-5">
-                        <select id="field-common-module-select" class="custom-select" th:field="*{commonModule}"></select>
+                        <select id="field-common-module-select" class="custom-select" th:field="*{commonModule}"
+                                onchange="commonModuleOnChange()"></select>
                     </div>
                 </div>
 
@@ -63,7 +64,7 @@
 
                     <div class="form-group col-sm-6">
                         <label for="text-target-text">Конечный текст</label>
-                        <textarea class="form-control" rows="10" id="text-target-text"></textarea>
+                        <textarea class="form-control" rows="10" id="text-target-text" th:field="*{targetText}"></textarea>
                     </div>
                 </div>
 
@@ -123,11 +124,11 @@
                             .attr("value", "00000000-0000-0000-0000-000000000000")
                             .text(placeholder == undefined ? "Выберите объект метаданых" : placeholder));
 
-                var selectedProject = $('#field-project').find(":selected").val();
+                var selectedProject = getProject();
                 if (!!selectedProject) {
                     $.ajax({
                         type: 'GET',
-                        url: '/api/conf/objects?project=1&objMetadata=' + className,
+                        url: '/api/conf/objects?project=' + selectedProject + '&objMetadata=' + className,
                         dataType: 'json',
                         success: function(data) {
                             if (data.error == false) {
@@ -147,6 +148,54 @@
                                     type: 'danger'
                                 });
                             }
+                        }
+                    });
+                }
+            }
+
+            function getProject() {
+                return $('#field-project').find(":selected").val();
+            }
+
+            function getCommonModuleUuid() {
+                return $('#field-common-module-select').find(":selected").val();
+                // return [[${entity.commonModule}]];
+            }
+
+            function commonModuleOnChange() {
+                loadCommonModuleText(getCommonModuleUuid());
+            }
+
+            function loadCommonModuleText(uuid) {
+                $('#text-source-text').text('');
+
+                var selectedProject = getProject();
+                if (!!selectedProject) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/conf/object?project=' + selectedProject + '&uuid=' + uuid,
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.error == false) {
+                                $('#text-source-text').text(data.object.module.code);
+                            } else {
+                                $.notify(data.description, {
+                                    offset: {
+                                        x: 10,
+                                        y: 75
+                                    },
+                                    type: 'danger'
+                                });
+                            }
+                        },
+                        error: function (request, status, error) {
+                            $.notify(request.responseJSON.message, {
+                                offset: {
+                                    x: 10,
+                                    y: 75
+                                },
+                                type: 'danger'
+                            });
                         }
                     });
                 }
