@@ -9,6 +9,7 @@
 /db/target/
 /conf/target/
 /properties/target/
+/licence/target/
 
 /logs/
 .mvn/wrapper/maven-wrapper.jar

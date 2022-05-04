@@ -51,5 +51,11 @@
             <artifactId>conf</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ru.productfactory</groupId>
+            <artifactId>licence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

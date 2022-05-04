@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * API для управления подсистемой лицензирования решений
+ */
 @RestController
 @RequestMapping(path = "/api/licence")
 public class LicenceController {
@@ -39,12 +42,21 @@ public class LicenceController {
     @Autowired
     private LicenceKeyCrudRepository licenceKeyRepository;
 
+    /**
+     * Репозиторий "Журнал создания защищенных обработок (модулей) СЛК"
+     */
     @Autowired
     private JournalCrudRepository journalRepository;
 
+    /**
+     * Сервис параметров приложения
+     */
     @Autowired
     private PropertiesService propertiesService;
 
+    /**
+     * "Пакетный" режим утилиты лицензирования
+     */
     @Autowired
     private BatchModeLicence batchMode;
 
@@ -96,9 +108,9 @@ public class LicenceController {
      * @param multipartFile Обработка (*.epf файл)
      * @return Результат выполнения, содержащий идентификатор операции и дополнительную информацию
      */
-    @PostMapping("/generate")
+    @PostMapping("/generate/datafile")
     @ApiOperation(value = "Формирование защищенной обработки")
-    public ResponseGenerate generate(
+    public ResponseGenerate generateDataFile(
             @RequestParam(name = "id") Long id,
             @RequestParam(name = "file") MultipartFile multipartFile) {
 
@@ -208,5 +220,18 @@ public class LicenceController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Формирование защищенного решения
+     * @param id Идентификатор сценария сборки
+     * @return Результат выполнения, содержащий идентификатор операции и дополнительную информацию
+     */
+    @PostMapping("/generate/solution")
+    @ApiOperation(value = "Формирование защищенной обработки")
+    public ResponseGenerate generateSolution(
+            @RequestParam(name = "id") Long id) {
+
+        return null;
     }
 }

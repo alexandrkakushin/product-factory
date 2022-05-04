@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/header :: common"/>
+  <body>
+    <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
+
+    <nav th:replace="fragments/navbar :: navbar"/>
+
+    <div class="container-fluid pt-2">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+          <li class="breadcrumb-item active">
+            <span>СЛК</span>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <span>Создание защищенного решения</span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="row">
+        <div class="col-sm-8" style="text-align: left" >
+          <h5>
+            <strong>Создание защищенного решения</strong>
+          </h5>
+        </div>
+      </div>
+
+      <br>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label" for="field-build-script">Сценарий сборки</label>
+        <div class="col-sm-5">
+          <select id="field-build-script" class="custom-select">
+            <option value="">Выберите сценарий</option>
+            <option th:each="buildScript : ${buildScriptList}" th:value="${buildScript.id}">
+              <p th:text="${buildScript.name}"> # </p>
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <button id="btn_get_extensions" class="btn btn-outline-info" type="button" onclick="runBuild()">
+        <i class="fas fa-ghost" aria-hidden="true"></i>  Запустить сборку
+      </button>
+
+    </div>
+
+    <footer th:replace="fragments/footer :: bootstrap"/>
+
+    <script th:inline="javascript">
+      function getBuildScript() {
+        return $('#field-build-script').find(":selected").val();
+      }
+
+      function runBuild() {
+        var select = getBuildScript();
+        if (!select) {
+          $.notify('Необходимо выбрать сценарий сборки', {
+            offset: {
+              x: 10,
+              y: 75
+            },
+            type: 'info'
+          });
+          return;
+        }
+      }
+    </script>
+  </body>
+</html>

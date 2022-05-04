@@ -15,6 +15,7 @@
         <module>db</module>
         <module>conf</module>
         <module>properties</module>
+        <module>licence</module>
     </modules>
     <packaging>pom</packaging>
 
