@@ -87,7 +87,7 @@ public class ProjectsCrudController implements PfCrudController<Project> {
         }
 
         if (entity.getInfoBase() != null && entity.getInfoBase().getId() == null) {
-            entity.setDesigner(null);
+            entity.setInfoBase(null);
         }
 
         return PfCrudController.super.submit(entity);
