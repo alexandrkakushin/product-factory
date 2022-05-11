@@ -2,22 +2,20 @@ package ru.pf.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import ru.pf.entity.Project;
 import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ConfReader;
 import ru.pf.metadata.reader.ReaderException;
-import ru.pf.service.sourcecode.SourceCodeRepository;
 import ru.pf.service.sourcecode.SourceCode;
 import ru.pf.service.sourcecode.SourceCodeException;
+import ru.pf.service.sourcecode.SourceCodeRepository;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.stream.Stream;
 
 /**
  * Сервис для работы с проектами
@@ -92,12 +90,7 @@ public class ProjectsService {
 
         Path temp = getTemporaryLocation(project);
         if (typeRepository == SourceCodeRepository.Types.DIRECTORY && Files.exists(temp)) {
-            try (Stream<Path> pathStream = Files.walk(temp)) {
-                pathStream
-                        .sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(File::delete);
-            }
+            FileSystemUtils.deleteRecursively(temp);
         }
         Files.createDirectories(temp);
 
