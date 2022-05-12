@@ -221,17 +221,4 @@ public class LicenceController {
 
         return ResponseEntity.notFound().build();
     }
-
-    /**
-     * Формирование защищенного решения
-     * @param id Идентификатор сценария сборки
-     * @return Результат выполнения, содержащий идентификатор операции и дополнительную информацию
-     */
-    @PostMapping("/generate/solution")
-    @ApiOperation(value = "Формирование защищенной обработки")
-    public ResponseGenerate generateSolution(
-            @RequestParam(name = "id") Long id) {
-
-        return null;
-    }
 }
