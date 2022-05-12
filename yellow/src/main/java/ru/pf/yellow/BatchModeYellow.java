@@ -86,11 +86,47 @@ public class BatchModeYellow {
     }
 
     /**
+     * Загрузка конфигурации из XML-файлов
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param source Расположение XML-файлов
+     * @throws YellowException Исключение в случае загрузки XML-файлов
+     */
+    public void loadConfigFromFiles(Yellow yellow, InfoBase infoBase, Path source) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .loadConfigFromFiles(source)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Загрузка конфигурации расширения из XML-файлов
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param extension Расширение
+     * @param source Расположение XML-файлов
+     * @throws YellowException Исключение в случае загрузки XML-файлов расширения
+     */
+    public void loadConfigFromFiles(Yellow yellow, InfoBase infoBase, Extension extension, Path source) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .loadConfigFromFiles(source)
+                        .extension(extension)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
      * Выгрузка конфигурации расширения в XML-файлы
      * @param yellow "Толстый" клиент 1С:Предприятие
      * @param infoBase Информационная база
      * @param extension Расширение
-     * @param target Распложение XML-файлов
+     * @param target Расположение XML-файлов
      * @throws YellowException Исключание в случае выгрузки XML-файлов
      */
     public void dumpConfigExtensionToFiles(Yellow yellow, InfoBase infoBase, Extension extension, Path target) throws YellowException {
@@ -99,6 +135,42 @@ public class BatchModeYellow {
                         .infoBase(infoBase)
                         .dumpConfigToFiles(target)
                         .extension(extension)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Сохранение расширения конфигурации в файл (cfe)
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param extension Расширение
+     * @param target Расположение файла
+     * @throws YellowException Исключение в случае сохранения расширения конфигурации
+     */
+    public void dumpCfg(Yellow yellow, InfoBase infoBase, Extension extension, Path target) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .dumpCfg(target)
+                        .extension(extension)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Сохранение расширения конфигурации в файл (cf)
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param target Расположение файла
+     * @throws YellowException Исключение в случае сохранения конфигурации
+     */
+    public void dumpCfg(Yellow yellow, InfoBase infoBase, Path target) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .dumpCfg(target)
                         .build();
 
         startProcess(yellow, command);
@@ -160,6 +232,22 @@ public class BatchModeYellow {
         } catch (IOException ex) {
             throw new YellowException(ex);
         }
+    }
+
+    /**
+     * Выполняет загрузку внешней обработки (отчета) из формата XML. Используется выгрузка формата 2.0
+     * @param yellow Экземпляр 1С:Предприятие
+     * @param source Полный путь к корневому каталогу, который содержит внешнюю обработку (отчет) в файлах формата XML
+     * @param target Полный путь к внешней обработке (отчету) в формате .epf (.erf), которая получится в результате загрузки
+     */
+    public void loadExternalDataProcessorOrReportFromFiles(Yellow yellow, Path source, Path target) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .disableStartupDialogs()
+                        .loadExternalDataProcessorOrReportFromFiles(source, target)
+                        .build();
+
+        startProcess(yellow, command);
     }
 
     /**
@@ -333,6 +421,16 @@ public class BatchModeYellow {
             }
 
             /**
+             * Сохранение конфигурации или расширения конфигурации в файл
+             * @param target Имя файла
+             * @return Построитель команды
+             */
+            public CommandBuilder dumpCfg(Path target) {
+                this.command.getArgs().add("/DumpCfg \"" + target + "\"");
+                return this;
+            }
+
+            /**
              * Информация о хранилище конфигурации
              * @param cr Хранилище конфигурации
              * @return Построитель команды
@@ -435,6 +533,27 @@ public class BatchModeYellow {
              */
             public CommandBuilder out(Path out) {
                 this.command.getArgs().add("/Out \"" + out + "\"");
+                return this;
+            }
+
+            /**
+             * Выполняет загрузку внешней обработки (отчета) из формата XML. Используется выгрузка формата 2.0
+             * @param source Полный путь к корневому каталогу, который содержит внешнюю обработку (отчет) в файлах формата XML
+             * @param target Полный путь к внешней обработке (отчету) в формате .epf (.erf), которая получится в результате загрузки.
+             * @return Построитель команды
+             */
+            public CommandBuilder loadExternalDataProcessorOrReportFromFiles(Path source, Path target) {
+                this.command.getArgs().add("/LoadExternalDataProcessorOrReportFromFiles \"" + source + "\"" + " \"" + target + "\"");
+                return this;
+            }
+
+            /**
+             * Выполняет загрузку конфигурации/расширения из файла
+             * @param source Каталог загрузки
+             * @return Построитель команды
+             */
+            public CommandBuilder loadConfigFromFiles(Path source) {
+                this.command.getArgs().add("/LoadConfigFromFiles \"" + source + "\"");
                 return this;
             }
 
