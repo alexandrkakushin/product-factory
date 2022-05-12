@@ -122,17 +122,7 @@ public class ConfController {
         }
 
         try {
-            Conf conf = confReader.read(root);
-
-            response.setObject(
-                confReader.getRelations(conf).stream()
-                    .map(ConfReader.Relation::getContainer)
-                    .flatMap(Collection::stream)
-                    .map(MetadataObject.class::cast)
-                    .filter(metadataObject -> metadataObject.getUuid().equals(uuidObject))
-                    .findFirst()
-                    .orElseThrow(() -> new ReaderException("Объект метаданных не найден")));
-
+            response.setObject(confReader.findByUUID(root, uuidObject));
             response.getObject().parse();
 
         } catch (ReaderException ex) {
