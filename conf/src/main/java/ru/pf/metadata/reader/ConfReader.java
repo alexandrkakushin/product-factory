@@ -10,9 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Сервис для чтения объектов метаданных
@@ -73,6 +71,36 @@ public class ConfReader {
         }
 
         return conf;
+    }
+
+    /**
+     * Поиск объекта метаданных по UUID
+     * @param workPath каталог XML-файлов
+     * @param uuid UUID объекта метаданных
+     * @return Объект метадаанных
+     * @throws ReaderException Исключение будет выброшено, если объект не найден
+     */
+    public MetadataObject findByUUID(Path workPath, UUID uuid) throws ReaderException {
+        Conf conf = this.read(workPath);
+        return findByUUID(conf, uuid);
+    }
+
+    /**
+     * Поиск объекта метаданных по UUID
+     * @param conf Конфигурация
+     * @param uuid UUID объекта метаданных
+     * @return Объект метаданных
+     * @throws ReaderException Исключение будет выброшено, если объект не найден
+     */
+    public MetadataObject findByUUID(Conf conf, UUID uuid) throws ReaderException {
+        return
+            this.getRelations(conf).stream()
+                .map(ConfReader.Relation::getContainer)
+                .flatMap(Collection::stream)
+                .map(MetadataObject.class::cast)
+                .filter(metadataObject -> metadataObject.getUuid().equals(uuid))
+                .findFirst()
+                .orElseThrow(() -> new ReaderException("Объект метаданных не найден"));
     }
 
     /**
