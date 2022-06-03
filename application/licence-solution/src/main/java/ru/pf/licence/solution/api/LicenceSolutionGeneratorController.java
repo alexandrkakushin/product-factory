@@ -1,4 +1,4 @@
-package ru.pf.licence.solution.controller.api;
+package ru.pf.licence.solution.api;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

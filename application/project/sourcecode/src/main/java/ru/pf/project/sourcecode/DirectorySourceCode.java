@@ -1,4 +1,4 @@
-package ru.pf.service.sourcecode;
+package ru.pf.project.sourcecode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

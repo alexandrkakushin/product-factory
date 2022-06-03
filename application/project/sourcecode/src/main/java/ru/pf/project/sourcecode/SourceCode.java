@@ -1,4 +1,4 @@
-package ru.pf.service.sourcecode;
+package ru.pf.project.sourcecode;
 
 import ru.pf.entity.Project;
 

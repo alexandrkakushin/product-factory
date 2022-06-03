@@ -3,17 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>productfactory</artifactId>
+        <artifactId>project</artifactId>
         <groupId>ru.productfactory</groupId>
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>application</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>licence-solution</module>
-    </modules>
+    <artifactId>sourcecode</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -23,47 +19,18 @@
     <dependencies>
         <dependency>
             <groupId>ru.productfactory</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>project</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>ru.productfactory</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ru.productfactory</groupId>
-            <artifactId>web</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>ru.productfactory</groupId>
             <artifactId>db</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>ru.productfactory</groupId>
-            <artifactId>conf</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ru.productfactory</groupId>
-            <artifactId>properties</artifactId>
+            <artifactId>yellow</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

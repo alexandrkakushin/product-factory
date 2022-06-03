@@ -1,4 +1,4 @@
-package ru.pf.service.sourcecode;
+package ru.pf.project.sourcecode;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;

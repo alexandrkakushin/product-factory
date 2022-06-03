@@ -1,9 +1,9 @@
-package ru.pf.service.sourcecode;
+package ru.pf.project.sourcecode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pf.entity.Project;
-import ru.pf.service.ProjectsService;
+import ru.pf.project.service.ProjectsService;
 import ru.pf.yellow.*;
 
 import java.nio.file.Path;
