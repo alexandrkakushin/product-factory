@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="19" author="a.kakushin">
+        <addColumn tableName="licence_build_script">
+            <column name="info_base_id" type="bigint"/>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="licence_build_script"
+                baseColumnNames="info_base_id"
+                constraintName="FK_LICENCE_BUILD_SCRIPT_ON_INFOBASES"
+                referencedTableName="infobases"
+                referencedColumnNames="id"/>
+
+        <rollback>
+            <dropColumn tableName="licence_build_script" columnName="info_base_id"/>
+            <dropForeignKeyConstraint baseTableName="licence_build_script" constraintName="FK_LICENCE_BUILD_SCRIPT_ON_INFOBASES"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

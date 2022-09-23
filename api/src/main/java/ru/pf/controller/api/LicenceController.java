@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.pf.entity.licence.LicenceKey;
-import ru.pf.entity.licence.Journal;
+import ru.pf.entity.licence.journal.JournalLicenceKey;
 import ru.pf.licence.BatchModeLicence;
 import ru.pf.licence.LicenceException;
 import ru.pf.repository.licence.LicenceKeyCrudRepository;
-import ru.pf.repository.licence.JournalCrudRepository;
+import ru.pf.repository.licence.JournalLicenceKeyCrudRepository;
 import ru.pf.service.PropertiesService;
 
 import java.io.FileInputStream;
@@ -46,7 +46,7 @@ public class LicenceController {
      * Репозиторий "Журнал создания защищенных обработок (модулей) СЛК"
      */
     @Autowired
-    private JournalCrudRepository journalRepository;
+    private JournalLicenceKeyCrudRepository journalRepository;
 
     /**
      * Сервис параметров приложения
@@ -147,7 +147,7 @@ public class LicenceController {
                 response.setUuid(uuidOperation);
                 response.setSize(protectedModule.toFile().length());
 
-                Journal journal = new Journal();
+                JournalLicenceKey journal = new JournalLicenceKey();
                 journal.setOperation(uuidOperation);
                 journal.setDataProcessing(dataProcessing.toFile().getAbsolutePath());
                 journal.setProtectedModule(protectedModule.toFile().getAbsolutePath());
@@ -205,7 +205,7 @@ public class LicenceController {
     @ApiOperation(value = "Получение сгенерированного ранее защищенного модуля")
     public ResponseEntity<InputStreamResource> download(@RequestParam("uuid") UUID uuidOperation) throws FileNotFoundException {
 
-        Optional<Journal> optionalDb = journalRepository.findByOperation(uuidOperation);
+        Optional<JournalLicenceKey> optionalDb = journalRepository.findByOperation(uuidOperation);
         if (optionalDb.isPresent()) {
             Path dataFile = Paths.get(optionalDb.get().getProtectedModule());
 

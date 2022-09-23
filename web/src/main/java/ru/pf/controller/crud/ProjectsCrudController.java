@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.pf.entity.Project;
 import ru.pf.repository.*;
-import ru.pf.service.sourcecode.SourceCodeRepository;
+import ru.pf.core.sourcecode.SourceCodeRepository;
 
 /**
  * Контроллер для реализации CRUD-операций с проектами
@@ -80,6 +80,10 @@ public class ProjectsCrudController implements PfCrudController<Project> {
 
         if (entity.getGit() != null && entity.getGit().getId() == null) {
             entity.setGit(null);
+        }
+
+        if (entity.getInfoBase() != null && entity.getInfoBase().getId() == null) {
+            entity.setInfoBase(null);
         }
 
         if (entity.getDesigner() != null && entity.getDesigner().getId() == null) {

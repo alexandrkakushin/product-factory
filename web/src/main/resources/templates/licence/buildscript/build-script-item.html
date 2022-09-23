@@ -9,7 +9,7 @@
         <div class="container-fluid pt-2">
             <nav aria-label="bread crumb" th:replace="fragments/navbar :: breadcrumb"/>
 
-            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Ключ СЛК')"/>
+            <div class="row" th:include="fragments/item :: title(entity = ${entity}, name = 'Сценарий сборки')"/>
 
             <form action="#" th:action="@{${url}+'/submit'}" th:object="${entity}" method="post" onload="load()">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -32,6 +32,7 @@
                     </div>
                 </div>
 
+                <field th:replace="fragments/fields :: infoBase"/>
                 <field th:replace="fragments/fields :: licenceKey"/>
 
                 <div class="form-group row">

@@ -12,7 +12,7 @@ import ru.pf.metadata.object.Conf;
 import ru.pf.metadata.reader.ReaderException;
 import ru.pf.repository.ProjectsCrudRepository;
 import ru.pf.service.ProjectsService;
-import ru.pf.service.ZipService;
+import ru.pf.core.service.ZipService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

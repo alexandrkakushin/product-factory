@@ -2,7 +2,7 @@ package ru.pf.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.pf.service.sourcecode.SourceCodeRepository;
+import ru.pf.core.sourcecode.SourceCodeRepository;
 
 import javax.persistence.*;
 

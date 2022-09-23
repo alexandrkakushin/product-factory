@@ -30,4 +30,10 @@
     <include file="db/changelog/db.changelog-16-create-table-users-roles.xml"/>
 
     <include file="db/changelog/db.changelog-17-modify-licence-build-script.xml"/>
+
+    <!-- Добавление таблицы для хранения журнала построения защищенных решений -->
+    <include file="db/changelog/db.changelog-18-create-journal-build-solution.xml"/>
+
+    <!-- Добавление поля для хранения информационной базы в таблицу сценариев сборки защищенного решения -->
+    <include file="db/changelog/db.changelog-19-alter-table-licence-build-script.xml"/>
 </databaseChangeLog>

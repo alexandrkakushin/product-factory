@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="18" author="a.kakushin">
+        <createTable tableName="journal_build_solution">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="licence_build_script_id" type="bigint"/>
+            <column name="created" type="timestamp"/>
+            <column name="operation" type="UUID">
+                <constraints unique="true" nullable="false"/>
+            </column>
+
+            <column name="stage" type="varchar(255)"/>
+            <column name="file_name_for_download" type="varchar(255)"/>
+            <column name="size" type="bigint"/>
+            <column name="text_error" type="clob"/>
+            <column name="is_successful" type="bool"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="journal_build_solution"
+                baseColumnNames="licence_build_script_id"
+                constraintName="FK_JOURNAL_BUILD_SOLUTION_LICENCE_BUILD_SCRIPT"
+                referencedTableName="licence_build_script"
+                referencedColumnNames="id"/>
+
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="journal_build_solution"/>
+            <dropTable tableName="journal_build_solution"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

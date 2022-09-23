@@ -2,6 +2,7 @@ package ru.pf.entity.licence;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.pf.entity.InfoBase;
 import ru.pf.entity.PfEntity;
 import ru.pf.entity.Project;
 
@@ -48,6 +49,13 @@ public class LicenceBuildScript implements PfEntity<LicenceBuildScript> {
     @ManyToOne
     @JoinColumn(name = "licence_key_id")
     private LicenceKey licenceKey;
+
+    /**
+     * Информационная база для построения
+     */
+    @ManyToOne
+    @JoinColumn(name = "info_base_id")
+    private InfoBase infoBase;
 
     /**
      * Общий модуль, который должен быть изменен в процессе сборки

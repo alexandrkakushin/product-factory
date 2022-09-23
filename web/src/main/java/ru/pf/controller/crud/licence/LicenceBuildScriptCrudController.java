@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pf.controller.crud.PfCrudController;
 import ru.pf.controller.crud.SubmitException;
 import ru.pf.entity.licence.LicenceBuildScript;
+import ru.pf.repository.InfoBaseCrudRepository;
 import ru.pf.repository.PfCrudRepository;
 import ru.pf.repository.ProjectsCrudRepository;
 import ru.pf.repository.licence.LicenceBuildScriptCrudRepository;
@@ -24,11 +25,23 @@ public class LicenceBuildScriptCrudController implements PfCrudController<Licenc
 
     static final String URL = "licence/buildscript";
 
+    /**
+     * Репозиторий для чтения Ключей СЛК
+     */
     @Autowired
     private LicenceBuildScriptCrudRepository repository;
 
+    /**
+     * Репозиторий для чтения Проектов
+     */
     @Autowired
     private ProjectsCrudRepository projectsRepository;
+
+    /**
+     * Репозиторий для чтения Информационных баз
+     */
+    @Autowired
+    private InfoBaseCrudRepository infoBaseRepository;
 
     @Autowired
     private LicenceKeyCrudRepository licenceKeyRepository;
@@ -56,6 +69,7 @@ public class LicenceBuildScriptCrudController implements PfCrudController<Licenc
     @Override
     public void addAttributesItem(Model model) {
         model.addAttribute("projectList", projectsRepository.findAll(Sort.by("name")));
+        model.addAttribute("infoBaseList", infoBaseRepository.findAll(Sort.by("name")));
         model.addAttribute("licenceKeyList", licenceKeyRepository.findAll(Sort.by("name")));
 
         PfCrudController.super.addAttributesItem(model);

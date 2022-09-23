@@ -16,8 +16,7 @@
         <module>conf</module>
         <module>properties</module>
         <module>licence</module>
-        <module>application/project</module>
-    </modules>
+	</modules>
     <packaging>pom</packaging>
 
 	<name>productfactory</name>
