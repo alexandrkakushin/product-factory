@@ -40,20 +40,129 @@
         </div>
       </div>
 
-      <button id="btn_get_extensions" class="btn btn-outline-info" type="button" onclick="runBuild()">
+      <button id="btn_get_extensions" class="btn btn-outline-info" type="button" onclick="runBuild(event)">
         <i class="fas fa-ghost" aria-hidden="true"></i>  Запустить сборку
       </button>
+
+      <br/>
+      <br/>
+      <a href="#" hidden="true" id="download-link">Скачать</a>
+
+      <div class="form-group">
+        <textarea hidden="true" class="form-control" id="text-error" rows="15"></textarea>
+      </div>
 
     </div>
 
     <footer th:replace="fragments/footer :: bootstrap"/>
 
     <script th:inline="javascript">
+      let buildScriptList = [[${buildScriptList}]];
+    </script>
+
+    <script>
+      var session;
+      var statusTask;
+    </script>
+
+    <script th:inline="javascript">
       function getBuildScript() {
         return $('#field-build-script').find(":selected").val();
       }
 
-      function runBuild() {
+      function runUpdateStatusTask() {
+        loopUpdateStatus = function (terminator = false) {
+          if (terminator) {
+              clearTimeout(statusTask);
+          } else {
+            console.debug('Get status by uuid');
+
+            $.ajax({
+              type: 'GET',
+              url: `/api/licence/solution/async/status?session=${session}`,
+              dataType: 'json',
+              success: function(data) {
+                console.debug(data);
+                if (data.found) {
+                  loopUpdateStatus(true);
+                  if (data.successful) {
+                    $('#download-link').text("Скачать");
+                    $('#download-link').attr("href", "/api/licence/solution/async/download?session=" + session);
+                  } else {
+                    $('#download-link').attr("hidden", true);
+                    $('#text-error').removeAttr('hidden');
+                    $('#text-error').text(data.textError);
+                  }
+                }
+              },
+              error: function(data) {
+                $.notify('error', {
+                  offset: {
+                    x: 10,
+                    y: 75
+                  },
+                  type: 'danger'
+                });
+              }
+            });
+
+            statusTask = setTimeout(function() { loopUpdateStatus(); }, 3000);
+          }
+        }
+
+        $('#download-link').removeAttr('hidden');
+        $('#download-link').attr("href", "#");
+        $('#download-link').text("Построение, пожалуйста, подождите...");
+        $('#text-error').attr("hidden", true);
+
+        loopUpdateStatus(false);
+      }
+
+      function runBuild(event) {
+        let execute = function(selectedScriptId) {
+          let infoByScriptId = buildScriptList.find(element => element.id == selectedScriptId);
+          if (infoByScriptId.infoBaseId == undefined) {
+            $.notify('Сценарий не может быть запущен, поскольку не заполнена информационная база для сборки', {
+                offset: {
+                    x: 10,
+                    y: 75
+                },
+                type: 'warning'
+            });
+            return;
+          }
+
+          $.ajax({
+              type: 'POST',
+              url: `/api/licence/solution/async/build?script=${infoByScriptId.id}&infobase=${infoByScriptId.infoBaseId}`,
+              dataType: 'json',
+              success: function(data) {
+                console.debug(data);
+                session = data.uuid;
+                if (session != undefined) {
+                  runUpdateStatusTask();
+                } else {
+                  $.notify(data.error, {
+                      offset: {
+                          x: 10,
+                          y: 75
+                      },
+                      type: 'danger'
+                  });
+                }
+              },
+              error: function(data) {
+                $.notify('error', {
+                    offset: {
+                        x: 10,
+                        y: 75
+                    },
+                    type: 'danger'
+                });
+              }
+          });
+        }
+
         var select = getBuildScript();
         if (!select) {
           $.notify('Необходимо выбрать сценарий сборки', {
@@ -61,10 +170,11 @@
               x: 10,
               y: 75
             },
-            type: 'info'
+            type: 'warning'
           });
           return;
         }
+        execute(select);
       }
     </script>
   </body>

@@ -122,6 +122,21 @@ public class LicenceSolutionGenerator {
      */
     public Path build(LicenceBuildScript script, InfoBase infoBase) throws LicenceException, IOException {
         UUID session = UUID.randomUUID();
+        return this.build(session, script, infoBase);
+    }
+
+    /**
+     * Запуск построения защищенного решения с возможностью указания идентификатора сессии
+     * По данному идентификатору сессии предоставляется возможность скачивания файла
+     *
+     * @param session UUID сессии
+     * @param script Сценарий сборки
+     * @param infoBase Информационная база для сборки
+     * @return Расположение "скомпилированного" файла
+     * @throws LicenceException Исключения при работе с утилитой лицензирования СЛК
+     * @throws IOException Исключения при работе с файлами
+     */
+    public Path build(UUID session, LicenceBuildScript script, InfoBase infoBase) throws LicenceException, IOException {
         HashMap<String, Object> sessionParam = new HashMap<>();
         sessions.put(session, sessionParam);
 
