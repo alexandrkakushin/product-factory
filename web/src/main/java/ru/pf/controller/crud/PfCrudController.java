@@ -17,6 +17,10 @@ public interface PfCrudController<T extends PfEntity<?>> extends PfController {
 
     String getTemplateItem();
 
+    /**
+     * Относительный "адрес" шаблона формы списка файла (без .html) в "resources"
+     * @return Относительный путь шаблона
+     */
     default String getTemplateList() {
         return "catalogs/items";
     }
@@ -30,10 +34,18 @@ public interface PfCrudController<T extends PfEntity<?>> extends PfController {
     @GetMapping
     default String items(Model model) {
         model.addAttribute("name", getName());
-        model.addAttribute("items", getRepository().findAll(Sort.by("id")));
+        model.addAttribute("items", getItems());
         addAttributesItems(model);
 
         return getTemplateList();
+    }
+
+    /**
+     * Получение данных из репозитория, по умолчанию сортировка по идентификатору записей (ID)
+     * @return Записи
+     */
+    default Iterable<T> getItems() {
+        return getRepository().findAll(Sort.by("id"));
     }
 
     @GetMapping("/new")

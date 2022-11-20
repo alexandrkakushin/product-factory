@@ -23,7 +23,7 @@ import ru.pf.repository.licence.LicenceKeyCrudRepository;
 @RequestMapping(LicenceBuildScriptCrudController.URL)
 public class LicenceBuildScriptCrudController implements PfCrudController<LicenceBuildScript> {
 
-    static final String URL = "licence/buildscript";
+    static final String URL = "licence/solution/buildscript";
 
     /**
      * Репозиторий для чтения Ключей СЛК

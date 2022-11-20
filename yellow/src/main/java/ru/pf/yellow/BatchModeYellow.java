@@ -39,7 +39,7 @@ public class BatchModeYellow {
      * @param yellow "Толстый" клиент 1С:Предприятие
      * @param infoBase Информационная база
      * @param target Расположение DT-файла
-     * @throws YellowException
+     * @throws YellowException Исключение в случае выгрузки информационной базы в файл
      */
     public void dumpIb(Yellow yellow, InfoBase infoBase, Path target) throws YellowException {
         Command command =
@@ -56,7 +56,7 @@ public class BatchModeYellow {
      * @param yellow "Толстый" клиент 1С:Предприятие
      * @param infoBase Информационная база
      * @param source Расположение DT-файла
-     * @throws YellowException
+     * @throws YellowException Исключение в случае загрузки информационной базы из файла
      */
     public void restoreIb(Yellow yellow, InfoBase infoBase, Path source) throws YellowException {
         Command command =
@@ -80,6 +80,26 @@ public class BatchModeYellow {
                 new Command().designer()
                         .infoBase(infoBase)
                         .dumpConfigToFiles(target)
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Выгрузка конфигурации расширения в XML-файлы
+     *
+     * @param yellow    "Толстый" клиент 1С:Предприятие
+     * @param infoBase  Информационная база
+     * @param target    Расположение XML-файлов
+     * @param extension Расширение
+     * @throws YellowException Исключание в случае выгрузки XML-файлов
+     */
+    public void dumpConfigToFiles(Yellow yellow, InfoBase infoBase, Path target, Extension extension) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .dumpConfigToFiles(target)
+                        .extension(extension)
                         .build();
 
         startProcess(yellow, command);
@@ -115,25 +135,6 @@ public class BatchModeYellow {
                 new Command().designer()
                         .infoBase(infoBase)
                         .loadConfigFromFiles(source)
-                        .extension(extension)
-                        .build();
-
-        startProcess(yellow, command);
-    }
-
-    /**
-     * Выгрузка конфигурации расширения в XML-файлы
-     * @param yellow "Толстый" клиент 1С:Предприятие
-     * @param infoBase Информационная база
-     * @param extension Расширение
-     * @param target Расположение XML-файлов
-     * @throws YellowException Исключание в случае выгрузки XML-файлов
-     */
-    public void dumpConfigExtensionToFiles(Yellow yellow, InfoBase infoBase, Extension extension, Path target) throws YellowException {
-        Command command =
-                new Command().designer()
-                        .infoBase(infoBase)
-                        .dumpConfigToFiles(target)
                         .extension(extension)
                         .build();
 
@@ -189,6 +190,26 @@ public class BatchModeYellow {
                         .infoBase(infoBase)
                         .configurationRepository(cr)
                         .configurationRepositoryUpdateCfg()
+                        .disableStartupDialogs()
+                        .build();
+
+        startProcess(yellow, command);
+    }
+
+    /**
+     * Обновление расширения информационной базы из хранилища конфигураций
+     * @param yellow "Толстый" клиент 1С:Предприятие
+     * @param infoBase Информационная база
+     * @param cr Хранилище конфигурации
+     * @throws YellowException Исключение в случае ошибки при обновлении расширения из хранилища
+     */
+    public void configurationRepositoryUpdateCfg(Yellow yellow, InfoBase infoBase, ConfigurationRepository cr, Extension extension) throws YellowException {
+        Command command =
+                new Command().designer()
+                        .infoBase(infoBase)
+                        .configurationRepository(cr)
+                        .configurationRepositoryUpdateCfg()
+                        .extension(extension)
                         .disableStartupDialogs()
                         .build();
 

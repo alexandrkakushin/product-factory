@@ -62,7 +62,7 @@
                                    th:value="${entity.nameExtension}"
                                    class="form-control"
                                    id="field-name-extension"
-ы                                  placeholder="Имя расширения информационной базы">
+                                   placeholder="Имя расширения информационной базы">
                         </div>
                     </div>
                 </item-field>
@@ -72,56 +72,60 @@
         </div>
 
         <script th:inline="javascript">
-            setVisibleSourceTypes([[${entity.typeOfSourceCodeRepository}]]);
+            var selectedTypeOfSourceCode = [[${entity.typeOfSourceCodeRepository}]];
+            setVisibleBySourceTypes();
 
             function sourceOnChange(event) {
-                setVisibleSourceTypes(event.currentTarget.defaultValue);
+                selectedTypeOfSourceCode = event.currentTarget.defaultValue;
+                setVisibleBySourceTypes();
             }
 
             function typeOnChange(event) {
+                setVisibleBySourceTypes();
+            }
+
+            function setVisibleBySourceTypes() {
+                let inputDirectory = $('#input_DIRECTORY');
+                let inputCr = $('#input_CR');
+                let inputGit = $('#input_GIT');
+
+                inputDirectory.hide();
+                inputCr.hide();
+                inputGit.hide();
+
+                if (selectedTypeOfSourceCode === 'DIRECTORY') {
+                    inputDirectory.show();
+                }
+
+                if (selectedTypeOfSourceCode === 'CONFIGURATION_REPOSITORY') {
+                    inputCr.show();
+                }
+
+                if (selectedTypeOfSourceCode === 'GIT') {
+                    inputGit.show();
+                }
+
+                setVisibleInfoBase();
                 setVisibleNameExtension();
+            }
+
+            function setVisibleInfoBase() {
+                let inputInfoBase = $('#input-info-base');
+                inputInfoBase.hide();
+
+                let isExtension = $('#field-project-type').val() === 'EXTENSION';
+                if (selectedTypeOfSourceCode === 'INFO_BASE' || isExtension) {
+                    inputInfoBase.show();
+                }
             }
 
             function setVisibleNameExtension() {
                 let inputNameExtension = $('#input-name-extension');
                 inputNameExtension.hide();
 
-                if ($('#select_INFO_BASE').is(':checked')) {
-                    if ($('#field-project-type').val() === 'EXTENSION') {
-                        inputNameExtension.show();
-                    }
+                if ($('#field-project-type').val() === 'EXTENSION') {
+                    inputNameExtension.show();
                 }
-            }
-
-            function setVisibleSourceTypes(value) {
-                let inputDirectory = $('#input_DIRECTORY');
-                let inputCr = $('#input_CR');
-                let inputGit = $('#input_GIT');
-                let inputInfoBase = $('#input-info-base');
-
-                inputDirectory.hide();
-                inputCr.hide();
-                inputGit.hide();
-                inputInfoBase.hide();
-
-
-                if (value === 'DIRECTORY') {
-                    inputDirectory.show();
-                }
-
-                if (value === 'CONFIGURATION_REPOSITORY') {
-                    inputCr.show();
-                }
-
-                if (value === 'GIT') {
-                    inputGit.show();
-                }
-
-                if (value === 'INFO_BASE') {
-                    inputInfoBase.show();
-                }
-
-                setVisibleNameExtension();
             }
         </script>
 

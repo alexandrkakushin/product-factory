@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Контроллер для создания защищенных обработок
+ * Контроллер для создания защищенных решений
  */
 @Controller
-@RequestMapping(LicenceGeneratorController.URL)
-public class LicenceGeneratorController {
+@RequestMapping(LicenceSolutionGeneratorController.URL)
+public class LicenceSolutionGeneratorController {
 
-    static final String URL = "licence/generate";
+    static final String URL = "licence/solution/generate";
 
     /**
      * Репозиторий для чтения сценариев сборки

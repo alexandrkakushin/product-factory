@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
+    <head th:replace="fragments/header :: common"/>
+    <body>
+        <nav th:replace="fragments/navbar :: navbar"></nav>
+        <div class="container-fluid pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Product Factory</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span th:text="${name}"></span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-sm-8" style="text-align: left" >
+                    <h5>
+                        <strong>
+                            <p th:text="${name}"></p>
+                        </strong>
+                    </h5>
+                </div>
+                <div class="col-sm-4" style="text-align: right" >
+                    <a th:href="@{${url}+'/new'}" role="button" aria-pressed="true">
+                        <i class="fas fa-plus-circle" aria-hidden="true"></i> Создать
+                    </a>
+                </div>
+            </div>
+            <table class="table table-striped" aria-describedby="Элементы справочника">
+                <thead>
+                <tr>
+                    <th id="item-id">#</th>
+                    <th id="item-licence-build-script">Сценарий</th>
+                    <th id="item-created">Дата сборки</th>
+                    <th id="item-is-successful">Успех</th>
+                    <th id="item-size">Размер файла (Мб)</th>
+                    <th id="item-text-error">Текст ошибки</th>
+                    <th id="item-link-download">Ссылка</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${items.empty}">
+                    <td colspan="3"> Нет данных для отображения </td>
+                </tr>
+                <tr th:each="item : ${items}">
+                    <td>
+                        <span th:text="${item.id}"> # </span>
+                    </td>
+                    <td>
+                        <div th:if="${item.licenceBuildScript != null}">
+                            <a th:href="@{'/licence/solution/buildscript/'+${item.licenceBuildScript.id}}">
+                                <span th:text="${item.licenceBuildScript.name}"> Сценарий </span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <span th:text="${#dates.format(item.created, 'dd.MM.yyyy hh:mm:ss')}"> Дата сборки </span>
+                    </td>
+                    <td>
+                        <i th:if="${item.isSuccessful}" class="fas fa-check"></i>
+                    </td>
+                    <td>
+                        <span th:text="${#numbers.formatDecimal(item.size * 0.000000954, 1, 'COMMA', 2, 'POINT')}"> Размер файла </span>
+                    </td>
+                    <td>
+                        <span th:text="${item.textError}"> Текст ошибки </span>
+                    </td>
+                    <td>
+                        <div th:if="${item.fileExists}">
+                            <a th:href="@{'/api/licence/solution/async/download?session='+${item.operation}}">
+                                <span th:text="Скачать"> Скачать </span>
+                            </a>
+                        </div>
+                        <div th:if="${item.fileExists == false && item.isSuccessful}">
+                            <span style="color:red"> Файл не найден </span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer th:replace="fragments/footer :: bootstrap"></footer>
+    </body>
+</html>

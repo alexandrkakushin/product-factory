@@ -6,6 +6,8 @@ import ru.pf.entity.PfEntity;
 import ru.pf.entity.licence.LicenceBuildScript;
 
 import javax.persistence.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.UUID;
 
@@ -56,6 +58,12 @@ public class JournalBuildSolution implements PfEntity<JournalBuildSolution> {
     private String fileNameForDownload;
 
     /**
+     * Признак существования файла
+     */
+    @Transient
+    private boolean fileExists;
+
+    /**
      * Размер файла
      */
     private long size;
@@ -71,4 +79,14 @@ public class JournalBuildSolution implements PfEntity<JournalBuildSolution> {
      * Признак успешного построения
      */
     private boolean isSuccessful;
+
+    /**
+     * Инициализация полей после загрузки основных данных
+     */
+    @PostLoad
+    private void initTransients() {
+        if (this.getFileNameForDownload() != null) {
+            this.fileExists = Files.exists(Paths.get(this.getFileNameForDownload()));
+        }
+    }
 }

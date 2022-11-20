@@ -21,6 +21,7 @@ import ru.pf.repository.licence.LicenceBuildScriptCrudRepository;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -124,16 +125,20 @@ public class LicenceSolutionController {
 
         Optional<JournalBuildSolution> optionalDb = journal.findByOperation(session);
         if (optionalDb.isPresent()) {
-            Path dataFile = Paths.get(optionalDb.get().getFileNameForDownload());
+            String fileName = optionalDb.get().getFileNameForDownload();
+            if (fileName != null) {
+                Path dataFile = Paths.get(fileName);
+                if (Files.exists(dataFile)) {
+                    InputStreamResource resource = new InputStreamResource(
+                            new FileInputStream(dataFile.toFile()));
 
-            InputStreamResource resource = new InputStreamResource(
-                    new FileInputStream(dataFile.toFile()));
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + optionalDb.get().getFileNameForDownload())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .contentLength(optionalDb.get().getSize())
-                    .body(resource);
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + optionalDb.get().getFileNameForDownload())
+                            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                            .contentLength(optionalDb.get().getSize())
+                            .body(resource);
+                }
+            }
         }
 
         return ResponseEntity.notFound().build();

@@ -48,8 +48,8 @@ public class InfoBaseSourceCode implements SourceCode {
 
             if (project.getType() == Project.Type.EXTENSION) {
                 Extension extension = new Extension(project.getNameExtension());
-                batchModeYellow.dumpConfigExtensionToFiles(
-                        yellow, infoBase, extension, pathXml);
+                batchModeYellow.dumpConfigToFiles(
+                        yellow, infoBase, pathXml, extension);
             } else {
                 batchModeYellow.dumpConfigToFiles(yellow, infoBase, pathXml);
             }
