@@ -26,7 +26,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<postgresql.version>42.2.23.jre7</postgresql.version>
-		<jgit.version>5.13.0.202109080827-r</jgit.version>
+		<jgit.version>6.6.1.202309021850-r</jgit.version>
 		<lombok.version>1.18.22</lombok.version>
 		<!-- webjars -->
 		<webjars.locator.version>0.48</webjars.locator.version>
