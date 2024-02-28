@@ -3,6 +3,7 @@ package ru.pf.licence.solution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+import ru.pf.core.sourcecode.SourceCodeException;
 import ru.pf.entity.InfoBase;
 import ru.pf.entity.Project;
 import ru.pf.entity.licence.LicenceBuildScript;
@@ -128,6 +129,9 @@ public class LicenceSolutionGenerator {
     /**
      * Запуск построения защищенного решения с возможностью указания идентификатора сессии
      * По данному идентификатору сессии предоставляется возможность скачивания файла
+     * <p>
+     * В каталоге временных файлов для каждой сессии создается отдельный каталог в наименованием,
+     * которое представляет собой идентификатор сессии.
      *
      * @param session UUID сессии
      * @param script Сценарий сборки
@@ -146,6 +150,9 @@ public class LicenceSolutionGenerator {
         Path workDir = null;
         try {
             sessionParam.put(PARAM_PROJECT, script.getProject());
+            if (script.getProject() == null) {
+                throw new LicenceException("Не найден проект");
+            }
 
             workDir = Files.createTempDirectory(session.toString());
             sessionParam.put(PARAM_WORK_DIR, workDir);
@@ -154,12 +161,13 @@ public class LicenceSolutionGenerator {
             Files.createDirectory(xmlDir);
             setParam(session, PARAM_XML_DIR, xmlDir);
 
-            copySourceCode(session);
+            updateSourceCode(session);
+            copySourceCodeToTempDirectory(session);
             readConf(session);
             createEpf(session);
             createDatafile(session);
             insertProtectedModule(session);
-            updateSourceCode(session);
+            modifySourceCode(session);
             removeDataProcessor(session);
 
             return makeCfCfe(session);
@@ -196,17 +204,30 @@ public class LicenceSolutionGenerator {
     }
 
     /**
+     * Обновление исходников проекта
+     * @param session Уникальный идентификатор (UUID)
+     * @throws LicenceException Будет выброшено, если не получится обновить исходники проекта
+     */
+    private void updateSourceCode(UUID session) throws LicenceException {
+        Project project = (Project) getParam(session, PARAM_PROJECT);
+        LicenceBuildScript script = (LicenceBuildScript) getParam(session, PARAM_SCRIPT);
+        if (script.isNeedsUpdateProjectSource()) {
+            try {
+                projectsService.update(project);
+            } catch (SourceCodeException | IOException e) {
+                throw new LicenceException(e);
+            }
+        }
+    }
+
+    /**
      * Копирование исходных файлов проекта (XML-файлы)
      * @param session Уникальный идентификатор сессии
      * @throws LicenceException Исключение может быть выброшено в случае, если проект не найден
      * @throws IOException Возможна ошибка при рекурсивном копировании каталога с XML-файлами
      */
-    private void copySourceCode(UUID session) throws LicenceException, IOException {
+    private void copySourceCodeToTempDirectory(UUID session) throws LicenceException, IOException {
         Project project = (Project) getParam(session, PARAM_PROJECT);
-        if (project == null) {
-            throw new LicenceException("Не найден проект");
-        }
-
         Path source = projectsService.getTemporaryLocation(project);
         if (!Files.exists(source)) {
             throw new LicenceException("Не найден каталог проекта, возможно необходимо обновить исходники проекта");
@@ -358,7 +379,7 @@ public class LicenceSolutionGenerator {
      * @throws ReaderException Может быть выброшено, если не найден общий модуль или в случае ошибок парсинга файлов
      * @throws IOException При удалении или записи BSL-файла
      */
-    private void updateSourceCode(UUID session) throws ReaderException, IOException {
+    private void modifySourceCode(UUID session) throws ReaderException, IOException {
         LicenceBuildScript script = (LicenceBuildScript) getParam(session, PARAM_SCRIPT);
 
         UUID commonModuleUuid = script.getCommonModule();

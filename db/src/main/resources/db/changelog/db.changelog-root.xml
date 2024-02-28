@@ -36,4 +36,8 @@
 
     <!-- Добавление поля для хранения информационной базы в таблицу сценариев сборки защищенного решения -->
     <include file="db/changelog/db.changelog-19-alter-table-licence-build-script.xml"/>
+
+    <!-- Добавление поля для реализации опции обновления исходников проекта перед сборкой защищенного решения -->
+    <include file="db/changelog/db.changelog-20-alter-table-licence-build-script.xml"/>
+
 </databaseChangeLog>

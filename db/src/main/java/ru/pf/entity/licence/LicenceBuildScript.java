@@ -44,6 +44,11 @@ public class LicenceBuildScript implements PfEntity<LicenceBuildScript> {
     private Project project;
 
     /**
+     * Признак "Обновлять исходные коды проекта"
+     */
+    private boolean needsUpdateProjectSource;
+
+    /**
      * Связь с ключом системы лицензирования
      */
     @ManyToOne
