@@ -29,7 +29,7 @@
 		<jgit.version>5.13.0.202109080827-r</jgit.version>
 		<lombok.version>1.18.22</lombok.version>
 		<!-- webjars -->
-		<webjars.locator.version>0.48</webjars.locator.version>
+		<webjars.locator.version>0.50</webjars.locator.version>
 		<bootstrap.version>4.6.1</bootstrap.version>
 		<jquery.version>3.6.0</jquery.version>
 		<popperjs.version>1.16.1-lts</popperjs.version>
