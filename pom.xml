@@ -26,12 +26,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<postgresql.version>42.2.23.jre7</postgresql.version>
-		<jgit.version>5.13.1.202206130422-r</jgit.version>
-		<lombok.version>1.18.22</lombok.version>
+		<jgit.version>6.10.1.202505221210-r</jgit.version>
+		<lombok.version>1.18.24</lombok.version>
 		<!-- webjars -->
-		<webjars.locator.version>0.48</webjars.locator.version>
-		<bootstrap.version>4.6.1</bootstrap.version>
-		<jquery.version>3.6.0</jquery.version>
+		<webjars.locator.version>0.50</webjars.locator.version>
+		<bootstrap.version>5.3.3</bootstrap.version>
+		<jquery.version>3.6.1</jquery.version>
 		<popperjs.version>1.16.1-lts</popperjs.version>
 		<font.awesome.version>5.15.4</font.awesome.version>
 		<highlightjs.version>9.15.10</highlightjs.version>
